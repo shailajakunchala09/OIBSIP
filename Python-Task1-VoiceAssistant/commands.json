@@ -1,0 +1,37 @@
+{
+  "custom_commands": [
+    {
+      "name": "portfolio",
+      "phrases": ["open my portfolio", "show my portfolio", "open portfolio"],
+      "action": "open_url",
+      "value": "https://github.com/",
+      "response": "Opening your portfolio page."
+    },
+    {
+      "name": "internship page",
+      "phrases": ["open oasis infobyte", "open my internship page"],
+      "action": "open_url",
+      "value": "https://oasisinfobyte.com/",
+      "response": "Opening the Oasis Infobyte website."
+    },
+    {
+      "name": "youtube",
+      "phrases": ["open youtube", "play youtube"],
+      "action": "open_url",
+      "value": "https://www.youtube.com/",
+      "response": "Opening YouTube."
+    },
+    {
+      "name": "introduction",
+      "phrases": ["introduce yourself", "who are you", "what are you"],
+      "action": "say",
+      "value": "I am a Python voice assistant built for Task one of the Oasis Infobyte Python Programming internship.",
+      "response": "Here is my introduction."
+    }
+  ],
+
+  "email_contacts": {
+    "mentor": "mentor@example.com",
+    "myself": "your.test.address@example.com"
+  }
+}
