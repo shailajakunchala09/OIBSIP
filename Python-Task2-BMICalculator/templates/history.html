@@ -1,0 +1,327 @@
+{% extends "base.html" %}
+
+{% block title %}History - BMI Insight{% endblock %}
+
+{% block content %}
+
+<div class="page-shell">
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="topbar">
+
+        <div>
+
+            <div class="kicker">
+                HEALTH RECORDS
+            </div>
+
+            <h1>
+                Your BMI <span>history.</span>
+            </h1>
+
+            <p>
+                Review, search, and manage your saved BMI measurements.
+            </p>
+
+        </div>
+
+
+        <div class="topbar-actions">
+
+            <div class="profile-control">
+
+                <div class="mini-avatar">
+                    S
+                </div>
+
+                <select
+                    id="user-select"
+                    aria-label="Select user"
+                ></select>
+
+            </div>
+
+
+            <button
+                id="add-user-btn"
+                type="button"
+                class="top-add-user"
+            >
+                <span class="plus-icon">+</span>
+                Add User
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- ================= HISTORY CARD ================= -->
+
+    <section class="card history-card">
+
+        <div class="section-header">
+
+            <div class="section-title-wrap">
+
+                <div class="heading-icon small-clock">
+
+                    <svg viewBox="0 0 24 24">
+                        <circle cx="12" cy="12" r="8.2"/>
+                        <path d="M12 7.7v4.8l3.2 2"/>
+                    </svg>
+
+                </div>
+
+                <div>
+
+                    <h2>
+                        Measurement History
+                    </h2>
+
+                    <p>
+                        All saved BMI readings for the selected profile.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="view-link"
+            >
+                ← New Measurement
+            </a>
+
+        </div>
+
+
+        <!-- ================= SEARCH ================= -->
+
+        <div class="history-toolbar">
+
+            <div class="search-wrap">
+
+                <span
+                    style="
+                        position:absolute;
+                        left:14px;
+                        top:50%;
+                        transform:translateY(-50%);
+                        color:#8d99aa;
+                        font-size:17px;
+                        z-index:2;
+                    "
+                >
+                    ⌕
+                </span>
+
+                <input
+                    id="search-input"
+                    type="text"
+                    placeholder="Search by category or date..."
+                    autocomplete="off"
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= CATEGORY FILTER GUIDE ================= -->
+
+        <div
+            style="
+                display:flex;
+                flex-wrap:wrap;
+                align-items:center;
+                gap:10px;
+                margin-bottom:22px;
+            "
+        >
+
+            <span class="category-badge badge-underweight">
+                Underweight
+            </span>
+
+            <span class="category-badge badge-normal">
+                Normal
+            </span>
+
+            <span class="category-badge badge-overweight">
+                Overweight
+            </span>
+
+            <span class="category-badge badge-obese">
+                Obese
+            </span>
+
+        </div>
+
+
+        <!-- ================= RECORD TABLE ================= -->
+
+        <div
+            id="history-table-wrap"
+            class="table-container"
+        >
+
+            <div class="empty-state">
+                Loading your BMI history...
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= CATEGORY INFORMATION ================= -->
+
+    <section
+        style="
+            display:grid;
+            grid-template-columns:repeat(4,1fr);
+            gap:13px;
+            margin-top:15px;
+        "
+    >
+
+        <div
+            class="card"
+            style="
+                padding:18px;
+                border-top:3px solid #65a8f0;
+            "
+        >
+
+            <div
+                style="
+                    color:#3379c5;
+                    font-size:11px;
+                    font-weight:850;
+                    letter-spacing:.7px;
+                "
+            >
+                UNDERWEIGHT
+            </div>
+
+            <div
+                style="
+                    margin-top:6px;
+                    color:#65758b;
+                    font-size:13px;
+                    font-weight:700;
+                "
+            >
+                Below 18.5
+            </div>
+
+        </div>
+
+
+        <div
+            class="card"
+            style="
+                padding:18px;
+                border-top:3px solid #30c18c;
+            "
+        >
+
+            <div
+                style="
+                    color:#12895f;
+                    font-size:11px;
+                    font-weight:850;
+                    letter-spacing:.7px;
+                "
+            >
+                NORMAL
+            </div>
+
+            <div
+                style="
+                    margin-top:6px;
+                    color:#65758b;
+                    font-size:13px;
+                    font-weight:700;
+                "
+            >
+                18.5 – 24.9
+            </div>
+
+        </div>
+
+
+        <div
+            class="card"
+            style="
+                padding:18px;
+                border-top:3px solid #f2bd4a;
+            "
+        >
+
+            <div
+                style="
+                    color:#a46d00;
+                    font-size:11px;
+                    font-weight:850;
+                    letter-spacing:.7px;
+                "
+            >
+                OVERWEIGHT
+            </div>
+
+            <div
+                style="
+                    margin-top:6px;
+                    color:#65758b;
+                    font-size:13px;
+                    font-weight:700;
+                "
+            >
+                25 – 29.9
+            </div>
+
+        </div>
+
+
+        <div
+            class="card"
+            style="
+                padding:18px;
+                border-top:3px solid #ef6b7b;
+            "
+        >
+
+            <div
+                style="
+                    color:#c44257;
+                    font-size:11px;
+                    font-weight:850;
+                    letter-spacing:.7px;
+                "
+            >
+                OBESE
+            </div>
+
+            <div
+                style="
+                    margin-top:6px;
+                    color:#65758b;
+                    font-size:13px;
+                    font-weight:700;
+                "
+            >
+                30 or above
+            </div>
+
+        </div>
+
+    </section>
+
+</div>
+
+{% endblock %}
