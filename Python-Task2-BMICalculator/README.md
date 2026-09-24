@@ -132,6 +132,236 @@ Environment Variables
 ## BMI Calculation
 
 BMI is calculated using the standard formula:
-
-```text
 BMI = Weight / Height²
+Weight = kilograms
+Height = meters
+
+## BMI Categories
+| BMI Range      | Category    |
+| -------------- | ----------- |
+| Below 18.5     | Underweight |
+| 18.5 – 24.9    | Normal      |
+| 25.0 – 29.9    | Overweight  |
+| 30.0 and above | Obese       |
+
+## How the Application Works
+The application follows a simple workflow:
+
+Select or Create User
+        ↓
+Enter Weight & Height
+        ↓
+Validate Input
+        ↓
+Calculate BMI
+        ↓
+Determine BMI Category
+        ↓
+Save Measurement to SQLite
+        ↓
+View History
+        ↓
+Analyze BMI & Weight Trends
+
+## Web Application
+
+The Flask web application provides a modern dashboard interface.
+
+### Dashboard
+
+The dashboard provides:
+
+User profile selection
+Add-user functionality
+Weight and height inputs
+BMI calculation
+Color-coded result
+BMI scale
+Summary metrics
+Recent records
+BMI trend visualization
+History
+
+### The History page provides:
+
+Complete BMI history
+Measurement date and time
+Weight
+Height
+BMI
+Category
+Search and filtering
+Record deletion
+Analytics
+
+### The Analytics page provides:
+
+Latest BMI
+Previous BMI
+Highest BMI
+Lowest BMI
+Total measurement count
+BMI trend chart
+Weight trend chart
+
+## Desktop Application
+
+The desktop version is built using Tkinter and provides the same core functionality through a standalone graphical interface.
+
+### Dashboard
+User selection
+Add-user functionality
+Weight and height input
+BMI calculation
+BMI result card
+Color-coded category
+BMI scale
+Reset functionality
+
+### History
+Complete measurement history
+Date and time
+Weight
+Height
+BMI
+Category
+Record deletion
+
+### Analytics
+BMI statistics
+BMI trend chart
+Weight trend chart
+Matplotlib visualization
+
+The desktop application also supports light and dark themes.
+
+## Project Structure
+
+Python-Task2-BMICalculator/
+
+│
+
+├── app.py
+
+├── desktop_app.py
+
+├── bmi_calculator.py
+
+├── database.py
+
+├── validators.py
+
+├── config.py
+
+├── requirements.txt
+
+├── README.md
+
+├── .gitignore
+
+│
+
+├── templates/
+
+│   ├── base.html
+
+│   ├── index.html
+
+│   ├── history.html
+
+│   └── analytics.html
+
+│
+
+├── static/
+
+│   ├── css/
+
+│   │   └── style.css
+
+│   ├── js/
+
+│   │   └── app.js
+
+│   │
+
+│   └── assets/
+
+│
+
+├── data/
+
+│
+
+├── screenshots/
+
+│
+
+└── tests/
+
+    └── test_bmi.py
+
+
+## Future Enhancements
+Additional health metrics
+Advanced analytics and reporting
+PostgreSQL database support
+User authentication
+Exportable analytics charts
+Additional visualization options
+Additional measurement units
+Cloud data synchronization
+Progressive Web App support
+
+## Learning Outcomes
+
+This project provided practical experience with:
+
+Python application development
+Modular programming
+BMI calculation and classification
+Input validation
+SQLite database design
+CRUD operations
+Flask web development
+Tkinter GUI development
+Matplotlib visualization
+Chart.js visualization
+Automated testing with pytest
+Database error handling
+Git and GitHub
+Web application deployment
+
+## Project Status
+
+Completed — Oasis Infobyte Internship (OIBSIP), Python Programming Task 2
+
+### Implemented
+BMI calculation
+BMI classification
+Multi-user profiles
+SQLite persistence
+Historical BMI records
+Search and filtering
+Record deletion
+BMI analytics
+BMI trend visualization
+Weight trend visualization
+Flask web application
+Tkinter desktop application
+Responsive web interface
+Input validation
+Database error handling
+Automated testing
+Deployment configuration
+
+## Developer
+### Kunchala Shailaja
+
+BCA Graduate | Python Programming | AI/ML Learner
+
+## GitHub:
+https://github.com/shailajakunchala09
+
+## Repository:
+https://github.com/shailajakunchala09/OIBSIP
