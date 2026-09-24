@@ -1,27 +1,30 @@
-// ============================================================================
-// BMI INSIGHT
-// Front-end application logic
-// Dashboard • History • Analytics
-// Developer: Kunchala Shailaja
-// ============================================================================
-
-
-/* ==========================================================================
-   USER DATA
-   ========================================================================== */
+/* ============================================================
+   BMI INSIGHT
+   Main frontend application logic
+   ============================================================ */
 
 const STORAGE_KEY = "bmiInsightSelectedUser";
 
+
+/* ============================================================
+   Global User Data
+   ============================================================ */
+
 const usersDataElement = document.getElementById("bmi-users-data");
 
-window.BMI_USERS = usersDataElement
-    ? JSON.parse(usersDataElement.textContent || "[]")
-    : [];
+try {
+    window.BMI_USERS = usersDataElement
+        ? JSON.parse(usersDataElement.textContent || "[]")
+        : [];
+} catch (error) {
+    console.error("Unable to parse user data:", error);
+    window.BMI_USERS = [];
+}
 
 
-/* ==========================================================================
-   GENERAL HELPERS
-   ========================================================================== */
+/* ============================================================
+   Local Storage
+   ============================================================ */
 
 function getSelectedUserId() {
     return localStorage.getItem(STORAGE_KEY) || "";
@@ -29,9 +32,47 @@ function getSelectedUserId() {
 
 
 function setSelectedUserId(id) {
+    if (id === null || id === undefined || id === "") {
+        localStorage.removeItem(STORAGE_KEY);
+        return;
+    }
+
     localStorage.setItem(STORAGE_KEY, String(id));
 }
 
+
+/* ============================================================
+   API Helper
+   ============================================================ */
+
+async function fetchJSON(url, options = {}) {
+    let response;
+
+    try {
+        response = await fetch(url, options);
+    } catch (error) {
+        throw new Error(
+            "Unable to connect to the server. Please try again."
+        );
+    }
+
+    const data = await response.json().catch(() => ({}));
+
+    if (!response.ok) {
+        throw new Error(
+            data.error ||
+            data.message ||
+            `Request failed (${response.status})`
+        );
+    }
+
+    return data;
+}
+
+
+/* ============================================================
+   Toast Notifications
+   ============================================================ */
 
 function showToast(message, isError = false) {
     const container = document.getElementById("toast-container");
@@ -43,82 +84,52 @@ function showToast(message, isError = false) {
     const toast = document.createElement("div");
 
     toast.className =
-        "toast" + (isError ? " toast-error" : "");
+        "toast" +
+        (isError ? " toast-error" : "");
 
     toast.textContent = message;
 
     container.appendChild(toast);
 
-    setTimeout(() => {
+    window.setTimeout(() => {
         toast.remove();
-    }, 3500);
+    }, 3200);
 }
 
 
-async function fetchJSON(url, options = {}) {
-    const response = await fetch(url, options);
-
-    const data = await response.json().catch(() => ({}));
-
-    if (!response.ok) {
-        throw new Error(
-            data.error || "Something went wrong"
-        );
-    }
-
-    return data;
-}
-
+/* ============================================================
+   BMI Categories
+   ============================================================ */
 
 function categoryClass(category) {
     return {
         Underweight: "badge-underweight",
         Normal: "badge-normal",
         Overweight: "badge-overweight",
-        Obese: "badge-obese"
+        Obese: "badge-obese",
     }[category] || "badge-normal";
 }
 
 
 function categoryColor(category) {
     return {
-        Underweight: "#62a8eb",
-        Normal: "#25b476",
-        Overweight: "#e3a42e",
-        Obese: "#df5d6c"
-    }[category] || "#4e63e8";
+        Underweight: "#5CA2EE",
+        Normal: "#32B889",
+        Overweight: "#EFB63D",
+        Obese: "#ED6677",
+    }[category] || "#5468FF";
 }
 
 
-function updateProfileAvatar() {
-    const select = document.getElementById("user-select");
-    const avatar = document.querySelector(".profile-avatar");
-
-    if (!select || !avatar) {
-        return;
-    }
-
-    const user = (window.BMI_USERS || []).find(
-        (item) => String(item.id) === String(select.value)
-    );
-
-    if (!user) {
-        avatar.textContent = "S";
-        return;
-    }
-
-    const name = String(user.name || "").trim();
-
-    avatar.textContent =
-        name.charAt(0).toUpperCase() || "U";
-}
-
-
-/* ==========================================================================
-   USER SELECTOR
-   ========================================================================== */
+/* ============================================================
+   User Selector
+   ============================================================ */
 
 function populateUserSelect(select, users, selectedId) {
+    if (!select) {
+        return;
+    }
+
     select.innerHTML = "";
 
     if (!users || users.length === 0) {
@@ -129,7 +140,7 @@ function populateUserSelect(select, users, selectedId) {
 
         select.appendChild(option);
 
-        updateProfileAvatar();
+        setSelectedUserId("");
 
         return;
     }
@@ -144,17 +155,33 @@ function populateUserSelect(select, users, selectedId) {
     });
 
     const matchingUser = users.find(
-        (user) =>
-            String(user.id) === String(selectedId)
+        (user) => String(user.id) === String(selectedId)
     );
 
     select.value = matchingUser
-        ? matchingUser.id
-        : users[0].id;
+        ? String(matchingUser.id)
+        : String(users[0].id);
 
     setSelectedUserId(select.value);
 
-    updateProfileAvatar();
+    updateAvatar();
+}
+
+
+function updateAvatar() {
+    const select = document.getElementById("user-select");
+    const avatar = document.querySelector(".mini-avatar");
+
+    if (!select || !avatar) {
+        return;
+    }
+
+    const user = (window.BMI_USERS || []).find(
+        (item) => String(item.id) === String(select.value)
+    );
+
+    avatar.textContent =
+        user?.name?.trim()?.charAt(0)?.toUpperCase() || "S";
 }
 
 
@@ -165,69 +192,80 @@ function initUserSelect(onChange) {
         return null;
     }
 
+    const users = Array.isArray(window.BMI_USERS)
+        ? window.BMI_USERS
+        : [];
+
     populateUserSelect(
         select,
-        window.BMI_USERS || [],
+        users,
         getSelectedUserId()
     );
 
     select.addEventListener("change", () => {
         setSelectedUserId(select.value);
 
-        updateProfileAvatar();
+        updateAvatar();
 
         if (typeof onChange === "function") {
             onChange(select.value);
         }
     });
 
+
     const addUserButton =
         document.getElementById("add-user-btn");
 
     if (addUserButton) {
+
         addUserButton.addEventListener(
             "click",
             async () => {
 
-                const name = prompt(
-                    "Enter a name for the new user:"
-                );
+                const enteredName =
+                    window.prompt(
+                        "Enter a name for the new user:"
+                    );
 
-                if (!name || !name.trim()) {
+                if (!enteredName || !enteredName.trim()) {
                     return;
                 }
 
+                const name = enteredName.trim();
+
                 try {
+
                     const user = await fetchJSON(
                         "/api/users",
                         {
                             method: "POST",
-
                             headers: {
-                                "Content-Type":
-                                    "application/json"
+                                "Content-Type": "application/json",
                             },
-
                             body: JSON.stringify({
-                                name: name.trim()
-                            })
+                                name,
+                            }),
                         }
                     );
+
 
                     if (!Array.isArray(window.BMI_USERS)) {
                         window.BMI_USERS = [];
                     }
 
-                    const existingIndex =
-                        window.BMI_USERS.findIndex(
+
+                    const existingUser =
+                        window.BMI_USERS.find(
                             (item) =>
                                 String(item.id) ===
                                 String(user.id)
                         );
 
-                    if (existingIndex === -1) {
+
+                    if (!existingUser) {
                         window.BMI_USERS.push(user);
                     }
+
 
                     populateUserSelect(
                         select,
@@ -235,7 +273,9 @@ function initUserSelect(onChange) {
                         user.id
                     );
 
-                    updateProfileAvatar();
+
+                    updateAvatar();
+
 
                     showToast(
                         user.existing
@@ -243,126 +283,125 @@ function initUserSelect(onChange) {
                             : `Added ${user.name}`
                     );
 
-                    if (
-                        typeof onChange ===
-                        "function"
-                    ) {
+
+                    if (typeof onChange === "function") {
                         onChange(select.value);
                     }
 
                 } catch (error) {
+
                     showToast(
                         error.message,
                         true
                     );
+
                 }
+
             }
         );
-    }
 
-    updateProfileAvatar();
+    }
 
     return select;
 }
 
 
-/* ==========================================================================
-   DASHBOARD
-   ========================================================================== */
+/* ============================================================
+   BMI Ring
+   ============================================================ */
+
+function setRing(bmi, category) {
+    const ring = document.getElementById("bmi-ring");
+
+    if (!ring) {
+        return;
+    }
+
+    const numericBMI = Number(bmi);
+
+    const position = Math.max(
+        0,
+        Math.min(
+            (numericBMI - 15) / 25,
+            1
+        )
+    );
+
+    ring.style.setProperty(
+        "--score-progress",
+        `${position * 360}deg`
+    );
+
+    ring.style.setProperty(
+        "--ring-color",
+        categoryColor(category)
+    );
+}
+
+
+/* ============================================================
+   Dashboard
+   ============================================================ */
 
 function initDashboard() {
+
     const calculateButton =
-        document.getElementById(
-            "calculate-btn"
-        );
+        document.getElementById("calculate-btn");
 
     if (!calculateButton) {
         return;
     }
 
+
     const resetButton =
-        document.getElementById(
-            "reset-btn"
-        );
+        document.getElementById("reset-btn");
 
     const weightInput =
-        document.getElementById(
-            "weight-input"
-        );
+        document.getElementById("weight-input");
 
     const heightInput =
-        document.getElementById(
-            "height-input"
-        );
+        document.getElementById("height-input");
 
-    const errorText =
-        document.getElementById(
-            "form-error"
-        );
+    const formError =
+        document.getElementById("form-error");
 
     const resultValue =
-        document.getElementById(
-            "result-value"
-        );
+        document.getElementById("result-value");
 
     const resultBadge =
-        document.getElementById(
-            "result-badge"
-        );
+        document.getElementById("result-badge");
 
     const resultPlaceholder =
-        document.getElementById(
-            "result-placeholder"
-        );
-
-    const resultStatus =
-        document.getElementById(
-            "result-status"
-        );
-
-    const resultWeight =
-        document.getElementById(
-            "result-weight"
-        );
-
-    const resultHeight =
-        document.getElementById(
-            "result-height"
-        );
-
-    const resultCategoryText =
-        document.getElementById(
-            "result-category-text"
-        );
+        document.getElementById("result-placeholder");
 
     const scaleMarker =
-        document.getElementById(
-            "scale-marker"
-        );
-
-    const bmiRing =
-        document.getElementById(
-            "bmi-ring"
-        );
+        document.getElementById("scale-marker");
 
     const recentRecords =
-        document.getElementById(
-            "recent-records"
-        );
+        document.getElementById("recent-records");
+
+    const resultWeight =
+        document.getElementById("result-weight");
+
+    const resultHeight =
+        document.getElementById("result-height");
+
+    const resultState =
+        document.getElementById("result-state");
 
 
     const userSelect =
-        initUserSelect(
-            () => loadRecentRecords()
-        );
+        initUserSelect(loadRecentRecords);
 
 
     async function loadRecentRecords() {
-        if (!userSelect || !userSelect.value) {
+
+        if (!userSelect?.value) {
             return;
         }
 
         try {
+
             const records =
                 await fetchJSON(
                     `/api/records/${userSelect.value}`
@@ -372,53 +411,42 @@ function initDashboard() {
                 records.slice(0, 5)
             );
 
+            drawDashboardTrend(records);
+
         } catch (error) {
+
             showToast(
                 error.message,
                 true
             );
+
         }
     }
 
 
     function renderRecentRecords(records) {
+
         if (!recentRecords) {
             return;
         }
 
-        if (!records || records.length === 0) {
-            recentRecords.innerHTML = `
-                <div class="empty-state">
-                    No records yet. Calculate your first BMI measurement.
-                </div>
-            `;
+
+        if (!records.length) {
+
+            recentRecords.innerHTML =
+                `<div class="empty-state">
+                    No records yet. Calculate your first BMI reading.
+                </div>`;
 
             return;
         }
 
-        const rows = records
-            .map((record) => {
-                return `
-                    <tr>
-                        <td>${record.created_at}</td>
-                        <td>${record.weight} kg</td>
-                        <td>${record.height} m</td>
-                        <td>${Number(record.bmi).toFixed(2)}</td>
-                        <td>
-                            <span class="category-badge ${categoryClass(record.category)}">
-                                ${record.category}
-                            </span>
-                        </td>
-                    </tr>
-                `;
-            })
-            .join("");
 
         recentRecords.innerHTML = `
             <table>
                 <thead>
                     <tr>
-                        <th>Date</th>
+                        <th>Date &amp; Time</th>
                         <th>Weight</th>
                         <th>Height</th>
                         <th>BMI</th>
@@ -427,59 +455,22 @@ function initDashboard() {
                 </thead>
 
                 <tbody>
-                    ${rows}
+                    ${records.map((record) => `
+                        <tr>
+                            <td>${escapeHTML(record.created_at)}</td>
+                            <td>${escapeHTML(record.weight)} kg</td>
+                            <td>${escapeHTML(record.height)} m</td>
+                            <td>${Number(record.bmi).toFixed(2)}</td>
+                            <td>
+                                <span class="category-badge ${categoryClass(record.category)}">
+                                    ${escapeHTML(record.category)}
+                                </span>
+                            </td>
+                        </tr>
+                    `).join("")}
                 </tbody>
             </table>
         `;
-    }
-
-
-    function resetResultVisuals() {
-
-        if (resultValue) {
-            resultValue.textContent = "--";
-        }
-
-        if (resultBadge) {
-            resultBadge.style.display = "none";
-        }
-
-        if (resultPlaceholder) {
-            resultPlaceholder.textContent =
-                "Your BMI is calculated from your current weight and height.";
-        }
-
-        if (resultStatus) {
-            resultStatus.textContent = "READY";
-        }
-
-        if (resultWeight) {
-            resultWeight.textContent = "--";
-        }
-
-        if (resultHeight) {
-            resultHeight.textContent = "--";
-        }
-
-        if (resultCategoryText) {
-            resultCategoryText.textContent = "--";
-        }
-
-        if (scaleMarker) {
-            scaleMarker.style.display = "none";
-        }
-
-        if (bmiRing) {
-            bmiRing.style.setProperty(
-                "--ring-angle",
-                "0deg"
-            );
-
-            bmiRing.style.setProperty(
-                "--ring-color",
-                "#4e63e8"
-            );
-        }
     }
 
 
@@ -487,15 +478,16 @@ function initDashboard() {
         "click",
         async () => {
 
-            if (errorText) {
-                errorText.textContent = "";
+            if (formError) {
+                formError.textContent = "";
             }
 
-            if (!userSelect || !userSelect.value) {
 
-                if (errorText) {
-                    errorText.textContent =
-                        "Please add or select a user first.";
+            if (!userSelect?.value) {
+
+                if (formError) {
+                    formError.textContent =
+                        "Please select or add a user first.";
                 }
 
                 return;
@@ -503,8 +495,8 @@ function initDashboard() {
 
 
             calculateButton.disabled = true;
-            calculateButton.innerHTML =
-                `<span>Calculating...</span>`;
+            calculateButton.textContent =
+                "Calculating...";
 
 
             try {
@@ -514,46 +506,25 @@ function initDashboard() {
                         "/api/calculate",
                         {
                             method: "POST",
-
                             headers: {
                                 "Content-Type":
-                                    "application/json"
+                                    "application/json",
                             },
-
                             body: JSON.stringify({
                                 user_id:
                                     userSelect.value,
-
                                 weight:
-                                    weightInput.value,
-
+                                    weightInput?.value || "",
                                 height:
-                                    heightInput.value
-                            })
+                                    heightInput?.value || "",
+                            }),
                         }
                     );
 
 
-                const bmi =
-                    Number(result.bmi);
-
-
-                const position = Math.max(
-                    0,
-                    Math.min(
-                        Number(result.scale_position),
-                        1
-                    )
-                );
-
-
-                /* ------------------------------------------------------
-                   Main BMI result
-                   ------------------------------------------------------ */
-
                 if (resultValue) {
                     resultValue.textContent =
-                        bmi.toFixed(2);
+                        Number(result.bmi).toFixed(2);
                 }
 
 
@@ -566,57 +537,51 @@ function initDashboard() {
                         result.category;
 
                     resultBadge.className =
-                        "category-badge " +
-                        categoryClass(
+                        `category-badge ${categoryClass(
                             result.category
-                        );
+                        )}`;
                 }
 
 
                 if (resultPlaceholder) {
 
                     resultPlaceholder.textContent =
-                        `Your BMI is ${bmi.toFixed(2)}, classified as ${result.category}.`;
+                        `Your BMI is ${Number(
+                            result.bmi
+                        ).toFixed(2)} and is classified as ${
+                            result.category
+                        }.`;
                 }
 
-
-                if (resultStatus) {
-
-                    resultStatus.textContent =
-                        result.category.toUpperCase();
-                }
-
-
-                /* ------------------------------------------------------
-                   Supporting result information
-                   ------------------------------------------------------ */
 
                 if (resultWeight) {
-
                     resultWeight.textContent =
-                        `${Number(result.weight).toFixed(1)} kg`;
+                        `${result.weight} kg`;
                 }
 
 
                 if (resultHeight) {
-
                     resultHeight.textContent =
-                        `${Number(result.height).toFixed(2)} m`;
+                        `${result.height} m`;
                 }
 
 
-                if (resultCategoryText) {
-
-                    resultCategoryText.textContent =
-                        result.category;
+                if (resultState) {
+                    resultState.textContent =
+                        "Updated";
                 }
 
-
-                /* ------------------------------------------------------
-                   BMI scale marker
-                   ------------------------------------------------------ */
 
                 if (scaleMarker) {
+
+                    const position =
+                        Math.max(
+                            0,
+                            Math.min(
+                                Number(result.scale_position),
+                                1
+                            )
+                        );
 
                     scaleMarker.style.display =
                         "block";
@@ -626,27 +591,10 @@ function initDashboard() {
                 }
 
 
-                /* ------------------------------------------------------
-                   Premium BMI ring
-                   ------------------------------------------------------ */
-
-                if (bmiRing) {
-
-                    bmiRing.style.setProperty(
-                        "--ring-angle",
-                        `${Math.max(
-                            12,
-                            position * 360
-                        )}deg`
-                    );
-
-                    bmiRing.style.setProperty(
-                        "--ring-color",
-                        categoryColor(
-                            result.category
-                        )
-                    );
-                }
+                setRing(
+                    result.bmi,
+                    result.category
+                );
 
 
                 showToast(
@@ -657,21 +605,29 @@ function initDashboard() {
                 await loadRecentRecords();
 
 
+                // Refresh analytics if the page
+                // happens to contain it.
+                if (
+                    typeof window.refreshAnalytics ===
+                    "function"
+                ) {
+                    await window.refreshAnalytics();
+                }
+
             } catch (error) {
 
-                if (errorText) {
-                    errorText.textContent =
+                if (formError) {
+                    formError.textContent =
                         error.message;
                 }
 
             } finally {
 
-                calculateButton.disabled =
-                    false;
-
-                calculateButton.innerHTML =
-                    `<span>Calculate BMI</span><span class="button-arrow">→</span>`;
+                calculateButton.disabled = false;
+                calculateButton.textContent =
+                    "Calculate BMI";
             }
+
         }
     );
 
@@ -682,16 +638,51 @@ function initDashboard() {
             "click",
             () => {
 
-                weightInput.value = "";
-                heightInput.value = "";
-
-                if (errorText) {
-                    errorText.textContent = "";
+                if (weightInput) {
+                    weightInput.value = "";
                 }
 
-                resetResultVisuals();
+                if (heightInput) {
+                    heightInput.value = "";
+                }
+
+                if (formError) {
+                    formError.textContent = "";
+                }
+
+                if (resultValue) {
+                    resultValue.textContent = "--";
+                }
+
+                if (resultBadge) {
+                    resultBadge.style.display = "none";
+                }
+
+                if (resultPlaceholder) {
+                    resultPlaceholder.textContent =
+                        "Fill in the form to see your BMI result and classification.";
+                }
+
+                if (resultWeight) {
+                    resultWeight.textContent = "--";
+                }
+
+                if (resultHeight) {
+                    resultHeight.textContent = "--";
+                }
+
+                if (resultState) {
+                    resultState.textContent = "Ready";
+                }
+
+                if (scaleMarker) {
+                    scaleMarker.style.display = "none";
+                }
+
+                setRing(15, "Normal");
             }
         );
+
     }
 
 
@@ -699,9 +690,179 @@ function initDashboard() {
 }
 
 
-/* ==========================================================================
-   HISTORY PAGE
-   ========================================================================== */
+/* ============================================================
+   Dashboard BMI Trend
+   ============================================================ */
+
+function drawDashboardTrend(records) {
+
+    const canvas =
+        document.getElementById(
+            "dashboard-bmi-chart"
+        );
+
+    if (!canvas || typeof Chart === "undefined") {
+        return;
+    }
+
+
+    destroyChart(canvas);
+
+
+    const ordered =
+        sortRecordsAscending(records);
+
+
+    if (!ordered.length) {
+        return;
+    }
+
+
+    const labels =
+        ordered.map((record) =>
+            formatShortDate(
+                record.created_at
+            )
+        );
+
+
+    const values =
+        ordered.map((record) =>
+            Number(record.bmi)
+        );
+
+
+    const chart =
+        new Chart(
+            canvas,
+            {
+                type: "line",
+
+                data: {
+                    labels,
+
+                    datasets: [
+                        {
+                            label: "BMI",
+
+                            data: values,
+
+                            borderColor:
+                                "#5468FF",
+
+                            backgroundColor:
+                                "rgba(84, 104, 255, 0.10)",
+
+                            fill: true,
+
+                            tension: 0.4,
+
+                            pointRadius:
+                                ordered.length === 1
+                                    ? 6
+                                    : 3.5,
+
+                            pointHoverRadius: 7,
+
+                            pointBackgroundColor:
+                                "#FFFFFF",
+
+                            pointBorderColor:
+                                "#5468FF",
+
+                            pointBorderWidth: 3,
+
+                            borderWidth: 2.5,
+                        },
+                    ],
+                },
+
+                options: {
+                    responsive: true,
+
+                    maintainAspectRatio: false,
+
+                    interaction: {
+                        mode: "index",
+                        intersect: false,
+                    },
+
+                    plugins: {
+                        legend: {
+                            display: false,
+                        },
+
+                        tooltip: {
+                            displayColors: false,
+
+                            backgroundColor:
+                                "#17213F",
+
+                            titleColor:
+                                "#FFFFFF",
+
+                            bodyColor:
+                                "#DDE4F5",
+
+                            padding: 11,
+
+                            callbacks: {
+                                label(context) {
+
+                                    return `BMI: ${Number(
+                                        context.raw
+                                    ).toFixed(2)}`;
+                                },
+                            },
+                        },
+                    },
+
+                    scales: {
+                        x: {
+                            grid: {
+                                display: false,
+                            },
+
+                            ticks: {
+                                color: "#8E97B2",
+
+                                font: {
+                                    size: 9,
+                                    weight: "600",
+                                },
+
+                                maxRotation: 0,
+                            },
+                        },
+
+                        y: {
+                            grid: {
+                                color:
+                                    "rgba(23, 33, 63, 0.07)",
+                            },
+
+                            ticks: {
+                                color: "#8E97B2",
+
+                                font: {
+                                    size: 9,
+                                    weight: "600",
+                                },
+                            },
+                        },
+                    },
+                },
+            }
+        );
+
+
+    canvas._bmiInsightChart = chart;
+}
+
+
+/* ============================================================
+   History
+   ============================================================ */
 
 function initHistory() {
 
@@ -721,21 +882,45 @@ function initHistory() {
         );
 
 
+    const profileName =
+        document.getElementById(
+            "history-profile-name"
+        );
+
+
+    const exportLink =
+        document.getElementById(
+            "export-link"
+        );
+
+
     let allRecords = [];
 
 
     const userSelect =
-        initUserSelect(
-            () => loadHistory()
-        );
+        initUserSelect(loadHistory);
+
+
+    function updateExportLink() {
+
+        if (
+            exportLink &&
+            userSelect?.value
+        ) {
+            exportLink.href =
+                `/export/${userSelect.value}`;
+        }
+    }
 
 
     async function loadHistory() {
 
-        if (!userSelect ||
-            !userSelect.value) {
+        if (!userSelect?.value) {
             return;
         }
+
+
+        updateExportLink();
 
 
         try {
@@ -746,7 +931,22 @@ function initHistory() {
                 );
 
 
-            renderTable(
+            const user =
+                (window.BMI_USERS || []).find(
+                    (item) =>
+                        String(item.id) ===
+                        String(userSelect.value)
+                );
+
+
+            if (profileName) {
+                profileName.textContent =
+                    user?.name ||
+                    "Selected user";
+            }
+
+
+            renderHistoryTable(
                 allRecords
             );
 
@@ -756,44 +956,47 @@ function initHistory() {
                 error.message,
                 true
             );
-
         }
     }
 
 
-    function renderTable(records) {
+    function renderHistoryTable(records) {
 
-        if (!records ||
-            records.length === 0) {
+        if (!records.length) {
 
             tableWrap.innerHTML =
-                `
-                <div class="empty-state">
+                `<div class="empty-state">
                     No records found for this profile.
-                </div>
-                `;
+                </div>`;
 
             return;
         }
 
 
-        const rows =
-            records
-                .map((record) => {
+        tableWrap.innerHTML = `
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date &amp; Time</th>
+                        <th>Weight</th>
+                        <th>Height</th>
+                        <th>BMI</th>
+                        <th>Category</th>
+                        <th></th>
+                    </tr>
+                </thead>
 
-                    return `
-                        <tr data-record-id="${record.id}">
+                <tbody>
+                    ${records.map((record) => `
+                        <tr>
+                            <td>${escapeHTML(record.created_at)}</td>
 
                             <td>
-                                ${record.created_at}
+                                ${escapeHTML(record.weight)} kg
                             </td>
 
                             <td>
-                                ${record.weight} kg
-                            </td>
-
-                            <td>
-                                ${record.height} m
+                                ${escapeHTML(record.height)} m
                             </td>
 
                             <td>
@@ -802,7 +1005,7 @@ function initHistory() {
 
                             <td>
                                 <span class="category-badge ${categoryClass(record.category)}">
-                                    ${record.category}
+                                    ${escapeHTML(record.category)}
                                 </span>
                             </td>
 
@@ -815,37 +1018,11 @@ function initHistory() {
                                     Delete
                                 </button>
                             </td>
-
                         </tr>
-                    `;
-
-                })
-                .join("");
-
-
-        tableWrap.innerHTML =
-            `
-            <table>
-
-                <thead>
-
-                    <tr>
-                        <th>Date</th>
-                        <th>Weight</th>
-                        <th>Height</th>
-                        <th>BMI</th>
-                        <th>Category</th>
-                        <th></th>
-                    </tr>
-
-                </thead>
-
-                <tbody>
-                    ${rows}
+                    `).join("")}
                 </tbody>
-
             </table>
-            `;
+        `;
 
 
         tableWrap
@@ -859,10 +1036,9 @@ function initHistory() {
                     async () => {
 
                         const confirmed =
-                            confirm(
+                            window.confirm(
                                 "Delete this BMI record? This cannot be undone."
                             );
-
 
                         if (!confirmed) {
                             return;
@@ -875,7 +1051,7 @@ function initHistory() {
                                 `/api/records/${button.dataset.id}`,
                                 {
                                     method:
-                                        "DELETE"
+                                        "DELETE",
                                 }
                             );
 
@@ -893,9 +1069,7 @@ function initHistory() {
                                 error.message,
                                 true
                             );
-
                         }
-
                     }
                 );
 
@@ -917,29 +1091,22 @@ function initHistory() {
 
                 const filtered =
                     allRecords.filter(
-                        (record) => {
+                        (record) =>
+                            String(
+                                record.category
+                            )
+                                .toLowerCase()
+                                .includes(term) ||
 
-                            return (
-                                String(
-                                    record.category
-                                )
+                            String(
+                                record.created_at
+                            )
                                 .toLowerCase()
                                 .includes(term)
-
-                                ||
-
-                                String(
-                                    record.created_at
-                                )
-                                .toLowerCase()
-                                .includes(term)
-                            );
-
-                        }
                     );
 
 
-                renderTable(
+                renderHistoryTable(
                     filtered
                 );
 
@@ -953,9 +1120,9 @@ function initHistory() {
 }
 
 
-/* ==========================================================================
-   ANALYTICS PAGE
-   ========================================================================== */
+/* ============================================================
+   Premium Analytics
+   ============================================================ */
 
 function initAnalytics() {
 
@@ -964,8 +1131,10 @@ function initAnalytics() {
             "bmi-chart"
         );
 
-
-    if (!bmiCanvas) {
+    if (
+        !bmiCanvas ||
+        typeof Chart === "undefined"
+    ) {
         return;
     }
 
@@ -976,60 +1145,133 @@ function initAnalytics() {
         );
 
 
-    let bmiChart = null;
-    let weightChart = null;
-
-
     const userSelect =
-        initUserSelect(
-            () => loadAnalytics()
+        initUserSelect(loadAnalytics);
+
+
+    let allRecords = [];
+
+    let selectedRange = "all";
+
+
+    const emptyBMI =
+        document.getElementById(
+            "bmi-empty-state"
         );
 
 
-    function formatDate(rawValue) {
-
-        const raw =
-            String(rawValue || "");
-
-
-        const isoMatch =
-            raw.match(
-                /^(\d{4})-(\d{2})-(\d{2})/
-            );
+    const emptyWeight =
+        document.getElementById(
+            "weight-empty-state"
+        );
 
 
-        if (isoMatch) {
-
-            return `${isoMatch[3]} ${getMonthName(
-                Number(isoMatch[2])
-            )}`;
-
-        }
+    const chartRangeButtons =
+        document.querySelectorAll(
+            ".range-btn"
+        );
 
 
-        return raw.split(",")[0];
+    /*
+     * Premium Analytics elements.
+     * The code also supports the older analytics
+     * elements where present.
+     */
+
+    const latestStatus =
+        document.getElementById(
+            "latest-status"
+        );
+
+
+    const changeLabel =
+        document.getElementById(
+            "bmi-change-label"
+        );
+
+
+    const snapshotBMI =
+        document.getElementById(
+            "snapshot-bmi"
+        );
+
+
+    const snapshotWeight =
+        document.getElementById(
+            "snapshot-weight"
+        );
+
+
+    const snapshotCategory =
+        document.getElementById(
+            "snapshot-category"
+        );
+
+
+    const snapshotCount =
+        document.getElementById(
+            "snapshot-count"
+        );
+
+
+    const averageBMI =
+        document.getElementById(
+            "average-bmi"
+        );
+
+
+    const averageWeight =
+        document.getElementById(
+            "average-weight"
+        );
+
+
+    const trendText =
+        document.getElementById(
+            "trend-text"
+        );
+
+
+    const trendDetail =
+        document.getElementById(
+            "trend-detail"
+        );
+
+
+    function loadChartRecords() {
+
+        return getRangeRecords(
+            allRecords,
+            selectedRange
+        );
     }
 
 
-    function getMonthName(month) {
+    function updateEmptyStates(
+        records
+    ) {
 
-        const months = [
-            "Jan",
-            "Feb",
-            "Mar",
-            "Apr",
-            "May",
-            "Jun",
-            "Jul",
-            "Aug",
-            "Sep",
-            "Oct",
-            "Nov",
-            "Dec"
-        ];
+        const hasRecords =
+            records.length > 0;
 
 
-        return months[month - 1] || "";
+        if (emptyBMI) {
+
+            emptyBMI.classList.toggle(
+                "hidden",
+                hasRecords
+            );
+        }
+
+
+        if (emptyWeight) {
+
+            emptyWeight.classList.toggle(
+                "hidden",
+                hasRecords
+            );
+        }
+
     }
 
 
@@ -1039,159 +1281,91 @@ function initAnalytics() {
             return null;
         }
 
-
-        return values.reduce(
-            (sum, value) =>
-                sum + Number(value),
-            0
-        ) / values.length;
-    }
-
-
-    function updateAnalyticsStats(
-        stats,
-        records
-    ) {
-
-        const latest =
-            document.getElementById(
-                "stat-latest"
-            );
-
-        const previous =
-            document.getElementById(
-                "stat-previous"
-            );
-
-        const highest =
-            document.getElementById(
-                "stat-highest"
-            );
-
-        const lowest =
-            document.getElementById(
-                "stat-lowest"
-            );
-
-        const count =
-            document.getElementById(
-                "stat-count"
-            );
-
-
-        if (latest) {
-
-            latest.textContent =
-                stats.latest !== null
-                    ? Number(
-                        stats.latest
-                    ).toFixed(2)
-                    : "--";
-        }
-
-
-        if (previous) {
-
-            previous.textContent =
-                stats.previous !== null
-                    ? Number(
-                        stats.previous
-                    ).toFixed(2)
-                    : "--";
-        }
-
-
-        if (highest) {
-
-            highest.textContent =
-                stats.highest !== null
-                    ? Number(
-                        stats.highest
-                    ).toFixed(2)
-                    : "--";
-        }
-
-
-        if (lowest) {
-
-            lowest.textContent =
-                stats.lowest !== null
-                    ? Number(
-                        stats.lowest
-                    ).toFixed(2)
-                    : "--";
-        }
-
-
-        if (count) {
-
-            count.textContent =
-                stats.count ?? 0;
-        }
-
-
-        updateTrendSummary(
-            records
+        return (
+            values.reduce(
+                (total, value) =>
+                    total + Number(value),
+                0
+            ) / values.length
         );
     }
 
 
-    function updateTrendSummary(records) {
+    function updateAnalyticsSummary(
+        records
+    ) {
 
-        const trendText =
-            document.getElementById(
-                "trend-text"
-            );
+        if (!records.length) {
 
-        const trendDetail =
-            document.getElementById(
-                "trend-detail"
-            );
-
-        const averageBmi =
-            document.getElementById(
-                "average-bmi"
-            );
-
-        const averageWeight =
-            document.getElementById(
-                "average-weight"
-            );
-
-
-        if (!records ||
-            records.length === 0) {
-
-            if (trendText) {
-                trendText.textContent =
-                    "Build your history to see a trend.";
-            }
-
-
-            if (trendDetail) {
-                trendDetail.textContent =
-                    "Your BMI trend will be summarized from your saved measurements.";
-            }
-
-
-            if (averageBmi) {
-                averageBmi.textContent =
+            if (averageBMI) {
+                averageBMI.textContent =
                     "--";
             }
-
 
             if (averageWeight) {
                 averageWeight.textContent =
                     "--";
             }
 
+            if (trendText) {
+                trendText.textContent =
+                    "No measurements yet.";
+            }
+
+            if (trendDetail) {
+                trendDetail.textContent =
+                    "Add a measurement to start your personal trend.";
+            }
+
+            if (snapshotBMI) {
+                snapshotBMI.textContent =
+                    "--";
+            }
+
+            if (snapshotWeight) {
+                snapshotWeight.textContent =
+                    "--";
+            }
+
+            if (snapshotCategory) {
+                snapshotCategory.textContent =
+                    "--";
+
+                snapshotCategory.className =
+                    "snapshot-category";
+            }
+
+            if (snapshotCount) {
+                snapshotCount.textContent =
+                    "0";
+            }
+
+            if (latestStatus) {
+                latestStatus.textContent =
+                    "No recorded measurements";
+            }
+
+            if (changeLabel) {
+                changeLabel.textContent =
+                    "Compare with previous";
+            }
 
             return;
         }
 
 
         const ordered =
-            [...records].reverse();
+            sortRecordsAscending(records);
+
+
+        const latest =
+            ordered[ordered.length - 1];
+
+
+        const previous =
+            ordered.length > 1
+                ? ordered[ordered.length - 2]
+                : null;
 
 
         const bmiValues =
@@ -1208,7 +1382,7 @@ function initAnalytics() {
             );
 
 
-        const avgBmi =
+        const avgBMI =
             calculateAverage(
                 bmiValues
             );
@@ -1220,105 +1394,188 @@ function initAnalytics() {
             );
 
 
-        if (averageBmi !== null &&
-            averageBmi) {
+        if (averageBMI) {
 
-            averageBmi.textContent =
-                avgBmi.toFixed(2);
+            averageBMI.textContent =
+                avgBMI !== null
+                    ? avgBMI.toFixed(2)
+                    : "--";
         }
 
 
-        if (averageWeight &&
-            avgWeight !== null) {
+        if (averageWeight) {
 
             averageWeight.textContent =
-                `${avgWeight.toFixed(1)} kg`;
+                avgWeight !== null
+                    ? `${avgWeight.toFixed(1)} kg`
+                    : "--";
         }
 
 
-        if (bmiValues.length < 2) {
+        /*
+         * Current BMI
+         */
 
-            if (trendText) {
+        if (snapshotBMI) {
+
+            snapshotBMI.textContent =
+                Number(latest.bmi)
+                    .toFixed(2);
+        }
+
+
+        /*
+         * Current weight
+         */
+
+        if (snapshotWeight) {
+
+            snapshotWeight.textContent =
+                `${Number(latest.weight).toFixed(1)} kg`;
+        }
+
+
+        /*
+         * Current category
+         */
+
+        if (snapshotCategory) {
+
+            snapshotCategory.textContent =
+                latest.category ||
+                "--";
+
+
+            snapshotCategory.className =
+                `snapshot-category ${categoryClass(
+                    latest.category
+                )}`;
+        }
+
+
+        /*
+         * Number of readings
+         */
+
+        if (snapshotCount) {
+
+            snapshotCount.textContent =
+                allRecords.length;
+        }
+
+
+        /*
+         * Latest status
+         */
+
+        if (latestStatus) {
+
+            latestStatus.textContent =
+                latest.category
+                    ? `Latest reading · ${latest.category}`
+                    : "Latest recorded value";
+        }
+
+
+        /*
+         * Change from previous reading
+         */
+
+        if (changeLabel) {
+
+            if (!previous) {
+
+                changeLabel.textContent =
+                    "First recorded measurement";
+
+            } else {
+
+                const difference =
+                    Number(latest.bmi) -
+                    Number(previous.bmi);
+
+
+                if (Math.abs(difference) < 0.005) {
+
+                    changeLabel.textContent =
+                        "No change from previous";
+
+                } else {
+
+                    changeLabel.textContent =
+                        difference > 0
+                            ? `↑ ${Math.abs(difference).toFixed(2)} from previous`
+                            : `↓ ${Math.abs(difference).toFixed(2)} from previous`;
+                }
+            }
+        }
+
+
+        /*
+         * Older analytics summary elements
+         */
+
+        if (trendText) {
+
+            if (ordered.length === 1) {
+
                 trendText.textContent =
                     "One measurement recorded.";
+
+            } else {
+
+                const difference =
+                    Number(latest.bmi) -
+                    Number(ordered[0].bmi);
+
+
+                if (Math.abs(difference) < 0.01) {
+
+                    trendText.textContent =
+                        "BMI is stable across your saved readings.";
+
+                } else if (difference < 0) {
+
+                    trendText.textContent =
+                        "Your BMI has moved downward.";
+
+                } else {
+
+                    trendText.textContent =
+                        "Your BMI has moved upward.";
+                }
             }
+        }
 
 
-            if (trendDetail) {
+        if (trendDetail) {
+
+            if (ordered.length === 1) {
+
                 trendDetail.textContent =
                     "Add another measurement to compare your BMI over time.";
-            }
+
+            } else {
+
+                const difference =
+                    Number(latest.bmi) -
+                    Number(ordered[0].bmi);
 
 
-            return;
-        }
-
-
-        const first =
-            bmiValues[0];
-
-
-        const latest =
-            bmiValues[
-                bmiValues.length - 1
-            ];
-
-
-        const difference =
-            latest - first;
-
-
-        if (Math.abs(difference) < 0.01) {
-
-            if (trendText) {
-                trendText.textContent =
-                    "BMI is stable across your saved readings.";
-            }
-
-
-            if (trendDetail) {
                 trendDetail.textContent =
-                    `Latest BMI: ${latest.toFixed(2)}.`;
+                    `Change across saved readings: ${
+                        difference > 0 ? "+" : ""
+                    }${difference.toFixed(2)}.`;
             }
-
-
-            return;
-        }
-
-
-        if (difference < 0) {
-
-            if (trendText) {
-                trendText.textContent =
-                    "Your BMI has moved downward.";
-            }
-
-
-            if (trendDetail) {
-                trendDetail.textContent =
-                    `Change from first to latest reading: ${difference.toFixed(2)}.`;
-            }
-
-
-        } else {
-
-            if (trendText) {
-                trendText.textContent =
-                    "Your BMI has moved upward.";
-            }
-
-
-            if (trendDetail) {
-                trendDetail.textContent =
-                    `Change from first to latest reading: +${difference.toFixed(2)}.`;
-            }
-
         }
 
     }
 
 
-    function commonChartOptions() {
+    function buildChartOptions(
+        ySuggestedMin,
+        ySuggestedMax
+    ) {
 
         return {
 
@@ -1326,315 +1583,526 @@ function initAnalytics() {
 
             maintainAspectRatio: false,
 
+            animation: {
+                duration: 700,
+                easing: "easeOutQuart",
+            },
+
             interaction: {
                 mode: "index",
-                intersect: false
+                intersect: false,
             },
 
             plugins: {
 
                 legend: {
-                    display: false
+                    display: false,
                 },
 
                 tooltip: {
 
                     backgroundColor:
-                        "#0d1726",
+                        "#17213F",
 
                     titleColor:
-                        "#ffffff",
+                        "#FFFFFF",
 
                     bodyColor:
-                        "#dce5f3",
+                        "#DDE4F5",
 
                     borderColor:
-                        "rgba(255,255,255,.08)",
+                        "rgba(255,255,255,0.08)",
 
                     borderWidth: 1,
 
-                    padding: 11,
+                    padding: 12,
 
-                    cornerRadius: 10,
+                    displayColors: false,
 
-                    displayColors: false
+                    titleFont: {
+                        family:
+                            "Inter, Segoe UI, Arial, sans-serif",
+                        size: 11,
+                        weight: "700",
+                    },
 
-                }
-
+                    bodyFont: {
+                        family:
+                            "Inter, Segoe UI, Arial, sans-serif",
+                        size: 12,
+                        weight: "600",
+                    },
+                },
             },
 
             scales: {
 
                 x: {
 
+                    border: {
+                        display: false,
+                    },
+
                     grid: {
-                        display: false
+                        display: false,
                     },
 
                     ticks: {
 
                         color:
-                            "#8490a3",
-
-                        font: {
-                            size: 9
-                        },
+                            "#969FB9",
 
                         maxRotation: 0,
 
                         autoSkip: true,
 
-                        maxTicksLimit: 7
+                        autoSkipPadding: 24,
 
-                    }
-
+                        font: {
+                            family:
+                                "Inter, Segoe UI, Arial, sans-serif",
+                            size: 10,
+                            weight: "600",
+                        },
+                    },
                 },
 
                 y: {
 
-                    beginAtZero: false,
-
                     border: {
-                        display: false
+                        display: false,
                     },
+
+                    suggestedMin:
+                        ySuggestedMin,
+
+                    suggestedMax:
+                        ySuggestedMax,
 
                     grid: {
 
                         color:
-                            "rgba(30,48,76,.07)"
+                            "#EEF1F6",
+
+                        drawTicks:
+                            false,
                     },
 
                     ticks: {
 
                         color:
-                            "#8490a3",
+                            "#969FB9",
+
+                        padding: 9,
 
                         font: {
-                            size: 9
-                        }
-
-                    }
-
-                }
-
-            },
-
-            elements: {
-
-                line: {
-                    tension: 0.35,
-                    borderWidth: 2.5
+                            family:
+                                "Inter, Segoe UI, Arial, sans-serif",
+                            size: 10,
+                            weight: "600",
+                        },
+                    },
                 },
-
-                point: {
-
-                    radius: 4,
-
-                    hoverRadius: 6,
-
-                    borderWidth: 2
-
-                }
-
-            }
-
+            },
         };
     }
 
 
-    const bmiReferencePlugin = {
+    function createBMIGraph(
+        records
+    ) {
 
-        id: "bmiReferencePlugin",
-
-        afterDraw(chart) {
-
-            if (!chart.scales ||
-                !chart.scales.y ||
-                !chart.chartArea) {
-
-                return;
-            }
+        destroyChart(
+            bmiCanvas
+        );
 
 
-            const yScale =
-                chart.scales.y;
-
-            const area =
-                chart.chartArea;
-
-
-            const referenceValues = [
-                18.5,
-                24.9,
-                29.9
-            ];
+        if (!records.length) {
+            updateEmptyStates([]);
+            return;
+        }
 
 
-            const ctx =
-                chart.ctx;
+        const labels =
+            records.map(
+                (record) =>
+                    formatShortDate(
+                        record.created_at
+                    )
+            );
 
 
-            ctx.save();
+        const values =
+            records.map(
+                (record) =>
+                    Number(record.bmi)
+            );
 
 
-            referenceValues.forEach(
-                (value) => {
-
-                    const y =
-                        yScale.getPixelForValue(
-                            value
-                        );
+        const minimum =
+            Math.min(...values);
 
 
-                    if (
-                        y < area.top ||
-                        y > area.bottom
-                    ) {
-                        return;
-                    }
+        const maximum =
+            Math.max(...values);
 
 
-                    ctx.beginPath();
+        const lowerBound =
+            Math.max(
+                0,
+                Math.floor(
+                    Math.min(
+                        minimum - 2,
+                        15
+                    )
+                )
+            );
 
-                    ctx.moveTo(
-                        area.left,
-                        y
-                    );
 
-                    ctx.lineTo(
-                        area.right,
-                        y
-                    );
+        const upperBound =
+            Math.max(
+                32,
+                Math.ceil(
+                    maximum + 3
+                )
+            );
 
-                    ctx.setLineDash([
-                        4,
-                        5
-                    ]);
 
-                    ctx.strokeStyle =
-                        "rgba(78,99,232,.12)";
+        const canvasContext =
+            bmiCanvas.getContext(
+                "2d"
+            );
 
-                    ctx.lineWidth = 1;
 
-                    ctx.stroke();
+        const gradient =
+            canvasContext.createLinearGradient(
+                0,
+                0,
+                0,
+                bmiCanvas.height || 350
+            );
 
+
+        gradient.addColorStop(
+            0,
+            "rgba(84,104,255,0.25)"
+        );
+
+
+        gradient.addColorStop(
+            0.6,
+            "rgba(84,104,255,0.08)"
+        );
+
+
+        gradient.addColorStop(
+            1,
+            "rgba(84,104,255,0)"
+        );
+
+
+        const chart =
+            new Chart(
+                bmiCanvas,
+                {
+                    type: "line",
+
+                    data: {
+
+                        labels,
+
+                        datasets: [
+                            {
+                                label: "BMI",
+
+                                data: values,
+
+                                borderColor:
+                                    "#5468FF",
+
+                                backgroundColor:
+                                    gradient,
+
+                                fill: true,
+
+                                tension: 0.42,
+
+                                cubicInterpolationMode:
+                                    "monotone",
+
+                                borderWidth: 3,
+
+                                pointRadius:
+                                    records.length === 1
+                                        ? 7
+                                        : 4,
+
+                                pointHoverRadius:
+                                    8,
+
+                                pointBackgroundColor:
+                                    "#FFFFFF",
+
+                                pointBorderColor:
+                                    "#5468FF",
+
+                                pointBorderWidth: 3,
+
+                                spanGaps: true,
+                            },
+                        ],
+                    },
+
+                    options:
+                        buildChartOptions(
+                            lowerBound,
+                            upperBound
+                        ),
                 }
             );
 
 
-            ctx.restore();
-        }
+        chart.options.plugins.tooltip.callbacks = {
 
-    };
+            title(items) {
 
+                const index =
+                    items[0]?.dataIndex ??
+                    0;
 
-    function showChartMessage(
-        canvas,
-        message
-    ) {
-
-        if (!canvas) {
-            return;
-        }
-
-
-        const parent =
-            canvas.parentElement;
-
-
-        if (!parent) {
-            return;
-        }
-
-
-        canvas.style.display =
-            "none";
-
-
-        let messageBox =
-            parent.querySelector(
-                ".chart-empty-message"
-            );
-
-
-        if (!messageBox) {
-
-            messageBox =
-                document.createElement(
-                    "div"
+                return (
+                    records[index]?.created_at ||
+                    ""
                 );
-
-            messageBox.className =
-                "chart-empty-message";
-
-            messageBox.style.height =
-                "100%";
-
-            messageBox.style.display =
-                "flex";
-
-            messageBox.style.alignItems =
-                "center";
-
-            messageBox.style.justifyContent =
-                "center";
-
-            messageBox.style.color =
-                "#98a2b0";
-
-            messageBox.style.fontSize =
-                "10px";
-
-            parent.appendChild(
-                messageBox
-            );
-        }
+            },
 
 
-        messageBox.textContent =
-            message;
+            label(context) {
+
+                const index =
+                    context.dataIndex;
+
+                const record =
+                    records[index];
+
+
+                return [
+                    `BMI: ${Number(
+                        record.bmi
+                    ).toFixed(2)}`,
+
+                    `Category: ${record.category}`,
+
+                    `Weight: ${Number(
+                        record.weight
+                    ).toFixed(1)} kg`,
+                ];
+            },
+        };
+
+
+        bmiCanvas._bmiInsightChart =
+            chart;
     }
 
 
-    function clearChartMessage(
-        canvas
+    function createWeightGraph(
+        records
     ) {
 
-        if (!canvas) {
+        if (!weightCanvas) {
             return;
         }
 
 
-        const parent =
-            canvas.parentElement;
+        destroyChart(
+            weightCanvas
+        );
 
 
-        if (!parent) {
+        if (!records.length) {
             return;
         }
 
 
-        const messageBox =
-            parent.querySelector(
-                ".chart-empty-message"
+        const labels =
+            records.map(
+                (record) =>
+                    formatShortDate(
+                        record.created_at
+                    )
             );
 
 
-        if (messageBox) {
-            messageBox.remove();
-        }
+        const values =
+            records.map(
+                (record) =>
+                    Number(record.weight)
+            );
 
 
-        canvas.style.display =
-            "block";
+        const minimum =
+            Math.min(...values);
+
+
+        const maximum =
+            Math.max(...values);
+
+
+        const spread =
+            maximum - minimum;
+
+
+        const padding =
+            spread === 0
+                ? 3
+                : Math.max(
+                    1.5,
+                    spread * 0.25
+                );
+
+
+        const lowerBound =
+            Math.max(
+                0,
+                Math.floor(
+                    minimum - padding
+                )
+            );
+
+
+        const upperBound =
+            Math.ceil(
+                maximum + padding
+            );
+
+
+        const canvasContext =
+            weightCanvas.getContext(
+                "2d"
+            );
+
+
+        const gradient =
+            canvasContext.createLinearGradient(
+                0,
+                0,
+                0,
+                weightCanvas.height || 300
+            );
+
+
+        gradient.addColorStop(
+            0,
+            "rgba(227,165,44,0.24)"
+        );
+
+
+        gradient.addColorStop(
+            0.6,
+            "rgba(227,165,44,0.08)"
+        );
+
+
+        gradient.addColorStop(
+            1,
+            "rgba(227,165,44,0)"
+        );
+
+
+        const chart =
+            new Chart(
+                weightCanvas,
+                {
+                    type: "line",
+
+                    data: {
+
+                        labels,
+
+                        datasets: [
+                            {
+                                label: "Weight",
+
+                                data: values,
+
+                                borderColor:
+                                    "#E3A52C",
+
+                                backgroundColor:
+                                    gradient,
+
+                                fill: true,
+
+                                tension: 0.42,
+
+                                cubicInterpolationMode:
+                                    "monotone",
+
+                                borderWidth: 3,
+
+                                pointRadius:
+                                    records.length === 1
+                                        ? 7
+                                        : 4,
+
+                                pointHoverRadius:
+                                    8,
+
+                                pointBackgroundColor:
+                                    "#FFFFFF",
+
+                                pointBorderColor:
+                                    "#E3A52C",
+
+                                pointBorderWidth: 3,
+
+                                spanGaps: true,
+                            },
+                        ],
+                    },
+
+                    options:
+                        buildChartOptions(
+                            lowerBound,
+                            upperBound
+                        ),
+                }
+            );
+
+
+        chart.options.plugins.tooltip.callbacks = {
+
+            title(items) {
+
+                const index =
+                    items[0]?.dataIndex ??
+                    0;
+
+                return (
+                    records[index]?.created_at ||
+                    ""
+                );
+            },
+
+
+            label(context) {
+
+                return `Weight: ${Number(
+                    context.raw
+                ).toFixed(1)} kg`;
+            },
+        };
+
+
+        weightCanvas._bmiInsightChart =
+            chart;
     }
 
 
     async function loadAnalytics() {
 
-        if (!userSelect ||
-            !userSelect.value) {
-
+        if (!userSelect?.value) {
             return;
         }
 
@@ -1645,234 +2113,146 @@ function initAnalytics() {
                 stats,
                 records
             ] = await Promise.all([
-
                 fetchJSON(
                     `/api/stats/${userSelect.value}`
                 ),
 
                 fetchJSON(
                     `/api/records/${userSelect.value}`
-                )
-
+                ),
             ]);
 
 
-            updateAnalyticsStats(
-                stats,
-                records
+            allRecords =
+                sortRecordsAscending(
+                    records
+                );
+
+
+            /*
+             * Statistics
+             */
+
+            const statLatest =
+                document.getElementById(
+                    "stat-latest"
+                );
+
+
+            const statPrevious =
+                document.getElementById(
+                    "stat-previous"
+                );
+
+
+            const statHighest =
+                document.getElementById(
+                    "stat-highest"
+                );
+
+
+            const statLowest =
+                document.getElementById(
+                    "stat-lowest"
+                );
+
+
+            const statCount =
+                document.getElementById(
+                    "stat-count"
+                );
+
+
+            if (statLatest) {
+
+                statLatest.textContent =
+                    stats.latest !== null
+                        ? Number(
+                            stats.latest
+                        ).toFixed(2)
+                        : "--";
+            }
+
+
+            if (statPrevious) {
+
+                statPrevious.textContent =
+                    stats.previous !== null
+                        ? Number(
+                            stats.previous
+                        ).toFixed(2)
+                        : "--";
+            }
+
+
+            if (statHighest) {
+
+                statHighest.textContent =
+                    stats.highest !== null
+                        ? Number(
+                            stats.highest
+                        ).toFixed(2)
+                        : "--";
+            }
+
+
+            if (statLowest) {
+
+                statLowest.textContent =
+                    stats.lowest !== null
+                        ? Number(
+                            stats.lowest
+                        ).toFixed(2)
+                        : "--";
+            }
+
+
+            if (statCount) {
+
+                statCount.textContent =
+                    stats.count ??
+                    allRecords.length;
+            }
+
+
+            /*
+             * Summary
+             */
+
+            updateAnalyticsSummary(
+                allRecords
             );
 
 
-            const ordered =
-                [...records].reverse();
+            /*
+             * Selected date range
+             */
+
+            const chartRecords =
+                loadChartRecords();
 
 
-            const labels =
-                ordered.map(
-                    (record) =>
-                        formatDate(
-                            record.created_at
-                        )
-                );
+            /*
+             * Empty state
+             */
 
-
-            const bmiValues =
-                ordered.map(
-                    (record) =>
-                        Number(record.bmi)
-                );
-
-
-            const weightValues =
-                ordered.map(
-                    (record) =>
-                        Number(record.weight)
-                );
-
-
-            if (bmiChart) {
-
-                bmiChart.destroy();
-
-                bmiChart = null;
-            }
-
-
-            if (weightChart) {
-
-                weightChart.destroy();
-
-                weightChart = null;
-            }
-
-
-            if (
-                labels.length === 0 ||
-                bmiValues.length === 0
-            ) {
-
-                showChartMessage(
-                    bmiCanvas,
-                    "No BMI history available yet."
-                );
-
-
-                showChartMessage(
-                    weightCanvas,
-                    "No weight history available yet."
-                );
-
-
-                return;
-            }
-
-
-            if (
-                typeof Chart ===
-                "undefined"
-            ) {
-
-                showToast(
-                    "Chart.js could not be loaded.",
-                    true
-                );
-
-                return;
-            }
-
-
-            clearChartMessage(
-                bmiCanvas
+            updateEmptyStates(
+                chartRecords
             );
 
 
-            clearChartMessage(
-                weightCanvas
+            /*
+             * Graphs
+             */
+
+            createBMIGraph(
+                chartRecords
             );
 
 
-            /* ----------------------------------------------------------
-               BMI Chart
-               ---------------------------------------------------------- */
-
-            bmiChart =
-                new Chart(
-                    bmiCanvas,
-                    {
-
-                        type: "line",
-
-                        data: {
-
-                            labels,
-
-                            datasets: [
-
-                                {
-
-                                    label:
-                                        "BMI",
-
-                                    data:
-                                        bmiValues,
-
-                                    borderColor:
-                                        "#4e63e8",
-
-                                    backgroundColor:
-                                        "rgba(78,99,232,.09)",
-
-                                    pointBackgroundColor:
-                                        "#4e63e8",
-
-                                    pointBorderColor:
-                                        "#ffffff",
-
-                                    pointHoverBackgroundColor:
-                                        "#ffffff",
-
-                                    pointHoverBorderColor:
-                                        "#4e63e8",
-
-                                    fill: true
-
-                                }
-
-                            ]
-
-                        },
-
-                        options:
-                            commonChartOptions(),
-
-                        plugins: [
-                            bmiReferencePlugin
-                        ]
-
-                    }
-                );
-
-
-            /* ----------------------------------------------------------
-               Weight Chart
-               ---------------------------------------------------------- */
-
-            if (weightCanvas) {
-
-                weightChart =
-                    new Chart(
-                        weightCanvas,
-                        {
-
-                            type: "line",
-
-                            data: {
-
-                                labels,
-
-                                datasets: [
-
-                                    {
-
-                                        label:
-                                            "Weight",
-
-                                        data:
-                                            weightValues,
-
-                                        borderColor:
-                                            "#d79a20",
-
-                                        backgroundColor:
-                                            "rgba(215,154,32,.09)",
-
-                                        pointBackgroundColor:
-                                            "#d79a20",
-
-                                        pointBorderColor:
-                                            "#ffffff",
-
-                                        pointHoverBackgroundColor:
-                                            "#ffffff",
-
-                                        pointHoverBorderColor:
-                                            "#d79a20",
-
-                                        fill: true
-
-                                    }
-
-                                ]
-
-                            },
-
-                            options:
-                                commonChartOptions()
-
-                        }
-                    );
-
-            }
+            createWeightGraph(
+                chartRecords
+            );
 
         } catch (error) {
 
@@ -1880,19 +2260,403 @@ function initAnalytics() {
                 error.message,
                 true
             );
-
         }
-
     }
 
+
+    chartRangeButtons.forEach(
+        (button) => {
+
+            button.addEventListener(
+                "click",
+                () => {
+
+                    chartRangeButtons.forEach(
+                        (item) =>
+                            item.classList.remove(
+                                "active"
+                            )
+                    );
+
+
+                    button.classList.add(
+                        "active"
+                    );
+
+
+                    selectedRange =
+                        button.dataset.range ||
+                        "all";
+
+
+                    const chartRecords =
+                        loadChartRecords();
+
+
+                    updateEmptyStates(
+                        chartRecords
+                    );
+
+
+                    createBMIGraph(
+                        chartRecords
+                    );
+
+
+                    createWeightGraph(
+                        chartRecords
+                    );
+                }
+            );
+
+        }
+    );
+
+
+    /*
+     * Expose refresh function so the
+     * Dashboard can refresh Analytics.
+     */
+
+    window.refreshAnalytics =
+        loadAnalytics;
+
+
+    /*
+     * Initial load
+     */
 
     loadAnalytics();
 }
 
 
-/* ==========================================================================
-   START APPLICATION
-   ========================================================================== */
+/* ============================================================
+   Date Helpers
+   ============================================================ */
+
+function parseRecordDate(value) {
+
+    if (!value) {
+        return null;
+    }
+
+
+    const raw =
+        String(value).trim();
+
+
+    /*
+     * Try the normal browser parser first.
+     */
+
+    let date =
+        new Date(raw);
+
+
+    if (!Number.isNaN(
+        date.getTime()
+    )) {
+        return date;
+    }
+
+
+    /*
+     * Handle database date strings
+     * containing commas.
+     */
+
+    const normalized =
+        raw.replace(
+            ",",
+            ""
+        );
+
+
+    date =
+        new Date(
+            normalized
+        );
+
+
+    if (!Number.isNaN(
+        date.getTime()
+    )) {
+        return date;
+    }
+
+
+    /*
+     * Handle YYYY-MM-DD manually.
+     */
+
+    const match =
+        raw.match(
+            /^(\d{4})-(\d{2})-(\d{2})/
+        );
+
+
+    if (match) {
+
+        const year =
+            Number(match[1]);
+
+        const month =
+            Number(match[2]) - 1;
+
+        const day =
+            Number(match[3]);
+
+
+        date =
+            new Date(
+                year,
+                month,
+                day
+            );
+
+
+        if (!Number.isNaN(
+            date.getTime()
+        )) {
+            return date;
+        }
+    }
+
+
+    return null;
+}
+
+
+function formatShortDate(value) {
+
+    const date =
+        parseRecordDate(
+            value
+        );
+
+
+    if (!date) {
+
+        return String(value || "")
+            .split(",")[0]
+            .trim();
+    }
+
+
+    return date.toLocaleDateString(
+        "en-US",
+        {
+            month: "short",
+            day: "numeric",
+        }
+    );
+}
+
+
+function sortRecordsAscending(
+    records
+) {
+
+    return [...(records || [])].sort(
+        (a, b) => {
+
+            const dateA =
+                parseRecordDate(
+                    a.created_at
+                );
+
+            const dateB =
+                parseRecordDate(
+                    b.created_at
+                );
+
+
+            if (!dateA && !dateB) {
+                return 0;
+            }
+
+            if (!dateA) {
+                return -1;
+            }
+
+            if (!dateB) {
+                return 1;
+            }
+
+            return (
+                dateA.getTime() -
+                dateB.getTime()
+            );
+        }
+    );
+}
+
+
+function getRangeRecords(
+    records,
+    range
+) {
+
+    const ordered =
+        sortRecordsAscending(
+            records
+        );
+
+
+    if (
+        range === "all" ||
+        ordered.length === 0
+    ) {
+        return ordered;
+    }
+
+
+    const latest =
+        parseRecordDate(
+            ordered[
+                ordered.length - 1
+            ].created_at
+        );
+
+
+    if (!latest) {
+        return ordered;
+    }
+
+
+    const cutoff =
+        new Date(
+            latest.getTime()
+        );
+
+
+    cutoff.setDate(
+        cutoff.getDate() -
+        Number(range)
+    );
+
+
+    return ordered.filter(
+        (record) => {
+
+            const date =
+                parseRecordDate(
+                    record.created_at
+                );
+
+
+            return (
+                date &&
+                date >= cutoff
+            );
+        }
+    );
+}
+
+
+/* ============================================================
+   Chart Cleanup
+   ============================================================ */
+
+function destroyChart(
+    canvas
+) {
+
+    if (!canvas) {
+        return;
+    }
+
+
+    /*
+     * Remove any previous chart
+     * created by this application.
+     */
+
+    if (canvas._bmiInsightChart) {
+
+        try {
+            canvas._bmiInsightChart.destroy();
+        } catch (error) {
+            console.warn(
+                "Unable to destroy chart:",
+                error
+            );
+        }
+
+        canvas._bmiInsightChart =
+            null;
+    }
+
+
+    /*
+     * Also detect Chart.js charts
+     * created by another script.
+     */
+
+    if (
+        typeof Chart !== "undefined" &&
+        typeof Chart.getChart ===
+            "function"
+    ) {
+
+        const existingChart =
+            Chart.getChart(
+                canvas
+            );
+
+
+        if (existingChart) {
+
+            try {
+                existingChart.destroy();
+            } catch (error) {
+                console.warn(
+                    "Unable to destroy existing Chart.js instance:",
+                    error
+                );
+            }
+        }
+    }
+}
+
+
+/* ============================================================
+   HTML Safety
+   ============================================================ */
+
+function escapeHTML(
+    value
+) {
+
+    return String(
+        value ?? ""
+    )
+        .replace(
+            /&/g,
+            "&amp;"
+        )
+        .replace(
+            /</g,
+            "&lt;"
+        )
+        .replace(
+            />/g,
+            "&gt;"
+        )
+        .replace(
+            /"/g,
+            "&quot;"
+        )
+        .replace(
+            /'/g,
+            "&#039;"
+        );
+}
+
+
+/* ============================================================
+   Application Startup
+   ============================================================ */
 
 document.addEventListener(
     "DOMContentLoaded",
