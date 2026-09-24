@@ -2139,3 +2139,688 @@ a {
         height: 190px;
     }
 }
+/* =========================================================
+   PREMIUM ANALYTICS PAGE
+   ========================================================= */
+
+.analytics-page {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding-bottom: 48px;
+}
+
+
+/* ---------------------------------------------------------
+   Header
+   --------------------------------------------------------- */
+
+.analytics-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 28px;
+    margin-bottom: 28px;
+}
+
+.analytics-header h1 {
+    margin: 5px 0 6px;
+    font-size: 34px;
+    line-height: 1.1;
+    letter-spacing: -0.8px;
+}
+
+.analytics-header p {
+    margin: 0;
+    color: #7d86a8;
+    font-size: 14px;
+}
+
+.eyebrow {
+    display: inline-block;
+    color: #6676ef;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.7px;
+}
+
+.analytics-controls {
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.analytics-user-control {
+    min-width: 190px;
+}
+
+.analytics-user-control label {
+    display: block;
+    margin-bottom: 7px;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    color: #9299b6;
+}
+
+.analytics-user-control select {
+    width: 100%;
+    height: 44px;
+    padding: 0 14px;
+    border: 1px solid #e2e6f0;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #18213f;
+    font-size: 13px;
+    font-weight: 700;
+    outline: none;
+}
+
+.analytics-add-user {
+    height: 44px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 12px;
+    background: #18213f;
+    color: white;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.analytics-add-user:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 10px 24px rgba(24, 33, 63, 0.16);
+}
+
+.analytics-add-user span {
+    font-size: 18px;
+    margin-right: 5px;
+    vertical-align: -1px;
+}
+
+
+/* ---------------------------------------------------------
+   Overview cards
+   --------------------------------------------------------- */
+
+.analytics-overview {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.analytics-stat-card {
+    position: relative;
+    min-height: 132px;
+    padding: 20px;
+    border: 1px solid #e8ebf3;
+    border-radius: 18px;
+    background: #ffffff;
+    box-shadow: 0 8px 28px rgba(25, 36, 70, 0.04);
+    overflow: hidden;
+}
+
+.analytics-stat-card::after {
+    content: "";
+    position: absolute;
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    right: -36px;
+    bottom: -42px;
+    background: rgba(84, 104, 255, 0.05);
+}
+
+.primary-stat {
+    border-color: rgba(84, 104, 255, 0.18);
+    background:
+        linear-gradient(180deg, rgba(84, 104, 255, 0.05), rgba(84, 104, 255, 0)),
+        #ffffff;
+}
+
+.analytics-stat-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+    z-index: 1;
+}
+
+.analytics-stat-label {
+    color: #9299b6;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+}
+
+.analytics-stat-icon {
+    width: 29px;
+    height: 29px;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    background: #edf0ff;
+    color: #5468ff;
+    font-size: 15px;
+    font-weight: 800;
+}
+
+.analytics-stat-icon.neutral {
+    background: #eef5f1;
+    color: #35a879;
+}
+
+.analytics-stat-icon.purple {
+    background: #f1edff;
+    color: #8468ee;
+}
+
+.analytics-stat-icon.orange {
+    background: #fff4df;
+    color: #e49c1f;
+}
+
+.analytics-stat-value {
+    position: relative;
+    z-index: 1;
+    margin-top: 14px;
+    color: #16203d;
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -1px;
+}
+
+.analytics-range-value {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-size: 25px;
+}
+
+.range-separator {
+    color: #b8bfd2;
+    font-weight: 500;
+}
+
+.analytics-stat-foot {
+    position: relative;
+    z-index: 1;
+    margin-top: 11px;
+    color: #8a92af;
+    font-size: 11px;
+}
+
+
+/* ---------------------------------------------------------
+   Chart cards
+   --------------------------------------------------------- */
+
+.analytics-chart-card {
+    border: 1px solid #e8ebf3;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 10px 34px rgba(25, 36, 70, 0.045);
+    overflow: hidden;
+}
+
+.featured-chart {
+    margin-bottom: 18px;
+}
+
+.chart-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 22px 22px 14px;
+}
+
+.chart-title-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.chart-icon {
+    width: 40px;
+    height: 40px;
+    display: grid;
+    place-items: center;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.bmi-icon {
+    background: #edf0ff;
+    color: #5468ff;
+}
+
+.weight-icon {
+    background: #fff4df;
+    color: #d9991f;
+}
+
+.snapshot-icon {
+    background: #e9f8f2;
+    color: #32a578;
+}
+
+.chart-title-group h2 {
+    margin: 0 0 3px;
+    color: #17213f;
+    font-size: 17px;
+    letter-spacing: -0.2px;
+}
+
+.chart-title-group p {
+    margin: 0;
+    color: #8a92ad;
+    font-size: 12px;
+}
+
+
+/* ---------------------------------------------------------
+   Range controls
+   --------------------------------------------------------- */
+
+.chart-actions {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px;
+    border: 1px solid #e8ebf3;
+    border-radius: 10px;
+    background: #f8f9fc;
+}
+
+.range-btn {
+    border: 0;
+    min-width: 43px;
+    height: 29px;
+    padding: 0 9px;
+    border-radius: 7px;
+    background: transparent;
+    color: #8a92ad;
+    font-size: 10px;
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.range-btn.active {
+    background: #ffffff;
+    color: #5468ff;
+    box-shadow: 0 3px 10px rgba(25, 36, 70, 0.08);
+}
+
+
+/* ---------------------------------------------------------
+   Legend
+   --------------------------------------------------------- */
+
+.bmi-chart-legend {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 4px 24px 0;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #67708f;
+    font-size: 10px;
+}
+
+.legend-item small {
+    color: #a1a7bd;
+    font-size: 9px;
+}
+
+.legend-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+.underweight-dot {
+    background: #5ca2ee;
+}
+
+.normal-dot {
+    background: #32b889;
+}
+
+.overweight-dot {
+    background: #efb63d;
+}
+
+.obese-dot {
+    background: #ed6677;
+}
+
+
+/* ---------------------------------------------------------
+   Charts
+   --------------------------------------------------------- */
+
+.premium-chart-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.bmi-premium-chart {
+    height: 390px;
+    padding: 14px 22px 22px;
+}
+
+.weight-premium-chart {
+    height: 310px;
+    padding: 14px 20px 20px;
+}
+
+.premium-chart-wrap canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.chart-unit {
+    display: inline-flex;
+    align-items: center;
+    height: 26px;
+    padding: 0 9px;
+    border-radius: 7px;
+    background: #f7f8fb;
+    color: #959db8;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+
+/* ---------------------------------------------------------
+   Empty chart state
+   --------------------------------------------------------- */
+
+.chart-empty-state {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    pointer-events: none;
+    background: linear-gradient(
+        180deg,
+        rgba(255,255,255,0.15),
+        rgba(255,255,255,0.72)
+    );
+}
+
+.chart-empty-state.hidden {
+    display: none;
+}
+
+.empty-chart-icon {
+    width: 48px;
+    height: 48px;
+    display: grid;
+    place-items: center;
+    margin-bottom: 3px;
+    border-radius: 15px;
+    background: #edf0ff;
+    color: #5468ff;
+    font-size: 22px;
+    font-weight: 800;
+}
+
+.chart-empty-state strong {
+    color: #283252;
+    font-size: 13px;
+}
+
+.chart-empty-state span {
+    color: #8d95af;
+    font-size: 11px;
+}
+
+
+/* ---------------------------------------------------------
+   Two-column analytics section
+   --------------------------------------------------------- */
+
+.analytics-two-column {
+    display: grid;
+    grid-template-columns: 1.35fr 0.85fr;
+    gap: 18px;
+    margin-bottom: 18px;
+}
+
+
+/* ---------------------------------------------------------
+   Snapshot card
+   --------------------------------------------------------- */
+
+.snapshot-body {
+    padding: 4px 22px 22px;
+}
+
+.snapshot-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 15px 0;
+}
+
+.snapshot-row strong {
+    color: #17213f;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+.snapshot-label {
+    display: block;
+    color: #36405e;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.snapshot-description {
+    display: block;
+    margin-top: 3px;
+    color: #969db7;
+    font-size: 10px;
+}
+
+.snapshot-category {
+    color: #5468ff !important;
+    font-size: 13px !important;
+    padding: 7px 10px;
+    border-radius: 8px;
+    background: #edf0ff;
+}
+
+.snapshot-divider {
+    height: 1px;
+    background: #eef0f5;
+}
+
+
+/* ---------------------------------------------------------
+   Reference
+   --------------------------------------------------------- */
+
+.bmi-reference-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 28px;
+    padding: 23px 24px;
+    border: 1px solid #e8ebf3;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 8px 28px rgba(25, 36, 70, 0.035);
+}
+
+.reference-eyebrow {
+    color: #9299b6;
+    font-size: 9px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+}
+
+.reference-heading h2 {
+    margin: 5px 0 0;
+    color: #17213f;
+    font-size: 17px;
+}
+
+.reference-ranges {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 25px;
+}
+
+.reference-range {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.reference-color {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+}
+
+.reference-range strong {
+    display: block;
+    color: #505974;
+    font-size: 10px;
+}
+
+.reference-range small {
+    display: block;
+    margin-top: 2px;
+    color: #9ca3b9;
+    font-size: 9px;
+}
+
+.underweight-color {
+    background: #5ca2ee;
+}
+
+.normal-color {
+    background: #32b889;
+}
+
+.overweight-color {
+    background: #efb63d;
+}
+
+.obese-color {
+    background: #ed6677;
+}
+
+
+/* ---------------------------------------------------------
+   Responsive
+   --------------------------------------------------------- */
+
+@media (max-width: 1100px) {
+
+    .analytics-overview {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .analytics-two-column {
+        grid-template-columns: 1fr;
+    }
+
+    .analytics-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .analytics-controls {
+        width: 100%;
+    }
+
+    .analytics-user-control {
+        flex: 1;
+    }
+
+    .bmi-reference-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+
+@media (max-width: 700px) {
+
+    .analytics-page {
+        padding: 0 4px 35px;
+    }
+
+    .analytics-header h1 {
+        font-size: 28px;
+    }
+
+    .analytics-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .analytics-user-control {
+        width: 100%;
+    }
+
+    .analytics-overview {
+        grid-template-columns: 1fr;
+    }
+
+    .chart-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .chart-actions {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .range-btn {
+        flex: 1;
+    }
+
+    .bmi-chart-legend {
+        gap: 11px;
+        padding-left: 22px;
+    }
+
+    .bmi-premium-chart {
+        height: 320px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .weight-premium-chart {
+        height: 260px;
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+
+    .reference-ranges {
+        width: 100%;
+        gap: 15px;
+    }
+}

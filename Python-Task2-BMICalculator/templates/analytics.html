@@ -4,302 +4,267 @@
 
 {% block content %}
 
-<div class="page-shell">
+<div class="analytics-page">
 
-    <!-- ================= HEADER ================= -->
-
-    <header class="topbar">
-
+    <!-- Page Header -->
+    <div class="analytics-header">
         <div>
-
-            <div class="kicker">
-                HEALTH DATA VISUALIZATION
-            </div>
-
-            <h1>
-                Understand your <span>trend.</span>
-            </h1>
-
-            <p>
-                Explore your historical BMI and weight measurements for the selected profile.
-            </p>
-
+            <span class="eyebrow">PERSONAL ANALYTICS</span>
+            <h1>Health Analytics</h1>
+            <p>Understand how your BMI and weight change across your saved measurements.</p>
         </div>
 
-
-        <div class="topbar-actions">
-
-            <div class="profile-control">
-
-                <div class="mini-avatar">
-                    S
-                </div>
-
-                <select
-                    id="user-select"
-                    aria-label="Select user"
-                ></select>
-
+        <div class="analytics-controls">
+            <div class="analytics-user-control">
+                <label for="user-select">PROFILE</label>
+                <select id="user-select"></select>
             </div>
 
-
-            <button
-                id="add-user-btn"
-                type="button"
-                class="top-add-user"
-            >
-                <span class="plus-icon">+</span>
-                Add User
+            <button id="add-user-btn" class="analytics-add-user">
+                <span>+</span>
+                Add user
             </button>
-
         </div>
-
-    </header>
-
-
-    <!-- ================= ANALYTICS STATS ================= -->
-
-    <section class="analytics-stats">
+    </div>
 
 
-        <div class="analytics-stat accent-stat">
+    <!-- Overview -->
+    <section class="analytics-overview">
 
-            <span>
-                LATEST BMI
-            </span>
+        <div class="analytics-stat-card primary-stat">
+            <div class="analytics-stat-top">
+                <span class="analytics-stat-label">CURRENT BMI</span>
+                <span class="analytics-stat-icon">↗</span>
+            </div>
 
-            <strong id="stat-latest">
-                --
-            </strong>
+            <div class="analytics-stat-value" id="stat-latest">--</div>
 
-            <small>
-                Most recent saved reading
-            </small>
-
+            <div class="analytics-stat-foot">
+                <span id="latest-status">Latest recorded value</span>
+            </div>
         </div>
 
 
-        <div class="analytics-stat">
+        <div class="analytics-stat-card">
+            <div class="analytics-stat-top">
+                <span class="analytics-stat-label">PREVIOUS BMI</span>
+                <span class="analytics-stat-icon neutral">○</span>
+            </div>
 
-            <span>
-                PREVIOUS BMI
-            </span>
+            <div class="analytics-stat-value" id="stat-previous">--</div>
 
-            <strong id="stat-previous">
-                --
-            </strong>
-
-            <small>
-                Previous saved reading
-            </small>
-
+            <div class="analytics-stat-foot">
+                <span id="bmi-change-label">Compare with previous</span>
+            </div>
         </div>
 
 
-        <div class="analytics-stat">
+        <div class="analytics-stat-card">
+            <div class="analytics-stat-top">
+                <span class="analytics-stat-label">BMI RANGE</span>
+                <span class="analytics-stat-icon purple">⌁</span>
+            </div>
 
-            <span>
-                HIGHEST
-            </span>
+            <div class="analytics-stat-value analytics-range-value">
+                <span id="stat-lowest">--</span>
+                <span class="range-separator">—</span>
+                <span id="stat-highest">--</span>
+            </div>
 
-            <strong id="stat-highest">
-                --
-            </strong>
-
-            <small>
-                Highest recorded BMI
-            </small>
-
+            <div class="analytics-stat-foot">
+                <span>Lowest to highest recorded BMI</span>
+            </div>
         </div>
 
 
-        <div class="analytics-stat">
+        <div class="analytics-stat-card">
+            <div class="analytics-stat-top">
+                <span class="analytics-stat-label">MEASUREMENTS</span>
+                <span class="analytics-stat-icon orange">#</span>
+            </div>
 
-            <span>
-                LOWEST
-            </span>
+            <div class="analytics-stat-value" id="stat-count">0</div>
 
-            <strong id="stat-lowest">
-                --
-            </strong>
-
-            <small>
-                Lowest recorded BMI
-            </small>
-
-        </div>
-
-
-        <div class="analytics-stat">
-
-            <span>
-                RECORDS
-            </span>
-
-            <strong id="stat-count">
-                0
-            </strong>
-
-            <small>
-                Saved measurements
-            </small>
-
+            <div class="analytics-stat-foot">
+                <span>Total saved readings</span>
+            </div>
         </div>
 
     </section>
 
 
-    <!-- ================= TREND SUMMARY ================= -->
+    <!-- BMI Trend -->
+    <section class="analytics-chart-card featured-chart">
 
-    <section class="card analytics-insight">
+        <div class="chart-card-header">
 
-        <div class="insight-icon">
+            <div class="chart-title-group">
+                <div class="chart-icon bmi-icon">
+                    <span>↗</span>
+                </div>
 
-            <svg viewBox="0 0 24 24">
-                <path d="M4 17 9 12l3.2 3.2L20 7"/>
-                <path d="M20 7v5"/>
-                <path d="M20 7h-5"/>
-            </svg>
+                <div>
+                    <h2>BMI Trend</h2>
+                    <p>Track your BMI movement across recorded measurements.</p>
+                </div>
+            </div>
+
+            <div class="chart-actions">
+                <button class="range-btn active" data-range="all">All</button>
+                <button class="range-btn" data-range="30">30D</button>
+                <button class="range-btn" data-range="90">90D</button>
+                <button class="range-btn" data-range="365">1Y</button>
+            </div>
 
         </div>
 
 
-        <div class="insight-copy">
+        <!-- BMI Category Legend -->
+        <div class="bmi-chart-legend">
+            <div class="legend-item">
+                <span class="legend-dot underweight-dot"></span>
+                <span>Underweight</span>
+                <small>&lt; 18.5</small>
+            </div>
 
-            <h2 id="trend-text">
-                Build your history to see a trend.
-            </h2>
+            <div class="legend-item">
+                <span class="legend-dot normal-dot"></span>
+                <span>Normal</span>
+                <small>18.5 – 24.9</small>
+            </div>
 
-            <p id="trend-detail">
-                Your BMI trend will be summarized from your saved measurements.
-            </p>
+            <div class="legend-item">
+                <span class="legend-dot overweight-dot"></span>
+                <span>Overweight</span>
+                <small>25 – 29.9</small>
+            </div>
 
+            <div class="legend-item">
+                <span class="legend-dot obese-dot"></span>
+                <span>Obese</span>
+                <small>≥ 30</small>
+            </div>
         </div>
 
 
-        <div class="insight-values">
+        <div class="premium-chart-wrap bmi-premium-chart">
+            <canvas id="bmi-chart"></canvas>
 
-            <div>
-
-                <span>
-                    AVERAGE BMI
-                </span>
-
-                <strong id="average-bmi">
-                    --
-                </strong>
-
+            <div id="bmi-empty-state" class="chart-empty-state hidden">
+                <div class="empty-chart-icon">↗</div>
+                <strong>Build your BMI trend</strong>
+                <span>Add another measurement to reveal changes over time.</span>
             </div>
-
-
-            <div>
-
-                <span>
-                    AVERAGE WEIGHT
-                </span>
-
-                <strong id="average-weight">
-                    --
-                </strong>
-
-            </div>
-
         </div>
 
     </section>
 
 
-    <!-- ================= CHARTS ================= -->
+    <!-- Secondary Analytics -->
+    <section class="analytics-two-column">
 
-    <section class="analytics-grid">
+        <!-- Weight Trend -->
+        <div class="analytics-chart-card">
 
+            <div class="chart-card-header">
 
-        <!-- BMI CHART -->
-
-        <div class="card chart-card">
-
-            <div class="section-header">
-
-                <div class="section-title-wrap">
-
-                    <div class="heading-icon small-chart">
-
-                        <svg viewBox="0 0 24 24">
-                            <path d="M4 18 9 12l3 3 8-9"/>
-                            <path d="M20 6v5"/>
-                            <path d="M20 6h-5"/>
-                        </svg>
-
+                <div class="chart-title-group">
+                    <div class="chart-icon weight-icon">
+                        <span>⚖</span>
                     </div>
-
 
                     <div>
-
-                        <h2>
-                            BMI Trend
-                        </h2>
-
-                        <p>
-                            Your BMI movement across saved readings.
-                        </p>
-
+                        <h2>Weight Trend</h2>
+                        <p>Monitor your weight across saved readings.</p>
                     </div>
-
                 </div>
 
-            </div>
-
-
-            <div class="large-chart">
-
-                <canvas id="bmi-chart"></canvas>
+                <div class="chart-unit">KG</div>
 
             </div>
 
-        </div>
-
-
-
-        <!-- WEIGHT CHART -->
-
-        <div class="card chart-card">
-
-            <div class="section-header">
-
-                <div class="section-title-wrap">
-
-                    <div class="heading-icon small-chart">
-
-                        <svg viewBox="0 0 24 24">
-                            <path d="M4 18 8.5 14l3 2.5L20 8"/>
-                            <path d="M20 8v5"/>
-                            <path d="M20 8h-5"/>
-                        </svg>
-
-                    </div>
-
-
-                    <div>
-
-                        <h2>
-                            Weight Trend
-                        </h2>
-
-                        <p>
-                            Your weight movement across saved readings.
-                        </p>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-
-            <div class="large-chart">
-
+            <div class="premium-chart-wrap weight-premium-chart">
                 <canvas id="weight-chart"></canvas>
 
+                <div id="weight-empty-state" class="chart-empty-state hidden">
+                    <div class="empty-chart-icon">⚖</div>
+                    <strong>No weight trend yet</strong>
+                    <span>Add more readings to see your movement.</span>
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Measurement Snapshot -->
+        <div class="analytics-chart-card snapshot-card">
+
+            <div class="chart-card-header">
+
+                <div class="chart-title-group">
+                    <div class="chart-icon snapshot-icon">
+                        <span>◔</span>
+                    </div>
+
+                    <div>
+                        <h2>Measurement Snapshot</h2>
+                        <p>Current profile overview.</p>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="snapshot-body">
+
+                <div class="snapshot-row">
+                    <div>
+                        <span class="snapshot-label">Latest BMI</span>
+                        <span class="snapshot-description">Most recent reading</span>
+                    </div>
+
+                    <strong id="snapshot-bmi">--</strong>
+                </div>
+
+
+                <div class="snapshot-divider"></div>
+
+
+                <div class="snapshot-row">
+                    <div>
+                        <span class="snapshot-label">Current Weight</span>
+                        <span class="snapshot-description">Most recent weight</span>
+                    </div>
+
+                    <strong id="snapshot-weight">--</strong>
+                </div>
+
+
+                <div class="snapshot-divider"></div>
+
+
+                <div class="snapshot-row">
+                    <div>
+                        <span class="snapshot-label">Latest Category</span>
+                        <span class="snapshot-description">Based on latest BMI</span>
+                    </div>
+
+                    <strong id="snapshot-category" class="snapshot-category">--</strong>
+                </div>
+
+
+                <div class="snapshot-divider"></div>
+
+
+                <div class="snapshot-row">
+                    <div>
+                        <span class="snapshot-label">Readings</span>
+                        <span class="snapshot-description">Measurements stored</span>
+                    </div>
+
+                    <strong id="snapshot-count">0</strong>
+                </div>
+
             </div>
 
         </div>
@@ -307,90 +272,51 @@
     </section>
 
 
-    <!-- ================= REFERENCE ================= -->
+    <!-- BMI Reference -->
+    <section class="bmi-reference-card">
 
-    <section class="card reference-card">
-
-        <div>
-
-            <div class="kicker">
-                BMI REFERENCE
-            </div>
-
-            <h2 style="margin:5px 0 0;font-size:17px;">
-                Classification ranges
-            </h2>
-
+        <div class="reference-heading">
+            <span class="reference-eyebrow">BMI REFERENCE</span>
+            <h2>Classification ranges</h2>
         </div>
 
+        <div class="reference-ranges">
 
-        <div class="reference-list">
-
-            <span>
-
-                <i class="ref-dot blue"></i>
-
+            <div class="reference-range">
+                <span class="reference-color underweight-color"></span>
                 <div>
-                    <b>Underweight</b>
+                    <strong>Underweight</strong>
                     <small>&lt; 18.5</small>
                 </div>
+            </div>
 
-            </span>
-
-
-            <span>
-
-                <i class="ref-dot green"></i>
-
+            <div class="reference-range">
+                <span class="reference-color normal-color"></span>
                 <div>
-                    <b>Normal</b>
+                    <strong>Normal</strong>
                     <small>18.5 – 24.9</small>
                 </div>
+            </div>
 
-            </span>
-
-
-            <span>
-
-                <i class="ref-dot yellow"></i>
-
+            <div class="reference-range">
+                <span class="reference-color overweight-color"></span>
                 <div>
-                    <b>Overweight</b>
+                    <strong>Overweight</strong>
                     <small>25 – 29.9</small>
                 </div>
+            </div>
 
-            </span>
-
-
-            <span>
-
-                <i class="ref-dot red"></i>
-
+            <div class="reference-range">
+                <span class="reference-color obese-color"></span>
                 <div>
-                    <b>Obese</b>
+                    <strong>Obese</strong>
                     <small>≥ 30</small>
                 </div>
-
-            </span>
+            </div>
 
         </div>
 
     </section>
-
-
-    <!-- ================= DISCLAIMER ================= -->
-
-    <div
-        style="
-            margin-top:14px;
-            padding:0 3px 20px;
-            color:#8895a7;
-            font-size:11px;
-            line-height:1.6;
-        "
-    >
-        BMI is a general screening measure and does not replace professional medical advice.
-    </div>
 
 </div>
 
