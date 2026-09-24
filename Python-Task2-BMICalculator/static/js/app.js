@@ -2,21 +2,22 @@
    BMI INSIGHT
    Main frontend application logic
 
-   This file is shared by:
+   Shared by:
    - Dashboard
    - History
    - Analytics
 
-   Chart design:
-   - Straight / angular line segments (tension: 0)
-   - No visible point markers (pointRadius: 0)
-   - Hover tooltip still works
+   TREND GRAPH DESIGN
+   - Straight connected segments
+   - Triangular peaks / valleys
+   - No visible dots
+   - No stepped blocks
    ============================================================ */
 
 const STORAGE_KEY = "bmiInsightSelectedUser";
 
 /* ============================================================
-   Global user data
+   USER DATA
    ============================================================ */
 
 (function initialiseUserData() {
@@ -30,21 +31,32 @@ const STORAGE_KEY = "bmiInsightSelectedUser";
     }
 
     try {
-        const parsed = JSON.parse(dataElement.textContent || "[]");
-        window.BMI_USERS = Array.isArray(parsed) ? parsed : [];
+        const parsed = JSON.parse(
+            dataElement.textContent || "[]"
+        );
+
+        window.BMI_USERS = Array.isArray(parsed)
+            ? parsed
+            : [];
     } catch (error) {
-        console.error("Unable to parse BMI user data:", error);
+        console.error(
+            "Unable to parse BMI user data:",
+            error
+        );
+
         window.BMI_USERS = [];
     }
 })();
 
 /* ============================================================
-   Local storage
+   LOCAL STORAGE
    ============================================================ */
 
 function getSelectedUserId() {
     try {
-        return localStorage.getItem(STORAGE_KEY) || "";
+        return (
+            localStorage.getItem(STORAGE_KEY) || ""
+        );
     } catch (error) {
         return "";
     }
@@ -52,30 +64,54 @@ function getSelectedUserId() {
 
 function setSelectedUserId(id) {
     try {
-        if (id === null || id === undefined || id === "") {
-            localStorage.removeItem(STORAGE_KEY);
+        if (
+            id === null ||
+            id === undefined ||
+            id === ""
+        ) {
+            localStorage.removeItem(
+                STORAGE_KEY
+            );
             return;
         }
-        localStorage.setItem(STORAGE_KEY, String(id));
+
+        localStorage.setItem(
+            STORAGE_KEY,
+            String(id)
+        );
     } catch (error) {
-        console.warn("Unable to save selected user:", error);
+        console.warn(
+            "Unable to save selected user:",
+            error
+        );
     }
 }
 
 /* ============================================================
-   API helper
+   API
    ============================================================ */
 
-async function fetchJSON(url, options = {}) {
+async function fetchJSON(
+    url,
+    options = {}
+) {
     let response;
 
     try {
-        response = await fetch(url, options);
+        response = await fetch(
+            url,
+            options
+        );
     } catch (error) {
-        throw new Error("Unable to connect to the server. Please try again.");
+        throw new Error(
+            "Unable to connect to the server. Please try again."
+        );
     }
 
-    const data = await response.json().catch(() => ({}));
+    const data =
+        await response.json().catch(
+            () => ({})
+        );
 
     if (!response.ok) {
         throw new Error(
@@ -89,206 +125,400 @@ async function fetchJSON(url, options = {}) {
 }
 
 /* ============================================================
-   Toast notifications
+   TOAST
    ============================================================ */
 
-function showToast(message, isError = false) {
-    const container = document.getElementById("toast-container");
+function showToast(
+    message,
+    isError = false
+) {
+    const container =
+        document.getElementById(
+            "toast-container"
+        );
+
     if (!container) return;
 
-    const toast = document.createElement("div");
-    toast.className = "toast" + (isError ? " toast-error" : "");
-    toast.textContent = String(message ?? "");
+    const toast =
+        document.createElement(
+            "div"
+        );
+
+    toast.className =
+        "toast" +
+        (isError
+            ? " toast-error"
+            : "");
+
+    toast.textContent =
+        String(message ?? "");
+
     container.appendChild(toast);
 
-    window.setTimeout(() => {
-        toast.remove();
-    }, 3200);
+    window.setTimeout(
+        () => toast.remove(),
+        3200
+    );
 }
 
 /* ============================================================
-   BMI category helpers
+   BMI CATEGORY
    ============================================================ */
 
-function categoryClass(category) {
+function categoryClass(
+    category
+) {
     return {
-        Underweight: "badge-underweight",
-        Normal: "badge-normal",
-        Overweight: "badge-overweight",
-        Obese: "badge-obese",
+        Underweight:
+            "badge-underweight",
+        Normal:
+            "badge-normal",
+        Overweight:
+            "badge-overweight",
+        Obese:
+            "badge-obese",
     }[category] || "badge-normal";
 }
 
-function categoryColor(category) {
+function categoryColor(
+    category
+) {
     return {
-        Underweight: "#5CA2EE",
-        Normal: "#32B889",
-        Overweight: "#EFB63D",
-        Obese: "#ED6677",
+        Underweight:
+            "#5CA2EE",
+        Normal:
+            "#32B889",
+        Overweight:
+            "#EFB63D",
+        Obese:
+            "#ED6677",
     }[category] || "#5468FF";
 }
 
 /* ============================================================
-   User selector
+   USER SELECTOR
    ============================================================ */
 
-function populateUserSelect(select, users, selectedId) {
+function populateUserSelect(
+    select,
+    users,
+    selectedId
+) {
     if (!select) return;
 
-    const safeUsers = Array.isArray(users) ? users : [];
+    const safeUsers =
+        Array.isArray(users)
+            ? users
+            : [];
+
     select.innerHTML = "";
 
     if (!safeUsers.length) {
-        const option = document.createElement("option");
+        const option =
+            document.createElement(
+                "option"
+            );
+
         option.value = "";
-        option.textContent = "No users yet";
+        option.textContent =
+            "No users yet";
+
         select.appendChild(option);
+
         setSelectedUserId("");
         updateAvatar();
+
         return;
     }
 
-    safeUsers.forEach((user) => {
-        const option = document.createElement("option");
-        option.value = user.id;
-        option.textContent = user.name;
-        select.appendChild(option);
-    });
+    safeUsers.forEach(
+        (user) => {
+            const option =
+                document.createElement(
+                    "option"
+                );
 
-    const matchingUser = safeUsers.find(
-        (user) => String(user.id) === String(selectedId)
+            option.value = user.id;
+            option.textContent =
+                user.name;
+
+            select.appendChild(
+                option
+            );
+        }
     );
+
+    const matchingUser =
+        safeUsers.find(
+            (user) =>
+                String(user.id) ===
+                String(selectedId)
+        );
 
     select.value = matchingUser
         ? String(matchingUser.id)
-        : String(safeUsers[0].id);
+        : String(
+              safeUsers[0].id
+          );
 
-    setSelectedUserId(select.value);
+    setSelectedUserId(
+        select.value
+    );
+
     updateAvatar();
 }
 
 function updateAvatar() {
-    const select = document.getElementById("user-select");
-    const avatar = document.querySelector(".mini-avatar");
+    const select =
+        document.getElementById(
+            "user-select"
+        );
 
-    if (!select || !avatar) return;
+    const avatar =
+        document.querySelector(
+            ".mini-avatar"
+        );
 
-    const user = (window.BMI_USERS || []).find(
-        (item) => String(item.id) === String(select.value)
-    );
+    if (!select || !avatar) {
+        return;
+    }
+
+    const user =
+        (window.BMI_USERS || [])
+            .find(
+                (item) =>
+                    String(
+                        item.id
+                    ) ===
+                    String(
+                        select.value
+                    )
+            );
 
     avatar.textContent =
-        user?.name?.trim()?.charAt(0)?.toUpperCase() || "S";
+        user?.name
+            ?.trim()
+            ?.charAt(0)
+            ?.toUpperCase() ||
+        "S";
 }
 
-function initUserSelect(onChange) {
-    const select = document.getElementById("user-select");
-    if (!select) return null;
+function initUserSelect(
+    onChange
+) {
+    const select =
+        document.getElementById(
+            "user-select"
+        );
+
+    if (!select) {
+        return null;
+    }
 
     populateUserSelect(
         select,
-        Array.isArray(window.BMI_USERS) ? window.BMI_USERS : [],
+        Array.isArray(
+            window.BMI_USERS
+        )
+            ? window.BMI_USERS
+            : [],
         getSelectedUserId()
     );
 
-    if (!select.dataset.bmiInsightBound) {
-        select.addEventListener("change", () => {
-            setSelectedUserId(select.value);
-            updateAvatar();
-
-            if (typeof onChange === "function") {
-                onChange(select.value);
-            }
-        });
-
-        select.dataset.bmiInsightBound = "1";
-    }
-
-    const addUserButton = document.getElementById("add-user-btn");
-
-    if (addUserButton && !addUserButton.dataset.bmiInsightBound) {
-        addUserButton.addEventListener("click", async () => {
-            const enteredName = window.prompt(
-                "Enter a name for the new user:"
-            );
-
-            if (!enteredName || !enteredName.trim()) {
-                return;
-            }
-
-            const name = enteredName.trim();
-
-            try {
-                const user = await fetchJSON("/api/users", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ name }),
-                });
-
-                if (!Array.isArray(window.BMI_USERS)) {
-                    window.BMI_USERS = [];
-                }
-
-                const existingIndex = window.BMI_USERS.findIndex(
-                    (item) => String(item.id) === String(user.id)
-                );
-
-                if (existingIndex === -1) {
-                    window.BMI_USERS.push(user);
-                } else {
-                    window.BMI_USERS[existingIndex] = user;
-                }
-
-                populateUserSelect(
-                    select,
-                    window.BMI_USERS,
-                    user.id
+    if (
+        !select.dataset
+            .bmiInsightBound
+    ) {
+        select.addEventListener(
+            "change",
+            () => {
+                setSelectedUserId(
+                    select.value
                 );
 
                 updateAvatar();
 
-                showToast(
-                    user.existing
-                        ? `${user.name} already exists`
-                        : `Added ${user.name}`
-                );
-
-                if (typeof onChange === "function") {
-                    onChange(select.value);
+                if (
+                    typeof onChange ===
+                    "function"
+                ) {
+                    onChange(
+                        select.value
+                    );
                 }
-            } catch (error) {
-                showToast(error.message, true);
             }
-        });
+        );
 
-        addUserButton.dataset.bmiInsightBound = "1";
+        select.dataset
+            .bmiInsightBound = "1";
+    }
+
+    const addUserButton =
+        document.getElementById(
+            "add-user-btn"
+        );
+
+    if (
+        addUserButton &&
+        !addUserButton.dataset
+            .bmiInsightBound
+    ) {
+        addUserButton.addEventListener(
+            "click",
+            async () => {
+                const enteredName =
+                    window.prompt(
+                        "Enter a name for the new user:"
+                    );
+
+                if (
+                    !enteredName ||
+                    !enteredName.trim()
+                ) {
+                    return;
+                }
+
+                const name =
+                    enteredName.trim();
+
+                try {
+                    const user =
+                        await fetchJSON(
+                            "/api/users",
+                            {
+                                method:
+                                    "POST",
+                                headers: {
+                                    "Content-Type":
+                                        "application/json",
+                                },
+                                body:
+                                    JSON.stringify(
+                                        {
+                                            name,
+                                        }
+                                    ),
+                            }
+                        );
+
+                    if (
+                        !Array.isArray(
+                            window.BMI_USERS
+                        )
+                    ) {
+                        window.BMI_USERS =
+                            [];
+                    }
+
+                    const existingIndex =
+                        window.BMI_USERS.findIndex(
+                            (item) =>
+                                String(
+                                    item.id
+                                ) ===
+                                String(
+                                    user.id
+                                )
+                        );
+
+                    if (
+                        existingIndex === -1
+                    ) {
+                        window.BMI_USERS.push(
+                            user
+                        );
+                    } else {
+                        window.BMI_USERS[
+                            existingIndex
+                        ] = user;
+                    }
+
+                    populateUserSelect(
+                        select,
+                        window.BMI_USERS,
+                        user.id
+                    );
+
+                    updateAvatar();
+
+                    showToast(
+                        user.existing
+                            ? `${user.name} already exists`
+                            : `Added ${user.name}`
+                    );
+
+                    if (
+                        typeof onChange ===
+                        "function"
+                    ) {
+                        onChange(
+                            select.value
+                        );
+                    }
+                } catch (
+                    error
+                ) {
+                    showToast(
+                        error.message,
+                        true
+                    );
+                }
+            }
+        );
+
+        addUserButton.dataset
+            .bmiInsightBound =
+            "1";
     }
 
     return select;
 }
 
 /* ============================================================
-   BMI score ring
+   BMI RING
    ============================================================ */
 
-function setRing(bmi, category) {
-    const ring = document.getElementById("bmi-ring");
+function setRing(
+    bmi,
+    category
+) {
+    const ring =
+        document.getElementById(
+            "bmi-ring"
+        );
+
     if (!ring) return;
 
-    const numericBMI = Number(bmi);
+    const numericBMI =
+        Number(bmi);
 
-    if (!Number.isFinite(numericBMI)) {
-        ring.style.setProperty("--score-progress", "0deg");
-        ring.style.setProperty("--ring-color", "#5468FF");
+    if (
+        !Number.isFinite(
+            numericBMI
+        )
+    ) {
+        ring.style.setProperty(
+            "--score-progress",
+            "0deg"
+        );
+
+        ring.style.setProperty(
+            "--ring-color",
+            "#5468FF"
+        );
+
         return;
     }
 
-    const position = Math.max(
-        0,
-        Math.min((numericBMI - 15) / 25, 1)
-    );
+    const position =
+        Math.max(
+            0,
+            Math.min(
+                (numericBMI - 15) /
+                    25,
+                1
+            )
+        );
 
     ring.style.setProperty(
         "--score-progress",
@@ -297,50 +527,130 @@ function setRing(bmi, category) {
 
     ring.style.setProperty(
         "--ring-color",
-        categoryColor(category)
+        categoryColor(
+            category
+        )
     );
 }
 
 /* ============================================================
-   Dashboard
+   DASHBOARD
    ============================================================ */
 
 function initDashboard() {
-    const calculateButton = document.getElementById("calculate-btn");
-    if (!calculateButton) return;
+    const calculateButton =
+        document.getElementById(
+            "calculate-btn"
+        );
 
-    const resetButton = document.getElementById("reset-btn");
-    const weightInput = document.getElementById("weight-input");
-    const heightInput = document.getElementById("height-input");
-    const formError = document.getElementById("form-error");
-    const resultValue = document.getElementById("result-value");
-    const resultBadge = document.getElementById("result-badge");
-    const resultPlaceholder = document.getElementById("result-placeholder");
-    const scaleMarker = document.getElementById("scale-marker");
-    const recentRecords = document.getElementById("recent-records");
-    const resultWeight = document.getElementById("result-weight");
-    const resultHeight = document.getElementById("result-height");
-    const resultState = document.getElementById("result-state");
+    if (!calculateButton) {
+        return;
+    }
 
-    const userSelect = initUserSelect(loadRecentRecords);
+    const resetButton =
+        document.getElementById(
+            "reset-btn"
+        );
+
+    const weightInput =
+        document.getElementById(
+            "weight-input"
+        );
+
+    const heightInput =
+        document.getElementById(
+            "height-input"
+        );
+
+    const formError =
+        document.getElementById(
+            "form-error"
+        );
+
+    const resultValue =
+        document.getElementById(
+            "result-value"
+        );
+
+    const resultBadge =
+        document.getElementById(
+            "result-badge"
+        );
+
+    const resultPlaceholder =
+        document.getElementById(
+            "result-placeholder"
+        );
+
+    const scaleMarker =
+        document.getElementById(
+            "scale-marker"
+        );
+
+    const recentRecords =
+        document.getElementById(
+            "recent-records"
+        );
+
+    const resultWeight =
+        document.getElementById(
+            "result-weight"
+        );
+
+    const resultHeight =
+        document.getElementById(
+            "result-height"
+        );
+
+    const resultState =
+        document.getElementById(
+            "result-state"
+        );
+
+    const userSelect =
+        initUserSelect(
+            loadRecentRecords
+        );
 
     async function loadRecentRecords() {
-        if (!userSelect?.value) return;
+        if (
+            !userSelect?.value
+        ) {
+            return;
+        }
 
         try {
-            const records = await fetchJSON(
-                `/api/records/${userSelect.value}`
+            const records =
+                await fetchJSON(
+                    `/api/records/${userSelect.value}`
+                );
+
+            renderRecentRecords(
+                records.slice(
+                    0,
+                    5
+                )
             );
 
-            renderRecentRecords(records.slice(0, 5));
-            drawDashboardTrend(records);
-        } catch (error) {
-            showToast(error.message, true);
+            drawDashboardTrend(
+                records
+            );
+        } catch (
+            error
+        ) {
+            showToast(
+                error.message,
+                true
+            );
         }
     }
 
-    function renderRecentRecords(records) {
-        if (!recentRecords) return;
+    function renderRecentRecords(
+        records
+    ) {
+        if (!recentRecords) {
+            return;
+        }
 
         if (!records.length) {
             recentRecords.innerHTML = `
@@ -348,6 +658,7 @@ function initDashboard() {
                     No records yet. Calculate your first BMI reading.
                 </div>
             `;
+
             return;
         }
 
@@ -362,329 +673,447 @@ function initDashboard() {
                         <th>Category</th>
                     </tr>
                 </thead>
+
                 <tbody>
-                    ${records.map((record) => `
+                    ${records
+                        .map(
+                            (record) => `
                         <tr>
-                            <td>${escapeHTML(record.created_at)}</td>
-                            <td>${escapeHTML(record.weight)} kg</td>
-                            <td>${escapeHTML(record.height)} m</td>
-                            <td>${Number(record.bmi).toFixed(2)}</td>
                             <td>
-                                <span class="category-badge ${categoryClass(record.category)}">
-                                    ${escapeHTML(record.category)}
+                                ${escapeHTML(
+                                    record.created_at
+                                )}
+                            </td>
+
+                            <td>
+                                ${escapeHTML(
+                                    record.weight
+                                )} kg
+                            </td>
+
+                            <td>
+                                ${escapeHTML(
+                                    record.height
+                                )} m
+                            </td>
+
+                            <td>
+                                ${Number(
+                                    record.bmi
+                                ).toFixed(2)}
+                            </td>
+
+                            <td>
+                                <span class="category-badge ${categoryClass(
+                                    record.category
+                                )}">
+                                    ${escapeHTML(
+                                        record.category
+                                    )}
                                 </span>
                             </td>
                         </tr>
-                    `).join("")}
+                    `
+                        )
+                        .join("")}
                 </tbody>
             </table>
         `;
     }
 
-    if (!calculateButton.dataset.bmiInsightBound) {
-        calculateButton.addEventListener("click", async () => {
-            if (formError) formError.textContent = "";
-
-            if (!userSelect?.value) {
+    if (
+        !calculateButton.dataset
+            .bmiInsightBound
+    ) {
+        calculateButton.addEventListener(
+            "click",
+            async () => {
                 if (formError) {
                     formError.textContent =
-                        "Please select or add a user first.";
-                }
-                return;
-            }
-
-            calculateButton.disabled = true;
-            calculateButton.textContent = "Calculating...";
-
-            try {
-                const result = await fetchJSON("/api/calculate", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        user_id: userSelect.value,
-                        weight: weightInput?.value || "",
-                        height: heightInput?.value || "",
-                    }),
-                });
-
-                if (resultValue) {
-                    resultValue.textContent =
-                        Number(result.bmi).toFixed(2);
+                        "";
                 }
 
-                if (resultBadge) {
-                    resultBadge.style.display = "inline-flex";
-                    resultBadge.textContent = result.category;
-                    resultBadge.className =
-                        `category-badge ${categoryClass(result.category)}`;
+                if (
+                    !userSelect?.value
+                ) {
+                    if (formError) {
+                        formError.textContent =
+                            "Please select or add a user first.";
+                    }
+
+                    return;
                 }
 
-                if (resultPlaceholder) {
-                    resultPlaceholder.textContent =
-                        `Your BMI is ${Number(result.bmi).toFixed(2)} and is classified as ${result.category}.`;
-                }
+                calculateButton.disabled =
+                    true;
 
-                if (resultWeight) {
-                    resultWeight.textContent =
-                        `${result.weight} kg`;
-                }
+                calculateButton.textContent =
+                    "Calculating...";
 
-                if (resultHeight) {
-                    resultHeight.textContent =
-                        `${result.height} m`;
-                }
+                try {
+                    const result =
+                        await fetchJSON(
+                            "/api/calculate",
+                            {
+                                method:
+                                    "POST",
+                                headers: {
+                                    "Content-Type":
+                                        "application/json",
+                                },
+                                body:
+                                    JSON.stringify(
+                                        {
+                                            user_id:
+                                                userSelect.value,
+                                            weight:
+                                                weightInput?.value ||
+                                                "",
+                                            height:
+                                                heightInput?.value ||
+                                                "",
+                                        }
+                                    ),
+                            }
+                        );
 
-                if (resultState) {
-                    resultState.textContent = "Updated";
-                }
+                    if (resultValue) {
+                        resultValue.textContent =
+                            Number(
+                                result.bmi
+                            ).toFixed(
+                                2
+                            );
+                    }
 
-                if (scaleMarker) {
-                    const position = Math.max(
-                        0,
-                        Math.min(Number(result.scale_position), 1)
+                    if (
+                        resultBadge
+                    ) {
+                        resultBadge.style.display =
+                            "inline-flex";
+
+                        resultBadge.textContent =
+                            result.category;
+
+                        resultBadge.className =
+                            `category-badge ${categoryClass(
+                                result.category
+                            )}`;
+                    }
+
+                    if (
+                        resultPlaceholder
+                    ) {
+                        resultPlaceholder.textContent =
+                            `Your BMI is ${Number(
+                                result.bmi
+                            ).toFixed(
+                                2
+                            )} and is classified as ${result.category}.`;
+                    }
+
+                    if (
+                        resultWeight
+                    ) {
+                        resultWeight.textContent =
+                            `${result.weight} kg`;
+                    }
+
+                    if (
+                        resultHeight
+                    ) {
+                        resultHeight.textContent =
+                            `${result.height} m`;
+                    }
+
+                    if (
+                        resultState
+                    ) {
+                        resultState.textContent =
+                            "Updated";
+                    }
+
+                    if (
+                        scaleMarker
+                    ) {
+                        const position =
+                            Math.max(
+                                0,
+                                Math.min(
+                                    Number(
+                                        result.scale_position
+                                    ),
+                                    1
+                                )
+                            );
+
+                        scaleMarker.style.display =
+                            "block";
+
+                        scaleMarker.style.left =
+                            `${position * 100}%`;
+                    }
+
+                    setRing(
+                        result.bmi,
+                        result.category
                     );
 
-                    scaleMarker.style.display = "block";
-                    scaleMarker.style.left =
-                        `${position * 100}%`;
+                    showToast(
+                        "BMI calculated and saved"
+                    );
+
+                    await loadRecentRecords();
+
+                    if (
+                        typeof window.refreshAnalytics ===
+                        "function"
+                    ) {
+                        await window.refreshAnalytics();
+                    }
+                } catch (
+                    error
+                ) {
+                    if (
+                        formError
+                    ) {
+                        formError.textContent =
+                            error.message;
+                    }
+                } finally {
+                    calculateButton.disabled =
+                        false;
+
+                    calculateButton.textContent =
+                        "Calculate BMI";
+                }
+            }
+        );
+
+        calculateButton.dataset
+            .bmiInsightBound =
+            "1";
+    }
+
+    if (
+        resetButton &&
+        !resetButton.dataset
+            .bmiInsightBound
+    ) {
+        resetButton.addEventListener(
+            "click",
+            () => {
+                if (
+                    weightInput
+                ) {
+                    weightInput.value =
+                        "";
+                }
+
+                if (
+                    heightInput
+                ) {
+                    heightInput.value =
+                        "";
+                }
+
+                if (
+                    formError
+                ) {
+                    formError.textContent =
+                        "";
+                }
+
+                if (
+                    resultValue
+                ) {
+                    resultValue.textContent =
+                        "--";
+                }
+
+                if (
+                    resultBadge
+                ) {
+                    resultBadge.style.display =
+                        "none";
+
+                    resultBadge.textContent =
+                        "";
+                }
+
+                if (
+                    resultPlaceholder
+                ) {
+                    resultPlaceholder.textContent =
+                        "Fill in the form to see your BMI result and classification.";
+                }
+
+                if (
+                    resultWeight
+                ) {
+                    resultWeight.textContent =
+                        "--";
+                }
+
+                if (
+                    resultHeight
+                ) {
+                    resultHeight.textContent =
+                        "--";
+                }
+
+                if (
+                    resultState
+                ) {
+                    resultState.textContent =
+                        "Ready";
+                }
+
+                if (
+                    scaleMarker
+                ) {
+                    scaleMarker.style.display =
+                        "none";
                 }
 
                 setRing(
-                    result.bmi,
-                    result.category
+                    null,
+                    null
                 );
-
-                showToast("BMI calculated and saved");
-
-                await loadRecentRecords();
-
-                if (typeof window.refreshAnalytics === "function") {
-                    await window.refreshAnalytics();
-                }
-            } catch (error) {
-                if (formError) {
-                    formError.textContent = error.message;
-                }
-            } finally {
-                calculateButton.disabled = false;
-                calculateButton.textContent = "Calculate BMI";
             }
-        });
+        );
 
-        calculateButton.dataset.bmiInsightBound = "1";
-    }
-
-    if (resetButton && !resetButton.dataset.bmiInsightBound) {
-        resetButton.addEventListener("click", () => {
-            if (weightInput) weightInput.value = "";
-            if (heightInput) heightInput.value = "";
-            if (formError) formError.textContent = "";
-
-            if (resultValue) {
-                resultValue.textContent = "--";
-            }
-
-            if (resultBadge) {
-                resultBadge.style.display = "none";
-                resultBadge.textContent = "";
-            }
-
-            if (resultPlaceholder) {
-                resultPlaceholder.textContent =
-                    "Fill in the form to see your BMI result and classification.";
-            }
-
-            if (resultWeight) {
-                resultWeight.textContent = "--";
-            }
-
-            if (resultHeight) {
-                resultHeight.textContent = "--";
-            }
-
-            if (resultState) {
-                resultState.textContent = "Ready";
-            }
-
-            if (scaleMarker) {
-                scaleMarker.style.display = "none";
-            }
-
-            setRing(null, null);
-        });
-
-        resetButton.dataset.bmiInsightBound = "1";
+        resetButton.dataset
+            .bmiInsightBound =
+            "1";
     }
 
     loadRecentRecords();
 }
 
 /* ============================================================
-   Dashboard BMI trend
+   DASHBOARD TREND
    ============================================================ */
 
-function drawDashboardTrend(records) {
-    const canvas = document.getElementById("dashboard-bmi-chart");
+function drawDashboardTrend(
+    records
+) {
+    const canvas =
+        document.getElementById(
+            "dashboard-bmi-chart"
+        );
 
-    if (!canvas || typeof Chart === "undefined") {
+    if (
+        !canvas ||
+        typeof Chart ===
+            "undefined"
+    ) {
         return;
     }
 
-    destroyChart(canvas);
+    destroyChart(
+        canvas
+    );
 
-    const ordered = sortRecordsAscending(records);
+    const ordered =
+        sortRecordsAscending(
+            records
+        );
 
-    /*
-     * No standalone points.
-     * A trend requires at least two measurements.
-     */
-    if (ordered.length < 2) {
+    if (
+        ordered.length <
+        2
+    ) {
         return;
     }
 
-    const labels = ordered.map((record) =>
-        formatShortDate(record.created_at)
-    );
+    const labels =
+        ordered.map(
+            (record) =>
+                formatShortDate(
+                    record.created_at
+                )
+        );
 
-    const values = ordered.map((record) =>
-        Number(record.bmi)
-    );
+    const values =
+        ordered.map(
+            (record) =>
+                Number(
+                    record.bmi
+                )
+        );
 
-    const chart = new Chart(canvas, {
-        type: "line",
+    const chart =
+        new Chart(
+            canvas,
+            {
+                type: "line",
 
-        data: {
-            labels,
+                data: {
+                    labels,
 
-            datasets: [
-                {
-                    label: "BMI",
-                    data: values,
+                    datasets: [
+                        {
+                            label:
+                                "BMI",
 
-                    borderColor: "#5468FF",
-                    backgroundColor:
-                        "rgba(84, 104, 255, 0.10)",
+                            data:
+                                values,
 
-                    fill: true,
+                            borderColor:
+                                "#5468FF",
 
-                    /*
-                     * IMPORTANT:
-                     * tension 0 = straight line segments.
-                     * This creates clear peaks and dips.
-                     */
-                    tension: 0,
-                    cubicInterpolationMode: "default",
+                            backgroundColor:
+                                "rgba(84,104,255,0.10)",
 
-                    /*
-                     * No visible dots.
-                     */
-                    pointRadius: 0,
-                    pointHoverRadius: 0,
-                    pointHitRadius: 12,
+                            fill:
+                                true,
 
-                    borderWidth: 3,
-                    spanGaps: true,
-                },
-            ],
-        },
+                            borderWidth:
+                                3,
 
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
+                            /*
+                             * Triangle peaks.
+                             * Straight line from one
+                             * measurement to the next.
+                             */
+                            tension:
+                                0,
 
-            interaction: {
-                mode: "index",
-                intersect: false,
-            },
+                            stepped:
+                                false,
 
-            elements: {
-                line: {
-                    tension: 0,
-                },
+                            /*
+                             * NO DOTS.
+                             */
+                            pointRadius:
+                                0,
 
-                point: {
-                    radius: 0,
-                    hoverRadius: 0,
-                    hitRadius: 12,
-                },
-            },
+                            pointHoverRadius:
+                                0,
 
-            plugins: {
-                legend: {
-                    display: false,
-                },
+                            pointHitRadius:
+                                12,
 
-                tooltip: {
-                    backgroundColor: "#0d1726",
-                    titleColor: "#ffffff",
-                    bodyColor: "#ffffff",
-                    padding: 12,
-                    cornerRadius: 10,
-                    displayColors: false,
-
-                    callbacks: {
-                        label(context) {
-                            return `BMI: ${Number(context.raw).toFixed(2)}`;
+                            spanGaps:
+                                true,
                         },
-                    },
-                },
-            },
-
-            scales: {
-                x: {
-                    border: {
-                        display: false,
-                    },
-
-                    grid: {
-                        display: false,
-                    },
-
-                    ticks: {
-                        color: "#8793a5",
-                        font: {
-                            size: 10,
-                        },
-                        maxRotation: 0,
-                        autoSkip: true,
-                        maxTicksLimit: 6,
-                    },
+                    ],
                 },
 
-                y: {
-                    beginAtZero: false,
+                options:
+                    buildTrendChartOptions(
+                        "BMI"
+                    ),
+            }
+        );
 
-                    border: {
-                        display: false,
-                    },
-
-                    grid: {
-                        color: "rgba(30,48,76,.08)",
-                    },
-
-                    ticks: {
-                        color: "#8793a5",
-
-                        font: {
-                            size: 10,
-                        },
-
-                        callback(value) {
-                            return Number(value).toFixed(0);
-                        },
-                    },
-                },
-            },
-        },
-    });
-
-    canvas._bmiInsightChart = chart;
+    canvas._bmiInsightChart =
+        chart;
 }
 
 /* ============================================================
-   History
+   HISTORY
    ============================================================ */
 
 function initHistory() {
@@ -715,7 +1144,9 @@ function initHistory() {
     let allRecords = [];
 
     const userSelect =
-        initUserSelect(loadHistory);
+        initUserSelect(
+            loadHistory
+        );
 
     function updateExportLink() {
         if (
@@ -728,7 +1159,9 @@ function initHistory() {
     }
 
     async function loadHistory() {
-        if (!userSelect?.value) {
+        if (
+            !userSelect?.value
+        ) {
             return;
         }
 
@@ -741,20 +1174,33 @@ function initHistory() {
                 );
 
             const user =
-                (window.BMI_USERS || []).find(
+                (
+                    window.BMI_USERS ||
+                    []
+                ).find(
                     (item) =>
-                        String(item.id) ===
-                        String(userSelect.value)
+                        String(
+                            item.id
+                        ) ===
+                        String(
+                            userSelect.value
+                        )
                 );
 
-            if (profileName) {
+            if (
+                profileName
+            ) {
                 profileName.textContent =
                     user?.name ||
                     "Selected user";
             }
 
-            renderHistoryTable(allRecords);
-        } catch (error) {
+            renderHistoryTable(
+                allRecords
+            );
+        } catch (
+            error
+        ) {
             showToast(
                 error.message,
                 true
@@ -762,13 +1208,16 @@ function initHistory() {
         }
     }
 
-    function renderHistoryTable(records) {
+    function renderHistoryTable(
+        records
+    ) {
         if (!records.length) {
             tableWrap.innerHTML = `
                 <div class="empty-state">
                     No records found for this profile.
                 </div>
             `;
+
             return;
         }
 
@@ -786,25 +1235,43 @@ function initHistory() {
                 </thead>
 
                 <tbody>
-                    ${records.map((record) => `
+                    ${records
+                        .map(
+                            (record) => `
                         <tr>
-                            <td>${escapeHTML(record.created_at)}</td>
-
                             <td>
-                                ${escapeHTML(record.weight)} kg
+                                ${escapeHTML(
+                                    record.created_at
+                                )}
                             </td>
 
                             <td>
-                                ${escapeHTML(record.height)} m
+                                ${escapeHTML(
+                                    record.weight
+                                )} kg
                             </td>
 
                             <td>
-                                ${Number(record.bmi).toFixed(2)}
+                                ${escapeHTML(
+                                    record.height
+                                )} m
                             </td>
 
                             <td>
-                                <span class="category-badge ${categoryClass(record.category)}">
-                                    ${escapeHTML(record.category)}
+                                ${Number(
+                                    record.bmi
+                                ).toFixed(
+                                    2
+                                )}
+                            </td>
+
+                            <td>
+                                <span class="category-badge ${categoryClass(
+                                    record.category
+                                )}">
+                                    ${escapeHTML(
+                                        record.category
+                                    )}
                                 </span>
                             </td>
 
@@ -818,7 +1285,9 @@ function initHistory() {
                                 </button>
                             </td>
                         </tr>
-                    `).join("")}
+                    `
+                        )
+                        .join("")}
                 </tbody>
             </table>
         `;
@@ -827,55 +1296,58 @@ function initHistory() {
             .querySelectorAll(
                 ".delete-record-btn"
             )
-            .forEach((button) => {
-
-                button.addEventListener(
-                    "click",
-                    async () => {
-
-                        if (
-                            !window.confirm(
-                                "Delete this BMI record? This can't be undone."
-                            )
-                        ) {
-                            return;
-                        }
-
-                        try {
-                            await fetchJSON(
-                                `/api/records/${button.dataset.id}`,
-                                {
-                                    method: "DELETE",
-                                }
-                            );
-
-                            showToast(
-                                "Record deleted"
-                            );
-
-                            await loadHistory();
-
+            .forEach(
+                (button) => {
+                    button.addEventListener(
+                        "click",
+                        async () => {
                             if (
-                                typeof window.refreshAnalytics ===
-                                "function"
+                                !window.confirm(
+                                    "Delete this BMI record? This can't be undone."
+                                )
                             ) {
-                                await window.refreshAnalytics();
+                                return;
                             }
 
-                        } catch (error) {
-                            showToast(
-                                error.message,
-                                true
-                            );
+                            try {
+                                await fetchJSON(
+                                    `/api/records/${button.dataset.id}`,
+                                    {
+                                        method:
+                                            "DELETE",
+                                    }
+                                );
+
+                                showToast(
+                                    "Record deleted"
+                                );
+
+                                await loadHistory();
+
+                                if (
+                                    typeof window.refreshAnalytics ===
+                                    "function"
+                                ) {
+                                    await window.refreshAnalytics();
+                                }
+                            } catch (
+                                error
+                            ) {
+                                showToast(
+                                    error.message,
+                                    true
+                                );
+                            }
                         }
-                    }
-                );
-            });
+                    );
+                }
+            );
     }
 
     if (
         searchInput &&
-        !searchInput.dataset.bmiInsightBound
+        !searchInput.dataset
+            .bmiInsightBound
     ) {
         searchInput.addEventListener(
             "input",
@@ -890,17 +1362,20 @@ function initHistory() {
                         (record) =>
                             String(
                                 record.category ||
-                                ""
+                                    ""
                             )
                                 .toLowerCase()
-                                .includes(term) ||
-
+                                .includes(
+                                    term
+                                ) ||
                             String(
                                 record.created_at ||
-                                ""
+                                    ""
                             )
                                 .toLowerCase()
-                                .includes(term)
+                                .includes(
+                                    term
+                                )
                     );
 
                 renderHistoryTable(
@@ -909,7 +1384,8 @@ function initHistory() {
             }
         );
 
-        searchInput.dataset.bmiInsightBound =
+        searchInput.dataset
+            .bmiInsightBound =
             "1";
     }
 
@@ -917,7 +1393,7 @@ function initHistory() {
 }
 
 /* ============================================================
-   Premium Analytics
+   ANALYTICS
    ============================================================ */
 
 function initAnalytics() {
@@ -928,7 +1404,8 @@ function initAnalytics() {
 
     if (
         !bmiCanvas ||
-        typeof Chart === "undefined"
+        typeof Chart ===
+            "undefined"
     ) {
         return;
     }
@@ -939,10 +1416,13 @@ function initAnalytics() {
         );
 
     const userSelect =
-        initUserSelect(loadAnalytics);
+        initUserSelect(
+            loadAnalytics
+        );
 
     let allRecords = [];
-    let activeRange = "all";
+    let activeRange =
+        "all";
 
     const rangeButtons =
         Array.from(
@@ -953,7 +1433,6 @@ function initAnalytics() {
 
     rangeButtons.forEach(
         (button) => {
-
             if (
                 button.dataset
                     .bmiInsightBound
@@ -964,19 +1443,18 @@ function initAnalytics() {
             button.addEventListener(
                 "click",
                 () => {
-
                     activeRange =
-                        button.dataset.range ||
+                        button.dataset
+                            .range ||
                         "all";
 
                     rangeButtons.forEach(
                         (item) => {
-
                             item.classList.toggle(
                                 "active",
-                                item === button
+                                item ===
+                                    button
                             );
-
                         }
                     );
 
@@ -990,9 +1468,14 @@ function initAnalytics() {
         }
     );
 
-    function setText(id, value) {
+    function setText(
+        id,
+        value
+    ) {
         const element =
-            document.getElementById(id);
+            document.getElementById(
+                id
+            );
 
         if (element) {
             element.textContent =
@@ -1000,7 +1483,9 @@ function initAnalytics() {
         }
     }
 
-    function updateOverview(records) {
+    function updateOverview(
+        records
+    ) {
         const ordered =
             sortRecordsAscending(
                 records
@@ -1069,69 +1554,101 @@ function initAnalytics() {
         }
 
         const latest =
-            ordered[count - 1];
+            ordered[
+                count - 1
+            ];
 
         const previous =
             count >= 2
-                ? ordered[count - 2]
+                ? ordered[
+                      count - 2
+                  ]
                 : null;
 
         const values =
             ordered.map(
                 (record) =>
-                    Number(record.bmi)
+                    Number(
+                        record.bmi
+                    )
             );
 
         const latestBMI =
-            Number(latest.bmi);
+            Number(
+                latest.bmi
+            );
 
         const previousBMI =
             previous
-                ? Number(previous.bmi)
+                ? Number(
+                      previous.bmi
+                  )
                 : null;
 
         const lowest =
-            Math.min(...values);
+            Math.min(
+                ...values
+            );
 
         const highest =
-            Math.max(...values);
+            Math.max(
+                ...values
+            );
 
         setText(
             "stat-latest",
-            latestBMI.toFixed(2)
+            latestBMI.toFixed(
+                2
+            )
         );
 
         setText(
             "stat-previous",
-            previousBMI !== null
-                ? previousBMI.toFixed(2)
+            previousBMI !==
+                null
+                ? previousBMI.toFixed(
+                      2
+                  )
                 : "--"
         );
 
         setText(
             "stat-lowest",
-            lowest.toFixed(2)
+            lowest.toFixed(
+                2
+            )
         );
 
         setText(
             "stat-highest",
-            highest.toFixed(2)
+            highest.toFixed(
+                2
+            )
         );
 
         setText(
             "snapshot-bmi",
-            latestBMI.toFixed(2)
+            latestBMI.toFixed(
+                2
+            )
         );
 
         setText(
             "snapshot-weight",
             `${Number(
                 latest.weight
-            ).toFixed(1)} kg`
+            ).toFixed(
+                1
+            )} kg`
         );
 
         setText(
             "snapshot-count",
+            count
+        );
+
+        setText(
+            "stat-count",
             count
         );
 
@@ -1140,9 +1657,12 @@ function initAnalytics() {
                 "snapshot-category"
             );
 
-        if (snapshotCategory) {
+        if (
+            snapshotCategory
+        ) {
             snapshotCategory.textContent =
-                latest.category || "--";
+                latest.category ||
+                "--";
 
             snapshotCategory.className =
                 `snapshot-category ${categoryClass(
@@ -1157,7 +1677,10 @@ function initAnalytics() {
             )}`
         );
 
-        if (previousBMI === null) {
+        if (
+            previousBMI ===
+            null
+        ) {
             setText(
                 "bmi-change-label",
                 "Add another reading to compare"
@@ -1181,7 +1704,9 @@ function initAnalytics() {
 
             setText(
                 "bmi-change-label",
-                `${direction} ${sign}${delta.toFixed(2)} vs previous`
+                `${direction} ${sign}${delta.toFixed(
+                    2
+                )} vs previous`
             );
         }
     }
@@ -1199,11 +1724,6 @@ function initAnalytics() {
                 "weight-empty-state"
             );
 
-        /*
-         * No dots are used.
-         * One measurement has no line trend,
-         * so the friendly empty state is shown.
-         */
         const showEmpty =
             records.length < 2;
 
@@ -1243,7 +1763,9 @@ function initAnalytics() {
     }
 
     async function loadAnalytics() {
-        if (!userSelect?.value) {
+        if (
+            !userSelect?.value
+        ) {
             return;
         }
 
@@ -1251,113 +1773,143 @@ function initAnalytics() {
             const [
                 stats,
                 records,
-            ] = await Promise.all([
-                fetchJSON(
-                    `/api/stats/${userSelect.value}`
-                ),
-
-                fetchJSON(
-                    `/api/records/${userSelect.value}`
-                ),
-            ]);
+            ] =
+                await Promise.all(
+                    [
+                        fetchJSON(
+                            `/api/stats/${userSelect.value}`
+                        ),
+                        fetchJSON(
+                            `/api/records/${userSelect.value}`
+                        ),
+                    ]
+                );
 
             allRecords =
                 sortRecordsAscending(
-                    records || []
+                    records ||
+                        []
                 );
 
             updateOverview(
                 allRecords
             );
 
-            /*
-             * Only overwrite with API stats when
-             * the values actually exist.
-             */
             if (
                 stats &&
-                stats.latest !== null &&
-                stats.latest !== undefined &&
+                stats.latest !==
+                    null &&
+                stats.latest !==
+                    undefined &&
                 Number.isFinite(
-                    Number(stats.latest)
+                    Number(
+                        stats.latest
+                    )
                 )
             ) {
                 setText(
                     "stat-latest",
                     Number(
                         stats.latest
-                    ).toFixed(2)
+                    ).toFixed(
+                        2
+                    )
                 );
             }
 
             if (
                 stats &&
-                stats.previous !== null &&
-                stats.previous !== undefined &&
+                stats.previous !==
+                    null &&
+                stats.previous !==
+                    undefined &&
                 Number.isFinite(
-                    Number(stats.previous)
+                    Number(
+                        stats.previous
+                    )
                 )
             ) {
                 setText(
                     "stat-previous",
                     Number(
                         stats.previous
-                    ).toFixed(2)
+                    ).toFixed(
+                        2
+                    )
                 );
             }
 
             if (
                 stats &&
-                stats.lowest !== null &&
-                stats.lowest !== undefined &&
+                stats.lowest !==
+                    null &&
+                stats.lowest !==
+                    undefined &&
                 Number.isFinite(
-                    Number(stats.lowest)
+                    Number(
+                        stats.lowest
+                    )
                 )
             ) {
                 setText(
                     "stat-lowest",
                     Number(
                         stats.lowest
-                    ).toFixed(2)
+                    ).toFixed(
+                        2
+                    )
                 );
             }
 
             if (
                 stats &&
-                stats.highest !== null &&
-                stats.highest !== undefined &&
+                stats.highest !==
+                    null &&
+                stats.highest !==
+                    undefined &&
                 Number.isFinite(
-                    Number(stats.highest)
+                    Number(
+                        stats.highest
+                    )
                 )
             ) {
                 setText(
                     "stat-highest",
                     Number(
                         stats.highest
-                    ).toFixed(2)
+                    ).toFixed(
+                        2
+                    )
                 );
             }
 
             if (
                 stats &&
                 Number.isFinite(
-                    Number(stats.count)
+                    Number(
+                        stats.count
+                    )
                 )
             ) {
                 setText(
                     "stat-count",
-                    Number(stats.count)
+                    Number(
+                        stats.count
+                    )
                 );
 
                 setText(
                     "snapshot-count",
-                    Number(stats.count)
+                    Number(
+                        stats.count
+                    )
                 );
             }
 
             redrawCharts();
-
-        } catch (error) {
+        } catch (
+            error
+        ) {
             showToast(
                 error.message,
                 true
@@ -1372,7 +1924,7 @@ function initAnalytics() {
 }
 
 /* ============================================================
-   Chart option builders
+   CHART OPTIONS
    ============================================================ */
 
 function buildTrendChartOptions(
@@ -1380,7 +1932,9 @@ function buildTrendChartOptions(
 ) {
     return {
         responsive: true,
-        maintainAspectRatio: false,
+
+        maintainAspectRatio:
+            false,
 
         interaction: {
             mode: "index",
@@ -1388,13 +1942,20 @@ function buildTrendChartOptions(
         },
 
         /*
-         * Global no-dot / straight-line settings.
+         * IMPORTANT:
+         * This is NOT stepped.
+         * Straight connected segments
+         * create triangular peaks and valleys.
          */
         elements: {
             line: {
                 tension: 0,
+                stepped: false,
             },
 
+            /*
+             * No visible points.
+             */
             point: {
                 radius: 0,
                 hoverRadius: 0,
@@ -1408,16 +1969,29 @@ function buildTrendChartOptions(
             },
 
             tooltip: {
-                displayColors: false,
-                backgroundColor: "#17213F",
-                titleColor: "#FFFFFF",
-                bodyColor: "#DDE4F5",
+                displayColors:
+                    false,
+
+                backgroundColor:
+                    "#17213F",
+
+                titleColor:
+                    "#FFFFFF",
+
+                bodyColor:
+                    "#DDE4F5",
+
                 padding: 11,
+
                 cornerRadius: 10,
 
                 callbacks: {
                     title(items) {
-                        return items?.[0]?.label || "";
+                        return (
+                            items?.[0]
+                                ?.label ||
+                            ""
+                        );
                     },
 
                     label(context) {
@@ -1435,9 +2009,14 @@ function buildTrendChartOptions(
                         }
 
                         return (
-                            unitLabel === "Weight"
-                                ? `Weight: ${value.toFixed(2)} kg`
-                                : `BMI: ${value.toFixed(2)}`
+                            unitLabel ===
+                            "Weight"
+                                ? `Weight: ${value.toFixed(
+                                      2
+                                  )} kg`
+                                : `BMI: ${value.toFixed(
+                                      2
+                                  )}`
                         );
                     },
                 },
@@ -1447,47 +2026,68 @@ function buildTrendChartOptions(
         scales: {
             x: {
                 border: {
-                    display: false,
+                    display:
+                        false,
                 },
 
                 grid: {
-                    display: false,
+                    display:
+                        false,
                 },
 
                 ticks: {
-                    color: "#969FB9",
-                    maxRotation: 0,
-                    autoSkip: true,
-                    autoSkipPadding: 24,
+                    color:
+                        "#969FB9",
+
+                    maxRotation:
+                        0,
+
+                    autoSkip:
+                        true,
+
+                    autoSkipPadding:
+                        24,
 
                     font: {
                         family:
                             "Inter, Segoe UI, Arial, sans-serif",
+
                         size: 10,
-                        weight: "600",
+
+                        weight:
+                            "600",
                     },
                 },
             },
 
             y: {
                 border: {
-                    display: false,
+                    display:
+                        false,
                 },
 
                 grid: {
-                    color: "#EEF1F6",
-                    drawTicks: false,
+                    color:
+                        "#EEF1F6",
+
+                    drawTicks:
+                        false,
                 },
 
                 ticks: {
-                    color: "#969FB9",
+                    color:
+                        "#969FB9",
+
                     padding: 9,
 
                     font: {
                         family:
                             "Inter, Segoe UI, Arial, sans-serif",
+
                         size: 10,
-                        weight: "600",
+
+                        weight:
+                            "600",
                     },
                 },
             },
@@ -1496,7 +2096,7 @@ function buildTrendChartOptions(
 }
 
 /* ============================================================
-   BMI graph
+   BMI ANALYTICS GRAPH
    ============================================================ */
 
 function createBMIGraph(
@@ -1509,21 +2109,24 @@ function createBMIGraph(
 
     if (
         !canvas ||
-        typeof Chart === "undefined"
+        typeof Chart ===
+            "undefined"
     ) {
         return;
     }
 
-    destroyChart(canvas);
+    destroyChart(
+        canvas
+    );
 
     /*
-     * Do NOT turn one reading into a dot.
-     * The user requested trend structure,
-     * so a minimum of two readings is required.
+     * Need at least two measurements
+     * for an actual trend.
      */
     if (
         !records ||
-        records.length < 2
+        records.length <
+            2
     ) {
         return;
     }
@@ -1539,21 +2142,28 @@ function createBMIGraph(
     const values =
         records.map(
             (record) =>
-                Number(record.bmi)
+                Number(
+                    record.bmi
+                )
         );
 
     const minimum =
-        Math.min(...values);
+        Math.min(
+            ...values
+        );
 
     const maximum =
-        Math.max(...values);
+        Math.max(
+            ...values
+        );
 
     const lowerBound =
         Math.max(
             0,
             Math.floor(
                 Math.min(
-                    minimum - 2,
+                    minimum -
+                        2,
                     15
                 )
             )
@@ -1563,7 +2173,8 @@ function createBMIGraph(
         Math.max(
             32,
             Math.ceil(
-                maximum + 3
+                maximum +
+                    3
             )
         );
 
@@ -1577,7 +2188,8 @@ function createBMIGraph(
             0,
             0,
             0,
-            canvas.height || 350
+            canvas.height ||
+                350
         );
 
     gradient.addColorStop(
@@ -1617,8 +2229,11 @@ function createBMIGraph(
 
                     datasets: [
                         {
-                            label: "BMI",
-                            data: values,
+                            label:
+                                "BMI",
+
+                            data:
+                                values,
 
                             borderColor:
                                 "#5468FF",
@@ -1626,15 +2241,32 @@ function createBMIGraph(
                             backgroundColor:
                                 gradient,
 
-                            fill: true,
+                            fill:
+                                true,
 
-                            borderWidth: 3,
+                            borderWidth:
+                                4,
+
+                            borderCapStyle:
+                                "round",
+
+                            borderJoinStyle:
+                                "round",
 
                             /*
-                             * STRAIGHT LINES.
-                             * No smooth curves.
+                             * TRIANGULAR PEAKS.
+                             *
+                             * One value to the next
+                             * is a straight line.
+                             *
+                             * DO NOT change this to
+                             * stepped or a high tension.
                              */
-                            tension: 0,
+                            tension:
+                                0,
+
+                            stepped:
+                                false,
 
                             cubicInterpolationMode:
                                 "default",
@@ -1642,13 +2274,17 @@ function createBMIGraph(
                             /*
                              * NO DOTS.
                              */
-                            pointRadius: 0,
+                            pointRadius:
+                                0,
 
-                            pointHoverRadius: 0,
+                            pointHoverRadius:
+                                0,
 
-                            pointHitRadius: 12,
+                            pointHitRadius:
+                                12,
 
-                            spanGaps: true,
+                            spanGaps:
+                                true,
                         },
                     ],
                 },
@@ -1662,7 +2298,7 @@ function createBMIGraph(
 }
 
 /* ============================================================
-   Weight graph
+   WEIGHT ANALYTICS GRAPH
    ============================================================ */
 
 function createWeightGraph(
@@ -1675,16 +2311,20 @@ function createWeightGraph(
 
     if (
         !canvas ||
-        typeof Chart === "undefined"
+        typeof Chart ===
+            "undefined"
     ) {
         return;
     }
 
-    destroyChart(canvas);
+    destroyChart(
+        canvas
+    );
 
     if (
         !records ||
-        records.length < 2
+        records.length <
+            2
     ) {
         return;
     }
@@ -1700,26 +2340,34 @@ function createWeightGraph(
     const values =
         records.map(
             (record) =>
-                Number(record.weight)
+                Number(
+                    record.weight
+                )
         );
 
     const minimum =
-        Math.min(...values);
+        Math.min(
+            ...values
+        );
 
     const maximum =
-        Math.max(...values);
+        Math.max(
+            ...values
+        );
 
     const lowerBound =
         Math.max(
             0,
             Math.floor(
-                minimum - 3
+                minimum -
+                    3
             )
         );
 
     const upperBound =
         Math.ceil(
-            maximum + 3
+            maximum +
+                3
         );
 
     const context =
@@ -1732,7 +2380,8 @@ function createWeightGraph(
             0,
             0,
             0,
-            canvas.height || 300
+            canvas.height ||
+                300
         );
 
     gradient.addColorStop(
@@ -1788,13 +2437,22 @@ function createWeightGraph(
                                 true,
 
                             borderWidth:
-                                3,
+                                4,
+
+                            borderCapStyle:
+                                "round",
+
+                            borderJoinStyle:
+                                "round",
 
                             /*
-                             * STRAIGHT /
-                             * ANGULAR TREND.
+                             * TRIANGULAR PEAKS.
                              */
-                            tension: 0,
+                            tension:
+                                0,
+
+                            stepped:
+                                false,
 
                             cubicInterpolationMode:
                                 "default",
@@ -1826,7 +2484,7 @@ function createWeightGraph(
 }
 
 /* ============================================================
-   Date helpers
+   DATE PARSING
    ============================================================ */
 
 function parseRecordDate(
@@ -1837,13 +2495,14 @@ function parseRecordDate(
     }
 
     const raw =
-        String(value).trim();
+        String(
+            value
+        ).trim();
 
-    /*
-     * Try normal browser parser.
-     */
     let date =
-        new Date(raw);
+        new Date(
+            raw
+        );
 
     if (
         !Number.isNaN(
@@ -1853,10 +2512,6 @@ function parseRecordDate(
         return date;
     }
 
-    /*
-     * Handle database strings
-     * containing commas.
-     */
     date =
         new Date(
             raw.replace(
@@ -1873,9 +2528,6 @@ function parseRecordDate(
         return date;
     }
 
-    /*
-     * Handle YYYY-MM-DD manually.
-     */
     const match =
         raw.match(
             /^(\d{4})-(\d{2})-(\d{2})/
@@ -1883,13 +2535,19 @@ function parseRecordDate(
 
     if (match) {
         const year =
-            Number(match[1]);
+            Number(
+                match[1]
+            );
 
         const month =
-            Number(match[2]) - 1;
+            Number(
+                match[2]
+            ) - 1;
 
         const day =
-            Number(match[3]);
+            Number(
+                match[3]
+            );
 
         date =
             new Date(
@@ -1910,6 +2568,10 @@ function parseRecordDate(
     return null;
 }
 
+/* ============================================================
+   DATE FORMATTING
+   ============================================================ */
+
 function formatShortDate(
     value
 ) {
@@ -1929,8 +2591,10 @@ function formatShortDate(
     return date.toLocaleDateString(
         "en-US",
         {
-            month: "short",
-            day: "numeric",
+            month:
+                "short",
+            day:
+                "numeric",
         }
     );
 }
@@ -1957,21 +2621,32 @@ function formatLongDate(
     return date.toLocaleDateString(
         "en-US",
         {
-            month: "short",
-            day: "numeric",
-            year: "numeric",
+            month:
+                "short",
+
+            day:
+                "numeric",
+
+            year:
+                "numeric",
         }
     );
 }
+
+/* ============================================================
+   SORT RECORDS
+   ============================================================ */
 
 function sortRecordsAscending(
     records
 ) {
     return [
-        ...(records || [])
+        ...(records || []),
     ].sort(
-        (a, b) => {
-
+        (
+            a,
+            b
+        ) => {
             const dateA =
                 parseRecordDate(
                     a.created_at
@@ -2005,6 +2680,10 @@ function sortRecordsAscending(
     );
 }
 
+/* ============================================================
+   RANGE FILTER
+   ============================================================ */
+
 function getRangeRecords(
     records,
     range
@@ -2015,9 +2694,11 @@ function getRangeRecords(
         );
 
     if (
-        range === "all" ||
+        range ===
+            "all" ||
         !range ||
-        ordered.length === 0
+        ordered.length ===
+            0
     ) {
         return ordered;
     }
@@ -2025,7 +2706,8 @@ function getRangeRecords(
     const latest =
         parseRecordDate(
             ordered[
-                ordered.length - 1
+                ordered.length -
+                    1
             ].created_at
         );
 
@@ -2034,7 +2716,9 @@ function getRangeRecords(
     }
 
     const days =
-        Number(range);
+        Number(
+            range
+        );
 
     if (
         !Number.isFinite(
@@ -2051,12 +2735,11 @@ function getRangeRecords(
 
     cutoff.setDate(
         cutoff.getDate() -
-        days
+            days
     );
 
     return ordered.filter(
         (record) => {
-
             const date =
                 parseRecordDate(
                     record.created_at
@@ -2064,14 +2747,15 @@ function getRangeRecords(
 
             return (
                 date &&
-                date >= cutoff
+                date >=
+                    cutoff
             );
         }
     );
 }
 
 /* ============================================================
-   Chart cleanup
+   CHART CLEANUP
    ============================================================ */
 
 function destroyChart(
@@ -2079,7 +2763,8 @@ function destroyChart(
 ) {
     if (
         !canvas ||
-        typeof Chart === "undefined"
+        typeof Chart ===
+            "undefined"
     ) {
         return;
     }
@@ -2089,7 +2774,9 @@ function destroyChart(
     ) {
         try {
             canvas._bmiInsightChart.destroy();
-        } catch (error) {
+        } catch (
+            error
+        ) {
             console.warn(
                 "Unable to destroy BMI Insight chart:",
                 error
@@ -2100,10 +2787,6 @@ function destroyChart(
             null;
     }
 
-    /*
-     * Also detect charts created
-     * by another script.
-     */
     if (
         typeof Chart.getChart ===
         "function"
@@ -2113,10 +2796,14 @@ function destroyChart(
                 canvas
             );
 
-        if (existingChart) {
+        if (
+            existingChart
+        ) {
             try {
                 existingChart.destroy();
-            } catch (error) {
+            } catch (
+                error
+            ) {
                 console.warn(
                     "Unable to destroy existing Chart.js instance:",
                     error
@@ -2127,7 +2814,7 @@ function destroyChart(
 }
 
 /* ============================================================
-   HTML safety
+   HTML ESCAPE
    ============================================================ */
 
 function escapeHTML(
@@ -2159,7 +2846,7 @@ function escapeHTML(
 }
 
 /* ============================================================
-   Page startup
+   START APPLICATION
    ============================================================ */
 
 document.addEventListener(
