@@ -26,8 +26,7 @@
 
 
 ### LIVE DEMO:
-
-**Coming Soon**
+https://bmi-insight.onrender.com/
 
 ---
 
@@ -231,6 +230,45 @@ Weight trend chart
 Matplotlib visualization
 
 The desktop application also supports light and dark themes.
+
+## 📸 Screenshots
+
+### 🏠 Dashboard
+
+<p align="center">
+  <img src="screenshots/01-dashboard.png" alt="BMI Insight Dashboard" width="950">
+</p>
+
+### ✅ Normal BMI Result
+
+<p align="center">
+  <img src="screenshots/02-normal-result.png" alt="Normal BMI Result" width="950">
+</p>
+
+### 🟠 Overweight BMI Result
+
+<p align="center">
+  <img src="screenshots/03-overweight-result.png" alt="Overweight BMI Result" width="950">
+</p>
+
+### 🔴 Obese BMI Result
+
+<p align="center">
+  <img src="screenshots/04-obese-result.png" alt="Obese BMI Result" width="950">
+</p>
+
+### 📋 BMI History
+
+<p align="center">
+  <img src="screenshots/05-history.png" alt="BMI History" width="950">
+</p>
+
+### 📈 BMI Analytics
+
+<p align="center">
+  <img src="screenshots/06-analytics-bmi-trend.png" alt="BMI Analytics and Trend" width="950">
+</p>
+
 
 ## Project Structure
 
