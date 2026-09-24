@@ -1,10 +1,6 @@
 # 🧮 BMI Insight
 
 <p align="center">
-  <img src="https://img.icons8.com/fluency/96/weight-scale.png" width="85" alt="BMI Insight Logo">
-</p>
-
-<p align="center">
   <strong>Personal BMI Tracking & Health Analytics</strong>
   <br>
 </p>
@@ -27,6 +23,7 @@
 </p>
 
 ---
+
 
 ### LIVE DEMO:
 
