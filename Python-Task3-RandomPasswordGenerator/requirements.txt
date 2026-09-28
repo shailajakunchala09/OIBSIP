@@ -4,3 +4,5 @@
 # package manager (e.g. `sudo apt install python3-tk`) rather than pip.
 
 pyperclip>=1.8.2
+Flask>=3,<4
+gunicorn>=23,<24
