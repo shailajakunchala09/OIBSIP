@@ -1,0 +1,6 @@
+# VaultForge - Secure Password Studio
+# Runtime dependencies only. Tkinter ships with standard CPython installs
+# on Windows/macOS; on some Linux distributions install it via your
+# package manager (e.g. `sudo apt install python3-tk`) rather than pip.
+
+pyperclip>=1.8.2
