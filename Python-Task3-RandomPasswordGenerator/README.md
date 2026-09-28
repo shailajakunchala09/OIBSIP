@@ -324,6 +324,7 @@ Building VaultForge reinforced:
 ## 👩‍💻 Developer
 
 **Kunchala Shailaja**
+
 Python Programming Internship — **OASIS INFOBYTE**
 Task: **Task 3 – Random Password Generator**
 
