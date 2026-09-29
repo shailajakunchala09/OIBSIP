@@ -239,19 +239,19 @@ python -m unittest discover -s tests -v
 ![Dashboard](screenshots/01-dashboard.png)
 
 ### 02. Generated Password
-![Generated Password](screenshots/02-generated-password.png)
+![Generated Password](screenshots/02-generated%20password.png)
 
 ### 03. Generator Controls
-![Generator Controls](screenshots/03-generator-controls.png)
+![Generator Controls](screenshots/03-generated%20controls.png)
 
 ### 04. Generation History
-![Generation History](screenshots/04-generation-history.png)
+![Generation History](screenshots/04-recent%20generated%20history.png)
 
 ### 05. Security Analysis
-![Security Analysis](screenshots/05-security-analysis.png)
+![Security Analysis](screenshots/05-security-analysis%20.png)
 
 ### 06. Dark Theme
-![Dark Theme](screenshots/06-dark-theme.png)
+![Dark Theme](screenshots/06-dark%20theme.png)
 ## ▶️ How to Run
 
 ```bash
