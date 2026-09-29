@@ -236,7 +236,7 @@ python -m unittest discover -s tests -v
 ## 📸 Screenshots
 
 ### 01. Dashboard
-![VaultForge Dashboard](screenshots/01-dashboard.png)
+![Dashboard](screenshots/01-dashboard.png)
 
 ### 02. Generated Password
 ![Generated Password](screenshots/02-generated-password.png)
@@ -245,13 +245,13 @@ python -m unittest discover -s tests -v
 ![Generator Controls](screenshots/03-generator-controls.png)
 
 ### 04. Generation History
-![Security Analysis](screenshots/05-security-analysis.png)
-
-### 05. Security Analysis
 ![Generation History](screenshots/04-generation-history.png)
 
+### 05. Security Analysis
+![Security Analysis](screenshots/05-security-analysis.png)
+
 ### 06. Dark Theme
-![Light Theme](screenshots/06-dark-theme.png)
+![Dark Theme](screenshots/06-dark-theme.png)
 ## ▶️ How to Run
 
 ```bash
