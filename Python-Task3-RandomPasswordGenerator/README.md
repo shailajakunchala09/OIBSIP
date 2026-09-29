@@ -235,34 +235,23 @@ python -m unittest discover -s tests -v
 
 ## 📸 Screenshots
 
-> Screenshots are captured from the running application — see
-> [`screenshots/README.md`](screenshots/README.md) for exactly how to
-> generate them on your machine before pushing to GitHub.
-
-### 🏠 VaultForge Dashboard
+### 01. VaultForge Dashboard
 ![VaultForge Dashboard](screenshots/01-dashboard.png)
 
-### 🔐 Strong Password Generation
-![Strong Password Generation](screenshots/02-strong-password.png)
+### 02. Generated Password
+![Generated Password](screenshots/02-generated-password.png)
 
-### ⚙️ Custom Options
-![Custom Options](screenshots/03-custom-options.png)
+### 03. Generator Controls
+![Generator Controls](screenshots/03-generator-controls.png)
 
-### 📊 Password Strength Analysis
-![Strength Analysis](screenshots/04-strength-analysis.png)
+### 04. Security & Strength Analysis
+![Security Analysis](screenshots/04-strength-analysis.png)
 
-### 🕘 Password History
-![Password History](screenshots/05-password-history.png)
+### 05. Recent Generation History
+![Generation History](screenshots/05-generation-history.png)
 
-### 🚫 Ambiguous Character Option
-![Ambiguous Character Option](screenshots/06-ambiguous-character-option.png)
-
-### ☀️ Light Theme
-![Light Theme](screenshots/07-light-theme.png)
-
-### ⚠️ Validation State
-![Validation State](screenshots/08-validation-state.png)
-
+### 06. Light Theme
+![Light Theme](screenshots/06-light-theme.png)
 ## ▶️ How to Run
 
 ```bash
