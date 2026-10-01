@@ -186,44 +186,20 @@ Type a city (e.g. `London`, `Tokyo`, `Paris, FR`) and press **Enter** or click *
 
 ## 12. 🖼️ Screenshots
 
-### Dashboard
-![Dashboard](screenshots/01-dashboard.png)
+### Weather Dashboard
+![Weather Dashboard](screenshots/01-weather-dashboard.png)
 
-### Current weather
-![Current weather](screenshots/02-current-weather.png)
+### Current Weather — Celsius
+![Current Weather Celsius](screenshots/02-weather-celsius.png)
 
-### 6-hour forecast
-![Hourly forecast](screenshots/03-hourly-forecast.png)
+### Celsius Forecast
+![Celsius Forecast](screenshots/03-celsius-forecast.png)
 
-### 5-day forecast
-![Five-day forecast](screenshots/04-five-day-forecast.png)
+### Current Weather — Fahrenheit
+![Current Weather Fahrenheit](screenshots/04-weather-fahrenheit.png)
 
-### °C / °F toggle
-![Unit toggle](screenshots/05-unit-toggle.png)
-
-### Error state (in-app, with retry)
-![Error state](screenshots/06-error-state.png)
-
-### Light theme
-![Light theme](screenshots/07-light-theme.png)
-
-### Dark theme
-![Dark theme](screenshots/08-dark-theme.png)
-
-### Automatic location detection
-![Location detection](screenshots/09-location-detection.png)
-
-<details>
-<summary>Regenerate the screenshots</summary>
-
-With a valid key in `.env` and an internet connection:
-
-```bash
-python scripts/capture_screenshots.py --city London
-```
-
-The script drives the real app against the live API and saves `01…09` into `screenshots/`.
-</details>
+### Fahrenheit Forecast
+![Fahrenheit Forecast](screenshots/05-fahrenheit-forecast.png)
 
 ## 13. 🛡️ Error Handling
 
