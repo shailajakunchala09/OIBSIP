@@ -1555,3 +1555,217 @@ html[data-theme="light"] .favorite-button {
         opacity: 1;
     }
 }
+/* =========================================================
+   COMPACT SKY PULSE DASHBOARD
+   ========================================================= */
+
+.app-shell {
+    width: min(1180px, calc(100% - 42px));
+    padding-top: 26px;
+}
+
+/* Header */
+.topbar {
+    min-height: 58px;
+    margin-bottom: 23px;
+}
+
+.brand-mark {
+    width: 46px;
+    height: 46px;
+    flex-basis: 46px;
+    border-radius: 13px;
+}
+
+.brand-name {
+    font-size: 21px;
+}
+
+.brand-tagline {
+    font-size: 10px;
+    margin-top: 4px;
+}
+
+/* Search */
+#cityInput,
+.primary-button,
+.secondary-button {
+    height: 49px;
+}
+
+.primary-button {
+    min-width: 175px;
+}
+
+.secondary-button {
+    min-width: 168px;
+}
+
+.try-cities,
+.recent-row {
+    margin-top: 9px;
+}
+
+/* Main dashboard */
+.current-weather-layout {
+    gap: 20px;
+}
+
+.hero-card {
+    min-height: 270px;
+    border-radius: 24px;
+}
+
+.hero-content {
+    min-height: 270px;
+    padding: 22px 24px 17px;
+}
+
+.hero-location {
+    margin-top: 15px;
+}
+
+.hero-location h1 {
+    font-size: 32px;
+}
+
+.hero-main {
+    gap: 18px;
+    margin-top: 12px;
+}
+
+.hero-temperature #temperature {
+    font-size: 70px;
+    letter-spacing: -3px;
+}
+
+.temperature-unit {
+    font-size: 19px;
+}
+
+.hero-icon-area {
+    right: 23px;
+    top: 88px;
+    width: 120px;
+    height: 95px;
+}
+
+.hero-weather-icon {
+    font-size: 65px;
+}
+
+.hero-footer {
+    padding-top: 13px;
+}
+
+/* Metrics */
+.metrics-grid {
+    gap: 10px;
+}
+
+.metric-card {
+    min-height: 125px;
+    padding: 14px;
+    border-radius: 16px;
+}
+
+.metric-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 9px;
+    font-size: 15px;
+}
+
+.metric-label {
+    margin-top: 9px;
+    font-size: 9px;
+}
+
+.metric-value {
+    font-size: 16px;
+}
+
+.metric-sub {
+    font-size: 9px;
+}
+
+/* Forecast */
+.forecast-section {
+    margin-top: 24px;
+}
+
+.section-heading {
+    margin-bottom: 10px;
+}
+
+.section-heading h2 {
+    font-size: 17px;
+}
+
+.hourly-grid,
+.daily-grid {
+    gap: 10px;
+}
+
+.hour-card {
+    min-height: 165px;
+    padding: 14px 10px;
+    border-radius: 16px;
+}
+
+.hour-icon {
+    min-height: 48px;
+    font-size: 32px;
+}
+
+.hour-temp {
+    font-size: 20px;
+}
+
+.day-card {
+    padding: 15px;
+    border-radius: 17px;
+}
+
+.day-icon {
+    min-height: 45px;
+    font-size: 34px;
+}
+
+/* Footer */
+.app-footer {
+    margin-top: 25px;
+}
+
+/* Smaller screens */
+@media (max-width: 1100px) {
+    .app-shell {
+        width: min(100% - 34px, 1000px);
+    }
+}
+
+@media (max-width: 560px) {
+    .app-shell {
+        width: calc(100% - 18px);
+    }
+
+    .hero-card,
+    .hero-content {
+        min-height: 320px;
+    }
+
+    .hero-temperature #temperature {
+        font-size: 64px;
+    }
+
+    .hero-icon-area {
+        right: 12px;
+        top: 95px;
+        width: 90px;
+        height: 75px;
+    }
+
+    .hero-weather-icon {
+        font-size: 54px;
+    }
+}
