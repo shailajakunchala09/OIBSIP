@@ -1867,3 +1867,35 @@ html[data-theme="light"] .favorite-button {
     margin-top: 7px;
     font-size: 7px;
 }
+/* =========================================================
+   FIX FORECAST WEATHER IMAGE SIZES
+   ========================================================= */
+
+.hour-icon img {
+    width: 48px !important;
+    height: 48px !important;
+    object-fit: contain;
+}
+
+.day-icon img {
+    width: 55px !important;
+    height: 55px !important;
+    object-fit: contain;
+}
+
+/* Keep the forecast icon containers compact */
+.hour-icon {
+    min-height: 55px !important;
+    height: 55px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.day-icon {
+    min-height: 60px !important;
+    height: 60px !important;
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
