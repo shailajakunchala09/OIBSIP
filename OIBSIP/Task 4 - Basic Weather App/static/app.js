@@ -2,13 +2,11 @@
 
 /* =========================================================
    SkyPulse Weather App — Browser Dashboard
-   Matches the SkyPulse desktop dashboard structure
    ========================================================= */
 
 const $ = (id) => document.getElementById(id);
 
 const els = {
-    // Header
     localClock: $("localClock"),
     clockText: $("clockText"),
     celsiusBtn: $("celsiusBtn"),
@@ -16,7 +14,6 @@ const els = {
     refreshBtn: $("refreshBtn"),
     themeBtn: $("themeBtn"),
 
-    // Search
     cityInput: $("cityInput"),
     clearSearchBtn: $("clearSearchBtn"),
     searchBtn: $("searchBtn"),
@@ -25,18 +22,15 @@ const els = {
     recentRow: $("recentRow"),
     recentList: $("recentList"),
 
-    // States
     welcomeState: $("welcomeState"),
     loadingState: $("loadingState"),
     errorState: $("errorState"),
     weatherDashboard: $("weatherDashboard"),
 
-    // Error
     errorTitle: $("errorTitle"),
     errorMessage: $("errorMessage"),
     retryBtn: $("retryBtn"),
 
-    // Hero
     heroCard: $("heroCard"),
     heroStars: $("heroStars"),
     heroRain: $("heroRain"),
@@ -53,7 +47,6 @@ const els = {
     updatedTime: $("updatedTime"),
     heroLocalTime: $("heroLocalTime"),
 
-    // Metrics
     humidityValue: $("humidityValue"),
     humiditySub: $("humiditySub"),
     windValue: $("windValue"),
@@ -71,106 +64,90 @@ const els = {
     daylightValue: $("daylightValue"),
     daylightSub: $("daylightSub"),
 
-    // Forecast
     hourlyGrid: $("hourlyGrid"),
     forecastLocation: $("forecastLocation"),
     dailyGrid: $("dailyGrid")
 };
-
-
-/* =========================================================
-   Application state
-   ========================================================= */
 
 const state = {
     city: "",
     weather: null,
     unit: localStorage.getItem("skypulse-unit") || "C",
     theme: localStorage.getItem("skypulse-theme") || "dark",
-    favorites: JSON.parse(localStorage.getItem("skypulse-favorites") || "[]"),
-    recent: JSON.parse(localStorage.getItem("skypulse-recent") || "[]"),
+    favorites: JSON.parse(
+        localStorage.getItem("skypulse-favorites") || "[]"
+    ),
+    recent: JSON.parse(
+        localStorage.getItem("skypulse-recent") || "[]"
+    ),
     lastRequest: ""
 };
 
 
 /* =========================================================
-   Utility helpers
+   HELPERS
    ========================================================= */
 
 function setText(element, value) {
     if (element) {
-        element.textContent = value ?? "--";
+        element.textContent =
+            value === null || value === undefined ? "--" : value;
     }
 }
-
 
 function show(element) {
-    if (element) {
-        element.hidden = false;
-    }
+    if (element) element.hidden = false;
 }
-
 
 function hide(element) {
-    if (element) {
-        element.hidden = true;
-    }
+    if (element) element.hidden = true;
 }
-
 
 function celsiusToFahrenheit(value) {
-    return (Number(value) * 9 / 5) + 32;
+    return Number(value) * 9 / 5 + 32;
 }
 
-
 function temperature(value) {
-    if (value === null || value === undefined || Number.isNaN(Number(value))) {
+    if (
+        value === null ||
+        value === undefined ||
+        !Number.isFinite(Number(value))
+    ) {
         return "--";
     }
 
-    const number = state.unit === "F"
-        ? celsiusToFahrenheit(Number(value))
-        : Number(value);
+    const number =
+        state.unit === "F"
+            ? celsiusToFahrenheit(value)
+            : Number(value);
 
     return `${Math.round(number)}°`;
 }
 
-
-function temperatureWithUnit(value) {
-    if (value === null || value === undefined || Number.isNaN(Number(value))) {
-        return "--";
-    }
-
-    const number = state.unit === "F"
-        ? celsiusToFahrenheit(Number(value))
-        : Number(value);
-
-    return `${Math.round(number)}°${state.unit}`;
-}
-
-
 function windSpeed(value) {
-    if (value === null || value === undefined || Number.isNaN(Number(value))) {
+    if (
+        value === null ||
+        value === undefined ||
+        !Number.isFinite(Number(value))
+    ) {
         return "--";
     }
 
-    // OpenWeather wind speed is m/s.
     const speed = Number(value);
 
     if (state.unit === "F") {
         return `${Math.round(speed * 2.23694)} mph`;
     }
 
-    return `${speed.toFixed(1)} m/s`;
+    return `${Math.round(speed * 3.6)} km/h`;
 }
 
-
 function formatTime(timestamp, timezoneOffset = 0) {
-    if (!timestamp) {
-        return "--";
-    }
+    if (!timestamp) return "--";
 
-    const date = new Date((Number(timestamp) + Number(timezoneOffset)) * 1000);
+    const date = new Date(
+        (Number(timestamp) + Number(timezoneOffset)) * 1000
+    );
 
     const hours = date.getUTCHours();
     const minutes = date.getUTCMinutes();
@@ -181,52 +158,34 @@ function formatTime(timestamp, timezoneOffset = 0) {
     return `${hour12}:${String(minutes).padStart(2, "0")} ${suffix}`;
 }
 
-
 function formatUpdatedTime(timestamp) {
-    if (!timestamp) {
-        return "--";
-    }
+    if (!timestamp) return "--";
 
-    const date = new Date(Number(timestamp) * 1000);
-
-    return date.toLocaleTimeString([], {
+    return new Date(Number(timestamp) * 1000).toLocaleTimeString([], {
         hour: "numeric",
         minute: "2-digit"
     });
 }
 
-
 function formatDay(dateString) {
-    if (!dateString) {
-        return "--";
-    }
+    if (!dateString) return "--";
 
-    const date = new Date(`${dateString}T12:00:00`);
-
-    return date.toLocaleDateString([], {
+    return new Date(`${dateString}T12:00:00`).toLocaleDateString([], {
         weekday: "short"
     });
 }
 
-
 function formatDate(dateString) {
-    if (!dateString) {
-        return "--";
-    }
+    if (!dateString) return "--";
 
-    const date = new Date(`${dateString}T12:00:00`);
-
-    return date.toLocaleDateString([], {
+    return new Date(`${dateString}T12:00:00`).toLocaleDateString([], {
         month: "short",
         day: "numeric"
     });
 }
 
-
 function capitalize(value) {
-    if (!value) {
-        return "";
-    }
+    if (!value) return "";
 
     return String(value)
         .toLowerCase()
@@ -234,30 +193,41 @@ function capitalize(value) {
 }
 
 
-function weatherIcon(icon) {
-    const icons = {
-        sun: "\u2600\uFE0F",
-        moon: "\uD83C\uDF19",
-        "partly-day": "\u26C5",
-        "partly-night": "\u263E",
-        cloud: "\u2601\uFE0F",
-        rain: "\uD83C\uDF27\uFE0F",
-        storm: "\u26C8\uFE0F",
-        snow: "\u2744\uFE0F",
-        fog: "\uD83C\uDF2B\uFE0F"
+/* =========================================================
+   SKYPULSE WEATHER IMAGES
+   ========================================================= */
+
+function weatherIconFile(icon) {
+    const files = {
+        sun: "sun.png",
+        moon: "moon.png",
+        "partly-day": "partly-day.png",
+        "partly-night": "partly-night.png",
+        cloud: "cloud.png",
+        rain: "rain.png",
+        storm: "storm.png",
+        snow: "snow.png",
+        fog: "fog.png"
     };
 
-    return icons[icon] || "\u2601\uFE0F";
+    return files[icon] || "cloud.png";
 }
 
-
-function weatherKind(kind) {
-    return String(kind || "clouds").toLowerCase();
+function weatherIconHTML(icon, className = "") {
+    return `
+        <img
+            class="${className}"
+            src="/static/weather_icons/${weatherIconFile(icon)}"
+            alt=""
+            aria-hidden="true"
+            onerror="this.style.display='none'"
+        >
+    `;
 }
 
 
 /* =========================================================
-   State switching
+   STATES
    ========================================================= */
 
 function showWelcome() {
@@ -267,7 +237,6 @@ function showWelcome() {
     show(els.welcomeState);
 }
 
-
 function showLoading() {
     hide(els.welcomeState);
     hide(els.errorState);
@@ -275,14 +244,12 @@ function showLoading() {
     show(els.loadingState);
 }
 
-
 function showDashboard() {
     hide(els.welcomeState);
     hide(els.loadingState);
     hide(els.errorState);
     show(els.weatherDashboard);
 }
-
 
 function showError(title, message) {
     hide(els.welcomeState);
@@ -300,62 +267,71 @@ function showError(title, message) {
 
 
 /* =========================================================
-   Theme
+   THEME
    ========================================================= */
 
 function applyTheme() {
-    document.documentElement.dataset.theme = state.theme;
-    document.body.dataset.theme = state.theme;
+    const theme =
+        state.theme === "light"
+            ? "light"
+            : "dark";
+
+    state.theme = theme;
+
+    document.documentElement.dataset.theme = theme;
+    document.body.dataset.theme = theme;
+
+    localStorage.setItem("skypulse-theme", theme);
 
     if (els.themeBtn) {
-        els.themeBtn.textContent = state.theme === "dark" ? "☀" : "☾";
+        els.themeBtn.textContent =
+            theme === "dark" ? "☀" : "☾";
+
         els.themeBtn.title =
-            state.theme === "dark"
+            theme === "dark"
                 ? "Switch to light mode"
                 : "Switch to dark mode";
-    }
 
-    localStorage.setItem("skypulse-theme", state.theme);
+        els.themeBtn.setAttribute(
+            "aria-label",
+            els.themeBtn.title
+        );
+    }
 }
 
 
 /* =========================================================
-   Unit switch
+   UNITS
    ========================================================= */
 
 function updateUnitButtons() {
-    if (els.celsiusBtn) {
-        els.celsiusBtn.classList.toggle(
-            "active",
-            state.unit === "C"
-        );
-    }
+    els.celsiusBtn?.classList.toggle(
+        "active",
+        state.unit === "C"
+    );
 
-    if (els.fahrenheitBtn) {
-        els.fahrenheitBtn.classList.toggle(
-            "active",
-            state.unit === "F"
-        );
-    }
+    els.fahrenheitBtn?.classList.toggle(
+        "active",
+        state.unit === "F"
+    );
 
-    localStorage.setItem("skypulse-unit", state.unit);
+    localStorage.setItem(
+        "skypulse-unit",
+        state.unit
+    );
 }
 
 
 /* =========================================================
-   Header clock
+   CLOCK
    ========================================================= */
 
 function updateClock() {
-    if (!els.clockText) {
-        return;
-    }
-
-    const now = new Date();
+    if (!els.clockText) return;
 
     setText(
         els.clockText,
-        now.toLocaleTimeString([], {
+        new Date().toLocaleTimeString([], {
             hour: "numeric",
             minute: "2-digit",
             second: "2-digit"
@@ -365,20 +341,20 @@ function updateClock() {
 
 
 /* =========================================================
-   Recent searches
+   RECENT SEARCHES
    ========================================================= */
 
 function saveRecent(city) {
-    if (!city) {
-        return;
-    }
+    if (!city) return;
 
     const normalized = city.trim();
 
     state.recent = [
         normalized,
         ...state.recent.filter(
-            item => item.toLowerCase() !== normalized.toLowerCase()
+            item =>
+                item.toLowerCase() !==
+                normalized.toLowerCase()
         )
     ].slice(0, 6);
 
@@ -390,11 +366,8 @@ function saveRecent(city) {
     renderRecent();
 }
 
-
 function renderRecent() {
-    if (!els.recentList || !els.recentRow) {
-        return;
-    }
+    if (!els.recentList || !els.recentRow) return;
 
     els.recentList.innerHTML = "";
 
@@ -426,40 +399,46 @@ function renderRecent() {
 
 
 /* =========================================================
-   Favorites
+   FAVORITES
    ========================================================= */
 
 function isFavorite(city) {
     return state.favorites.some(
-        item => item.toLowerCase() === String(city).toLowerCase()
+        item =>
+            item.toLowerCase() ===
+            String(city).toLowerCase()
     );
 }
 
-
 function updateFavoriteButton() {
-    if (!els.favoriteBtn || !state.city) {
-        return;
-    }
+    if (!els.favoriteBtn || !state.city) return;
 
     const favorite = isFavorite(state.city);
 
-    els.favoriteBtn.textContent = favorite ? "★" : "☆";
-    els.favoriteBtn.classList.toggle("active", favorite);
-    els.favoriteBtn.title = favorite
-        ? "Remove from favorites"
-        : "Add to favorites";
+    els.favoriteBtn.textContent =
+        favorite ? "★" : "☆";
+
+    els.favoriteBtn.classList.toggle(
+        "active",
+        favorite
+    );
+
+    els.favoriteBtn.title =
+        favorite
+            ? "Remove from favorites"
+            : "Add to favorites";
 }
 
-
 function toggleFavorite() {
-    if (!state.city) {
-        return;
-    }
+    if (!state.city) return;
 
     if (isFavorite(state.city)) {
-        state.favorites = state.favorites.filter(
-            item => item.toLowerCase() !== state.city.toLowerCase()
-        );
+        state.favorites =
+            state.favorites.filter(
+                item =>
+                    item.toLowerCase() !==
+                    state.city.toLowerCase()
+            );
     } else {
         state.favorites.push(state.city);
     }
@@ -474,45 +453,59 @@ function toggleFavorite() {
 
 
 /* =========================================================
-   Hero
+   HERO ATMOSPHERE
    ========================================================= */
 
 function updateHeroAtmosphere(kind, current) {
-    if (!els.heroCard) {
-        return;
-    }
+    if (!els.heroCard) return;
 
-    const atmosphere = weatherKind(kind);
+    const atmosphere =
+        String(kind || "clouds").toLowerCase();
 
     els.heroCard.dataset.weather = atmosphere;
+    els.heroCard.dataset.kind = atmosphere;
+
+    const isNight =
+        String(current?.icon_code || "").endsWith("n");
+
+    els.heroCard.classList.toggle(
+        "night",
+        isNight
+    );
 
     if (els.heroStars) {
-        els.heroStars.hidden = !(
-            current &&
-            String(current.icon_code || "").endsWith("n")
-        );
+        els.heroStars.hidden = !isNight;
     }
 
     if (els.heroRain) {
-        els.heroRain.hidden = !(
-            atmosphere === "rain" ||
-            atmosphere === "storm"
-        );
+        els.heroRain.hidden =
+            atmosphere !== "rain" &&
+            atmosphere !== "storm";
     }
 }
 
 
+/* =========================================================
+   HERO
+   ========================================================= */
+
 function renderHero(current) {
-    if (!current) {
-        return;
-    }
+    if (!current) return;
 
-    state.city = current.city || state.city;
+    state.city =
+        current.city ||
+        state.city;
 
-    setText(els.cityName, current.city || "--");
+    setText(
+        els.cityName,
+        current.city || "--"
+    );
+
     setText(
         els.countryName,
-        current.country_name || current.country || "--"
+        current.country_name ||
+        current.country ||
+        "--"
     );
 
     setText(
@@ -541,8 +534,11 @@ function renderHero(current) {
     );
 
     if (els.heroWeatherIcon) {
-        els.heroWeatherIcon.textContent =
-            weatherIcon(current.icon);
+        els.heroWeatherIcon.innerHTML =
+            weatherIconHTML(
+                current.icon,
+                "hero-weather-image"
+            );
     }
 
     setText(
@@ -560,47 +556,53 @@ function renderHero(current) {
 
     setText(
         els.weatherStatus,
-        capitalize(current.main_condition || current.condition)
+        capitalize(
+            current.main_condition ||
+            current.condition
+        )
     );
 
-    updateHeroAtmosphere(current.kind, current);
+    updateHeroAtmosphere(
+        current.kind,
+        current
+    );
+
     updateFavoriteButton();
 }
 
 
 /* =========================================================
-   Metrics
+   METRICS
    ========================================================= */
 
 function renderMetrics(current) {
-    if (!current) {
-        return;
-    }
+    if (!current) return;
 
     const humidity = Number(current.humidity);
     const pressure = Number(current.pressure);
     const visibility = Number(current.visibility);
     const clouds = Number(current.clouds);
 
-    // Humidity
     setText(
         els.humidityValue,
-        Number.isFinite(humidity) ? `${humidity}%` : "--"
+        Number.isFinite(humidity)
+            ? `${humidity}%`
+            : "--"
     );
 
     if (Number.isFinite(humidity)) {
-        if (humidity < 30) {
-            setText(els.humiditySub, "Dry");
-        } else if (humidity <= 60) {
-            setText(els.humiditySub, "Comfortable");
-        } else if (humidity <= 80) {
-            setText(els.humiditySub, "Humid");
-        } else {
-            setText(els.humiditySub, "Very humid");
-        }
+        setText(
+            els.humiditySub,
+            humidity < 30
+                ? "Dry"
+                : humidity <= 60
+                    ? "Comfortable"
+                    : humidity <= 80
+                        ? "Humid"
+                        : "Very humid"
+        );
     }
 
-    // Wind
     setText(
         els.windValue,
         windSpeed(current.wind_speed)
@@ -611,7 +613,6 @@ function renderMetrics(current) {
         `${current.wind_label || "Wind"} • ${current.wind_compass || "--"}`
     );
 
-    // Pressure
     setText(
         els.pressureValue,
         Number.isFinite(pressure)
@@ -620,38 +621,36 @@ function renderMetrics(current) {
     );
 
     if (Number.isFinite(pressure)) {
-        if (pressure < 1000) {
-            setText(els.pressureSub, "Low");
-        } else if (pressure <= 1020) {
-            setText(els.pressureSub, "Normal");
-        } else {
-            setText(els.pressureSub, "High");
-        }
+        setText(
+            els.pressureSub,
+            pressure < 1000
+                ? "Low"
+                : pressure <= 1020
+                    ? "Normal"
+                    : "High"
+        );
     }
-
-    // Visibility
-    const visibilityKm = visibility / 1000;
-
-    setText(
-        els.visibilityValue,
-        Number.isFinite(visibility)
-            ? `${visibilityKm.toFixed(1)} km`
-            : "--"
-    );
 
     if (Number.isFinite(visibility)) {
-        if (visibility >= 10000) {
-            setText(els.visibilitySub, "Excellent");
-        } else if (visibility >= 5000) {
-            setText(els.visibilitySub, "Good");
-        } else if (visibility >= 2000) {
-            setText(els.visibilitySub, "Moderate");
-        } else {
-            setText(els.visibilitySub, "Poor");
-        }
+        setText(
+            els.visibilityValue,
+            `${(visibility / 1000).toFixed(1)} km`
+        );
+
+        setText(
+            els.visibilitySub,
+            visibility >= 10000
+                ? "Excellent"
+                : visibility >= 5000
+                    ? "Good"
+                    : visibility >= 2000
+                        ? "Moderate"
+                        : "Poor"
+        );
+    } else {
+        setText(els.visibilityValue, "--");
     }
 
-    // Clouds
     setText(
         els.cloudsValue,
         Number.isFinite(clouds)
@@ -660,18 +659,18 @@ function renderMetrics(current) {
     );
 
     if (Number.isFinite(clouds)) {
-        if (clouds < 20) {
-            setText(els.cloudsSub, "Clear sky");
-        } else if (clouds < 60) {
-            setText(els.cloudsSub, "Partly cloudy");
-        } else if (clouds < 90) {
-            setText(els.cloudsSub, "Mostly cloudy");
-        } else {
-            setText(els.cloudsSub, "Overcast");
-        }
+        setText(
+            els.cloudsSub,
+            clouds < 20
+                ? "Clear sky"
+                : clouds < 60
+                    ? "Partly cloudy"
+                    : clouds < 90
+                        ? "Mostly cloudy"
+                        : "Overcast"
+        );
     }
 
-    // Sunrise
     setText(
         els.sunriseValue,
         formatTime(
@@ -685,7 +684,6 @@ function renderMetrics(current) {
         "Local time"
     );
 
-    // Sunset
     setText(
         els.sunsetValue,
         formatTime(
@@ -699,51 +697,61 @@ function renderMetrics(current) {
         "Local time"
     );
 
-    // Daylight
     if (current.sunrise && current.sunset) {
         const seconds =
-            Number(current.sunset) - Number(current.sunrise);
+            Number(current.sunset) -
+            Number(current.sunrise);
 
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor(
-            (seconds % 3600) / 60
-        );
+        const hours =
+            Math.floor(seconds / 3600);
+
+        const minutes =
+            Math.floor(
+                (seconds % 3600) / 60
+            );
 
         setText(
             els.daylightValue,
             `${hours}h ${minutes}m`
         );
-
-        setText(
-            els.daylightSub,
-            "Daylight"
-        );
     } else {
-        setText(els.daylightValue, "--");
-        setText(els.daylightSub, "Daylight");
+        setText(
+            els.daylightValue,
+            "--"
+        );
     }
+
+    setText(
+        els.daylightSub,
+        "Daylight"
+    );
 }
 
 
 /* =========================================================
-   Hourly forecast
+   HOURLY FORECAST
    ========================================================= */
 
 function renderHourly(hourly) {
-    if (!els.hourlyGrid) {
-        return;
-    }
+    if (!els.hourlyGrid) return;
 
     els.hourlyGrid.innerHTML = "";
 
-    if (!Array.isArray(hourly) || !hourly.length) {
+    if (
+        !Array.isArray(hourly) ||
+        !hourly.length
+    ) {
         els.hourlyGrid.innerHTML =
-            `<div class="forecast-empty">Hourly forecast unavailable.</div>`;
+            `<div class="forecast-empty">
+                Hourly forecast unavailable.
+            </div>`;
         return;
     }
 
     hourly.slice(0, 6).forEach(item => {
-        const card = document.createElement("article");
+        const card =
+            document.createElement("article");
+
         card.className = "hour-card";
 
         const rain =
@@ -755,7 +763,7 @@ function renderHourly(hourly) {
             </div>
 
             <div class="hour-icon">
-                ${weatherIcon(item.icon)}
+                ${weatherIconHTML(item.icon, "forecast-weather-image")}
             </div>
 
             <div class="hour-temp">
@@ -766,11 +774,13 @@ function renderHourly(hourly) {
                 ${capitalize(item.condition)}
             </div>
 
-            ${
-                rain >= 20
-                    ? `<div class="hour-rain">💧 ${Math.round(rain)}%</div>`
-                    : `<div class="hour-rain muted">No rain</div>`
-            }
+            <div class="hour-rain ${
+                rain >= 20 ? "" : "muted"
+            }">
+                ${rain >= 20
+                    ? `💧 ${Math.round(rain)}%`
+                    : "No rain"}
+            </div>
         `;
 
         els.hourlyGrid.appendChild(card);
@@ -779,50 +789,53 @@ function renderHourly(hourly) {
 
 
 /* =========================================================
-   Daily forecast
+   DAILY FORECAST
    ========================================================= */
 
 function renderDaily(daily) {
-    if (!els.dailyGrid) {
-        return;
-    }
+    if (!els.dailyGrid) return;
 
     els.dailyGrid.innerHTML = "";
 
-    if (!Array.isArray(daily) || !daily.length) {
+    if (
+        !Array.isArray(daily) ||
+        !daily.length
+    ) {
         els.dailyGrid.innerHTML =
-            `<div class="forecast-empty">Five-day forecast unavailable.</div>`;
+            `<div class="forecast-empty">
+                Five-day forecast unavailable.
+            </div>`;
         return;
     }
 
     daily.slice(0, 5).forEach((item, index) => {
-        const card = document.createElement("article");
+        const card =
+            document.createElement("article");
+
         card.className = "day-card";
 
         const high = Number(item.high);
         const low = Number(item.low);
-        const pop = Math.round(Number(item.pop || 0) * 100);
-
-        const range =
-            Number.isFinite(high) && Number.isFinite(low)
-                ? Math.max(1, high - low)
-                : 1;
-
-        const min = Number.isFinite(low) ? low : 0;
-        const max = Number.isFinite(high) ? high : 1;
-
-        const lowPosition = 0;
-        const highPosition = 100;
+        const pop =
+            Math.round(
+                Number(item.pop || 0) * 100
+            );
 
         card.innerHTML = `
             <div class="day-header">
                 <div>
                     <div class="day-name">
-                        ${item.day || formatDay(item.date)}
+                        ${
+                            item.day ||
+                            formatDay(item.date)
+                        }
                     </div>
 
                     <div class="day-date">
-                        ${item.date_label || formatDate(item.date)}
+                        ${
+                            item.date_label ||
+                            formatDate(item.date)
+                        }
                     </div>
                 </div>
 
@@ -835,7 +848,10 @@ function renderDaily(daily) {
 
             <div class="day-main">
                 <div class="day-icon">
-                    ${weatherIcon(item.icon)}
+                    ${weatherIconHTML(
+                        item.icon,
+                        "forecast-weather-image"
+                    )}
                 </div>
 
                 <div class="day-condition">
@@ -844,18 +860,17 @@ function renderDaily(daily) {
             </div>
 
             <div class="day-temperatures">
-                <strong>${temperature(high)}</strong>
-                <span>${temperature(low)}</span>
+                <strong>
+                    ${temperature(high)}
+                </strong>
+
+                <span>
+                    ${temperature(low)}
+                </span>
             </div>
 
             <div class="day-range">
-                <span
-                    class="range-fill"
-                    style="
-                        left:${lowPosition}%;
-                        width:${highPosition - lowPosition}%;
-                    "
-                ></span>
+                <span class="range-fill"></span>
             </div>
 
             <div class="day-footer">
@@ -864,7 +879,9 @@ function renderDaily(daily) {
                 </span>
 
                 <span>
-                    ${temperature(min)} — ${temperature(max)}
+                    ${temperature(low)}
+                    —
+                    ${temperature(high)}
                 </span>
             </div>
         `;
@@ -875,11 +892,15 @@ function renderDaily(daily) {
 
 
 /* =========================================================
-   Complete dashboard
+   COMPLETE DASHBOARD
    ========================================================= */
 
 function renderWeather(data) {
-    if (!data || !data.ok || !data.current) {
+    if (
+        !data ||
+        !data.ok ||
+        !data.current
+    ) {
         showError(
             "Weather unavailable",
             "The weather service did not return valid weather data."
@@ -888,7 +909,9 @@ function renderWeather(data) {
     }
 
     state.weather = data;
-    state.city = data.current.city || state.city;
+    state.city =
+        data.current.city ||
+        state.city;
 
     renderHero(data.current);
     renderMetrics(data.current);
@@ -909,22 +932,23 @@ function renderWeather(data) {
 
 
 /* =========================================================
-   Fetch weather by city
+   CITY SEARCH
    ========================================================= */
 
 async function fetchWeather(city) {
-    const query = String(city || "").trim();
+    const query =
+        String(city || "").trim();
 
     if (!query) {
-        setText(
-            els.searchError,
-            "Please enter a city name."
-        );
-
-        if (els.cityInput) {
-            els.cityInput.focus();
+        if (els.searchError) {
+            setText(
+                els.searchError,
+                "Please enter a city name."
+            );
+            show(els.searchError);
         }
 
+        els.cityInput?.focus();
         return;
     }
 
@@ -935,20 +959,26 @@ async function fetchWeather(city) {
     showLoading();
 
     try {
-        const response = await fetch(
-            `/api/weather?city=${encodeURIComponent(query)}`,
-            {
-                method: "GET",
-                headers: {
-                    "Accept": "application/json"
-                },
-                cache: "no-store"
-            }
-        );
+        const response =
+            await fetch(
+                `/api/weather?city=${encodeURIComponent(query)}`,
+                {
+                    method: "GET",
+                    headers: {
+                        Accept:
+                            "application/json"
+                    },
+                    cache: "no-store"
+                }
+            );
 
-        const data = await response.json();
+        const data =
+            await response.json();
 
-        if (!response.ok || !data.ok) {
+        if (
+            !response.ok ||
+            !data.ok
+        ) {
             throw new Error(
                 data.error ||
                 data.message ||
@@ -956,17 +986,24 @@ async function fetchWeather(city) {
             );
         }
 
-        saveRecent(data.current?.city || query);
+        saveRecent(
+            data.current?.city ||
+            query
+        );
 
         if (els.cityInput) {
             els.cityInput.value =
-                data.current?.city || query;
+                data.current?.city ||
+                query;
         }
 
         renderWeather(data);
 
     } catch (error) {
-        console.error("SkyPulse weather error:", error);
+        console.error(
+            "SkyPulse weather error:",
+            error
+        );
 
         showError(
             "Weather unavailable",
@@ -978,7 +1015,7 @@ async function fetchWeather(city) {
 
 
 /* =========================================================
-   My Location
+   MY LOCATION
    ========================================================= */
 
 function fetchLocationWeather() {
@@ -987,7 +1024,6 @@ function fetchLocationWeather() {
             "Location unavailable",
             "Your browser does not support location detection."
         );
-
         return;
     }
 
@@ -996,43 +1032,56 @@ function fetchLocationWeather() {
     navigator.geolocation.getCurrentPosition(
         async position => {
             try {
-                const latitude = position.coords.latitude;
-                const longitude = position.coords.longitude;
+                const latitude =
+                    position.coords.latitude;
 
-                const response = await fetch(
-                    `/api/weather/location?lat=${encodeURIComponent(latitude)}&lon=${encodeURIComponent(longitude)}`,
-                    {
-                        method: "GET",
-                        headers: {
-                            "Accept": "application/json"
-                        },
-                        cache: "no-store"
-                    }
-                );
+                const longitude =
+                    position.coords.longitude;
 
-                const data = await response.json();
+                const response =
+                    await fetch(
+                        `/api/weather/location?lat=${encodeURIComponent(latitude)}&lon=${encodeURIComponent(longitude)}`,
+                        {
+                            method: "GET",
+                            headers: {
+                                Accept:
+                                    "application/json"
+                            },
+                            cache: "no-store"
+                        }
+                    );
 
-                if (!response.ok || !data.ok) {
+                const data =
+                    await response.json();
+
+                if (
+                    !response.ok ||
+                    !data.ok
+                ) {
                     throw new Error(
                         data.error ||
                         "Unable to retrieve weather for your location."
                     );
                 }
 
-                state.city = data.current?.city || "";
+                state.city =
+                    data.current?.city || "";
 
                 if (els.cityInput) {
                     els.cityInput.value =
                         data.current?.city || "";
                 }
 
-                saveRecent(data.current?.city || "My Location");
+                saveRecent(
+                    data.current?.city ||
+                    "My Location"
+                );
 
                 renderWeather(data);
 
             } catch (error) {
                 console.error(
-                    "SkyPulse location weather error:",
+                    "SkyPulse location error:",
                     error
                 );
 
@@ -1045,11 +1094,6 @@ function fetchLocationWeather() {
         },
 
         error => {
-            console.error(
-                "SkyPulse geolocation error:",
-                error
-            );
-
             let message =
                 "Unable to detect your location.";
 
@@ -1080,31 +1124,28 @@ function fetchLocationWeather() {
 
 
 /* =========================================================
-   Event handlers
+   SEARCH
    ========================================================= */
 
 function performSearch() {
-    const city = els.cityInput
-        ? els.cityInput.value.trim()
-        : "";
+    const city =
+        els.cityInput?.value.trim() || "";
 
     if (!city) {
         if (els.searchError) {
-            els.searchError.textContent =
-                "Please enter a city name.";
+            setText(
+                els.searchError,
+                "Please enter a city name."
+            );
             show(els.searchError);
         }
 
-        if (els.cityInput) {
-            els.cityInput.focus();
-        }
-
+        els.cityInput?.focus();
         return;
     }
 
     fetchWeather(city);
 }
-
 
 function clearSearch() {
     if (els.cityInput) {
@@ -1114,7 +1155,6 @@ function clearSearch() {
 
     hide(els.searchError);
 }
-
 
 function refreshWeather() {
     if (state.city) {
@@ -1126,183 +1166,205 @@ function refreshWeather() {
 
 
 /* =========================================================
-   Keyboard shortcuts
+   TRY CITY BUTTONS
    ========================================================= */
 
-document.addEventListener("keydown", event => {
-    // Enter in search
-    if (
-        event.key === "Enter" &&
-        document.activeElement === els.cityInput
-    ) {
-        event.preventDefault();
-        performSearch();
-        return;
-    }
+function setupTryCities() {
+    document
+        .querySelectorAll(".try-city")
+        .forEach(button => {
+            button.addEventListener(
+                "click",
+                () => {
+                    const city =
+                        button.dataset.city ||
+                        button.textContent.trim();
 
-    // F5 / Ctrl + R
-    if (
-        event.key === "F5" ||
-        (
-            event.ctrlKey &&
-            event.key.toLowerCase() === "r"
-        )
-    ) {
-        event.preventDefault();
-        refreshWeather();
-        return;
-    }
+                    if (els.cityInput) {
+                        els.cityInput.value =
+                            city;
+                    }
 
-    // Ctrl + L
-    if (
-        event.ctrlKey &&
-        event.key.toLowerCase() === "l"
-    ) {
-        event.preventDefault();
-
-        if (els.cityInput) {
-            els.cityInput.focus();
-            els.cityInput.select();
-        }
-
-        return;
-    }
-
-    // Ctrl + T
-    if (
-        event.ctrlKey &&
-        event.key.toLowerCase() === "t"
-    ) {
-        event.preventDefault();
-
-        state.theme =
-            state.theme === "dark"
-                ? "light"
-                : "dark";
-
-        applyTheme();
-    }
-});
+                    fetchWeather(city);
+                }
+            );
+        });
+}
 
 
 /* =========================================================
-   Initialize
+   KEYBOARD SHORTCUTS
+   ========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (
+            event.key === "Enter" &&
+            document.activeElement ===
+                els.cityInput
+        ) {
+            event.preventDefault();
+            performSearch();
+            return;
+        }
+
+        if (
+            event.key === "F5" ||
+            (
+                event.ctrlKey &&
+                event.key.toLowerCase() === "r"
+            )
+        ) {
+            event.preventDefault();
+            refreshWeather();
+            return;
+        }
+
+        if (
+            event.ctrlKey &&
+            event.key.toLowerCase() === "l"
+        ) {
+            event.preventDefault();
+
+            els.cityInput?.focus();
+            els.cityInput?.select();
+
+            return;
+        }
+
+        if (
+            event.ctrlKey &&
+            event.key.toLowerCase() === "t"
+        ) {
+            event.preventDefault();
+
+            state.theme =
+                state.theme === "dark"
+                    ? "light"
+                    : "dark";
+
+            applyTheme();
+        }
+    }
+);
+
+
+/* =========================================================
+   INITIALIZE
    ========================================================= */
 
 function initialize() {
+
     applyTheme();
     updateUnitButtons();
     updateClock();
     renderRecent();
+    setupTryCities();
 
-    setInterval(updateClock, 1000);
+    setInterval(
+        updateClock,
+        1000
+    );
 
-    if (els.searchBtn) {
-        els.searchBtn.addEventListener(
-            "click",
-            performSearch
-        );
-    }
+    els.searchBtn?.addEventListener(
+        "click",
+        performSearch
+    );
 
-    if (els.cityInput) {
-        els.cityInput.addEventListener(
-            "input",
-            () => {
-                if (els.cityInput.value.trim()) {
-                    hide(els.searchError);
-                }
+    els.cityInput?.addEventListener(
+        "input",
+        () => {
+            if (
+                els.cityInput.value.trim()
+            ) {
+                hide(els.searchError);
             }
-        );
-    }
+        }
+    );
 
-    if (els.clearSearchBtn) {
-        els.clearSearchBtn.addEventListener(
-            "click",
-            clearSearch
-        );
-    }
+    els.clearSearchBtn?.addEventListener(
+        "click",
+        clearSearch
+    );
 
-    if (els.locationBtn) {
-        els.locationBtn.addEventListener(
-            "click",
-            fetchLocationWeather
-        );
-    }
+    els.locationBtn?.addEventListener(
+        "click",
+        fetchLocationWeather
+    );
 
-    if (els.refreshBtn) {
-        els.refreshBtn.addEventListener(
-            "click",
-            refreshWeather
-        );
-    }
+    els.refreshBtn?.addEventListener(
+        "click",
+        refreshWeather
+    );
 
-    if (els.retryBtn) {
-        els.retryBtn.addEventListener(
-            "click",
-            () => {
-                if (state.lastRequest) {
-                    fetchWeather(state.lastRequest);
-                } else {
-                    showWelcome();
-                }
+    els.retryBtn?.addEventListener(
+        "click",
+        () => {
+            if (state.lastRequest) {
+                fetchWeather(
+                    state.lastRequest
+                );
+            } else {
+                showWelcome();
             }
-        );
-    }
+        }
+    );
 
-    if (els.themeBtn) {
-        els.themeBtn.addEventListener(
-            "click",
-            () => {
-                state.theme =
-                    state.theme === "dark"
-                        ? "light"
-                        : "dark";
+    els.themeBtn?.addEventListener(
+        "click",
+        () => {
+            state.theme =
+                state.theme === "dark"
+                    ? "light"
+                    : "dark";
 
-                applyTheme();
+            applyTheme();
+        }
+    );
+
+    els.celsiusBtn?.addEventListener(
+        "click",
+        () => {
+            state.unit = "C";
+            updateUnitButtons();
+
+            if (state.weather) {
+                renderWeather(
+                    state.weather
+                );
             }
-        );
-    }
+        }
+    );
 
-    if (els.celsiusBtn) {
-        els.celsiusBtn.addEventListener(
-            "click",
-            () => {
-                state.unit = "C";
-                updateUnitButtons();
+    els.fahrenheitBtn?.addEventListener(
+        "click",
+        () => {
+            state.unit = "F";
+            updateUnitButtons();
 
-                if (state.weather) {
-                    renderWeather(state.weather);
-                }
+            if (state.weather) {
+                renderWeather(
+                    state.weather
+                );
             }
-        );
-    }
+        }
+    );
 
-    if (els.fahrenheitBtn) {
-        els.fahrenheitBtn.addEventListener(
-            "click",
-            () => {
-                state.unit = "F";
-                updateUnitButtons();
-
-                if (state.weather) {
-                    renderWeather(state.weather);
-                }
-            }
-        );
-    }
-
-    if (els.favoriteBtn) {
-        els.favoriteBtn.addEventListener(
-            "click",
-            toggleFavorite
-        );
-    }
+    els.favoriteBtn?.addEventListener(
+        "click",
+        toggleFavorite
+    );
 
     showWelcome();
 }
 
 
-if (document.readyState === "loading") {
+if (
+    document.readyState ===
+    "loading"
+) {
     document.addEventListener(
         "DOMContentLoaded",
         initialize
@@ -1310,65 +1372,3 @@ if (document.readyState === "loading") {
 } else {
     initialize();
 }
-
-
-/* =========================================================
-   FINAL SKYPULSE THEME CONTROLLER
-   ========================================================= */
-
-(function () {
-
-    const button = document.getElementById("themeBtn");
-
-    function applyTheme(theme) {
-
-        if (theme !== "light" && theme !== "dark") {
-            theme = "dark";
-        }
-
-        document.documentElement.setAttribute("data-theme", theme);
-        document.body.setAttribute("data-theme", theme);
-
-        localStorage.setItem("skypulse-theme", theme);
-
-        if (button) {
-            button.textContent = theme === "dark" ? "☀" : "☾";
-            button.title =
-                theme === "dark"
-                    ? "Switch to light mode"
-                    : "Switch to dark mode";
-            button.setAttribute(
-                "aria-label",
-                theme === "dark"
-                    ? "Switch to light mode"
-                    : "Switch to dark mode"
-            );
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-
-        const saved =
-            localStorage.getItem("skypulse-theme") || "dark";
-
-        applyTheme(saved);
-
-        if (!button) return;
-
-        /* Remove previous click handlers by replacing the button */
-        const cleanButton = button.cloneNode(true);
-        button.parentNode.replaceChild(cleanButton, button);
-
-        cleanButton.addEventListener("click", function () {
-
-            const current =
-                document.documentElement.getAttribute("data-theme") || "dark";
-
-            applyTheme(current === "dark" ? "light" : "dark");
-
-        });
-
-        applyTheme(saved);
-    });
-
-})();
