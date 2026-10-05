@@ -16,6 +16,9 @@
 
 ---
 
+## LIVE DEMO:   https://skypulse-weather-app-od6o.onrender.com/
+
+
 ## 1. 📌 Project Overview
 
 SkyPulse is a desktop weather dashboard created for **Task 4 (Basic Weather App)** of the **OASIS INFOBYTE Python Programming Internship**. It fetches live data from the OpenWeatherMap API and presents current conditions, a 6-hour outlook and a 5-day forecast in a modern, responsive interface that adapts its look to the weather and time of day.
