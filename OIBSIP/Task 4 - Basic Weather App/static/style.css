@@ -1769,3 +1769,101 @@ html[data-theme="light"] .favorite-button {
         font-size: 54px;
     }
 }
+/* Smaller forecast cards only */
+
+.hourly-grid {
+    gap: 8px;
+}
+
+.hour-card {
+    min-height: 135px;
+    padding: 10px 8px;
+    border-radius: 14px;
+}
+
+.hour-time {
+    font-size: 9px;
+}
+
+.hour-icon {
+    min-height: 34px;
+    margin: 5px 0 2px;
+    font-size: 24px;
+}
+
+.hour-temp {
+    font-size: 16px;
+}
+
+.hour-condition {
+    margin-top: 3px;
+    font-size: 8px;
+}
+
+.hour-rain {
+    padding-top: 6px;
+    font-size: 8px;
+}
+
+
+/* Smaller 5-day forecast cards */
+
+.daily-grid {
+    gap: 8px;
+}
+
+.day-card {
+    padding: 11px;
+    border-radius: 14px;
+}
+
+.day-name {
+    font-size: 10px;
+}
+
+.day-date {
+    margin-top: 2px;
+    font-size: 8px;
+}
+
+.today-badge {
+    padding: 3px 6px;
+    font-size: 7px;
+}
+
+.day-main {
+    margin-top: 9px;
+}
+
+.day-icon {
+    min-height: 35px;
+    font-size: 27px;
+}
+
+.day-condition {
+    margin-top: 3px;
+    font-size: 8px;
+}
+
+.day-temperatures {
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.day-temperatures strong {
+    font-size: 16px;
+}
+
+.day-temperatures span {
+    font-size: 10px;
+}
+
+.day-range {
+    height: 3px;
+    margin-top: 8px;
+}
+
+.day-footer {
+    margin-top: 7px;
+    font-size: 7px;
+}
