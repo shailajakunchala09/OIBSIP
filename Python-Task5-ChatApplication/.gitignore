@@ -1,0 +1,23 @@
+# Runtime data
+database/*.db
+database/*.db-wal
+database/*.db-shm
+database/*.sqlite*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+
+# Local settings and secrets
+.vanta_chat/
+settings.json
+.env
+
+# Editors and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

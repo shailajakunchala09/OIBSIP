@@ -1,0 +1,5 @@
+# VANTA CHAT uses only the Python standard library.
+# Nothing to pip install.
+#
+# Requires Python 3.10+ with Tkinter. Tkinter ships with the python.org Windows installer
+# (tick "tcl/tk and IDLE" if you customise the install).
