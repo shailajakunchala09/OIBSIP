@@ -1,69 +1,110 @@
 ﻿/* =========================================================
-   SKYPULSE WEB DASHBOARD
-   Browser styling matched to the desktop SkyPulse design
+   SkyPulse Weather App — Browser Dashboard
+   Final Premium UI
+   ========================================================= */
+
+:root {
+    --bg: #0a0f1e;
+    --surface: #131b2e;
+    --surface-alt: #1b2640;
+    --surface-soft: rgba(255,255,255,0.045);
+    --border: #25314f;
+
+    --text: #eaf0fb;
+    --text-muted: #95a3c0;
+    --text-faint: #5f6e8c;
+
+    --accent: #4f9dff;
+    --accent-hover: #74b2ff;
+    --accent-dark: #1b4fd6;
+
+    --good: #4ade9a;
+    --warn: #fbbf24;
+    --danger: #ff6b7a;
+
+    --shadow:
+        0 24px 70px rgba(0,0,0,.32);
+
+    --shadow-soft:
+        0 10px 35px rgba(0,0,0,.20);
+
+    --radius-xl: 28px;
+    --radius-lg: 22px;
+    --radius-md: 16px;
+    --radius-sm: 12px;
+
+    --transition: 180ms ease;
+}
+
+:root[data-theme="light"] {
+    --bg: #edf1f7;
+    --surface: #ffffff;
+    --surface-alt: #f1f5fb;
+    --surface-soft: rgba(14,26,51,.035);
+    --border: #dce4f0;
+
+    --text: #0e1a33;
+    --text-muted: #5a6a87;
+    --text-faint: #93a0b8;
+
+    --accent: #2563eb;
+    --accent-hover: #1d4fd0;
+    --accent-dark: #1d4fd0;
+
+    --good: #0f9f6e;
+    --warn: #b7791f;
+    --danger: #d93a4f;
+
+    --shadow:
+        0 24px 70px rgba(25,45,80,.13);
+
+    --shadow-soft:
+        0 10px 35px rgba(25,45,80,.09);
+}
+
+
+/* =========================================================
+   RESET
    ========================================================= */
 
 * {
     box-sizing: border-box;
 }
 
-:root {
-    --bg: #0A0F1E;
-    --surface: #131B2E;
-    --surface-alt: #1B2640;
-    --border: #25314F;
-    --text: #EAF0FB;
-    --muted: #95A3C0;
-    --faint: #5F6E8C;
-    --accent: #4F9DFF;
-    --accent-hover: #74B2FF;
-    --good: #4ADE9A;
-    --warn: #FBBF24;
-    --danger: #FF6B7A;
-    --shadow: 0 20px 55px rgba(0, 0, 0, .28);
-    --shadow-soft: 0 10px 30px rgba(0, 0, 0, .18);
+html {
+    min-height: 100%;
+    scroll-behavior: smooth;
 }
 
-html[data-theme="light"],
-body[data-theme="light"] {
-    --bg: #EDF1F7;
-    --surface: #FFFFFF;
-    --surface-alt: #F1F5FB;
-    --border: #DCE4F0;
-    --text: #0E1A33;
-    --muted: #5A6A87;
-    --faint: #93A0B8;
-    --accent: #2563EB;
-    --accent-hover: #1D4FD0;
-    --good: #0F9F6E;
-    --warn: #B7791F;
-    --danger: #D93A4F;
-    --shadow: 0 18px 45px rgba(35, 55, 90, .13);
-    --shadow-soft: 0 8px 25px rgba(35, 55, 90, .09);
-}
-
-html,
 body {
     margin: 0;
-    min-height: 100%;
-    background: var(--bg);
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 15% 0%,
+            rgba(79,157,255,.08),
+            transparent 30%
+        ),
+        var(--bg);
+
     color: var(--text);
+
     font-family:
         Inter,
         ui-sans-serif,
+        system-ui,
         -apple-system,
         BlinkMacSystemFont,
         "Segoe UI",
-        Roboto,
-        Arial,
         sans-serif;
-}
 
-body {
-    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+
     transition:
-        background .25s ease,
-        color .25s ease;
+        background var(--transition),
+        color var(--transition);
 }
 
 button,
@@ -75,36 +116,42 @@ button {
     cursor: pointer;
 }
 
-.app-shell {
-    width: 100%;
-    min-height: 100vh;
-    background:
-        radial-gradient(
-            circle at 15% 0%,
-            rgba(79, 157, 255, .08),
-            transparent 32%
-        ),
-        radial-gradient(
-            circle at 90% 15%,
-            rgba(74, 222, 154, .035),
-            transparent 28%
-        ),
-        var(--bg);
-    padding: 24px 30px 28px;
-    transition: background .25s ease;
+button:focus-visible,
+input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
 }
+
+img {
+    display: block;
+    max-width: 100%;
+}
+
+
+/* =========================================================
+   MAIN APP SHELL
+   ========================================================= */
+
+#appShell {
+    width: min(1240px, calc(100% - 48px));
+    margin: 0 auto;
+    padding: 26px 0 40px;
+}
+
 
 /* =========================================================
    TOP BAR
    ========================================================= */
 
 .topbar {
-    width: min(1240px, 100%);
-    margin: 0 auto 24px;
+    min-height: 70px;
+
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 24px;
+
+    margin-bottom: 20px;
 }
 
 .brand {
@@ -115,40 +162,32 @@ button {
 }
 
 .brand-mark {
-    width: 46px;
-    height: 46px;
-    flex: 0 0 46px;
+    width: 48px;
+    height: 48px;
+    flex: 0 0 48px;
+
+    display: grid;
+    place-items: center;
+
     border-radius: 14px;
-    position: relative;
-    overflow: hidden;
-    background: linear-gradient(135deg, #4F9DFF, #1B4FD6);
+
+    background:
+        linear-gradient(
+            145deg,
+            #4f9dff 0%,
+            #1b4fd6 100%
+        );
+
     box-shadow:
-        0 8px 22px rgba(37, 99, 235, .28),
-        inset 0 1px 0 rgba(255,255,255,.25);
+        0 10px 26px rgba(27,79,214,.32);
+
+    overflow: hidden;
 }
 
-.brand-mark::before {
-    content: "";
-    position: absolute;
-    width: 19px;
-    height: 19px;
-    border-radius: 50%;
-    background: #FFD75A;
-    left: 8px;
-    top: 7px;
-    box-shadow: 0 0 16px rgba(255,215,90,.45);
-}
-
-.brand-mark::after {
-    content: "";
-    position: absolute;
-    width: 32px;
-    height: 10px;
-    left: 8px;
-    bottom: 9px;
-    border-bottom: 3px solid #fff;
-    border-radius: 50%;
-    transform: rotate(-7deg);
+.brand-mark img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .brand-copy {
@@ -156,19 +195,21 @@ button {
 }
 
 .brand-name {
-    font-size: 18px;
+    font-size: 23px;
     line-height: 1.05;
     font-weight: 800;
-    letter-spacing: -.025em;
-    color: var(--text);
+    letter-spacing: -.6px;
 }
 
 .brand-tagline {
-    margin-top: 5px;
-    color: var(--muted);
+    margin-top: 4px;
+
+    color: var(--text-muted);
+
     font-size: 11px;
     font-weight: 600;
-    letter-spacing: .02em;
+    letter-spacing: .9px;
+    text-transform: uppercase;
 }
 
 .top-controls {
@@ -177,588 +218,557 @@ button {
     gap: 9px;
 }
 
-#localClock {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    color: var(--muted);
-    font-size: 12px;
+.local-clock {
+    color: var(--text-muted);
+    font-size: 13px;
     font-weight: 600;
     margin-right: 4px;
+    white-space: nowrap;
 }
 
-.unit-toggle {
-    height: 38px;
-    padding: 3px;
-    display: flex;
-    align-items: center;
-    gap: 2px;
-    border: 1px solid var(--border);
-    border-radius: 12px;
-    background: var(--surface);
-    box-shadow: var(--shadow-soft);
-}
-
-.unit-btn {
-    height: 30px;
-    min-width: 34px;
-    padding: 0 9px;
-    border: 0;
-    border-radius: 9px;
-    background: transparent;
-    color: var(--muted);
-    font-size: 12px;
-    font-weight: 800;
-    transition: .18s ease;
-}
-
-.unit-btn:hover {
-    color: var(--text);
-}
-
-.unit-btn.active {
-    color: #fff;
-    background: var(--accent);
-    box-shadow: 0 4px 12px rgba(79,157,255,.28);
-}
-
-.icon-button {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: .18s ease;
-    box-shadow: var(--shadow-soft);
-}
-
-.icon-button:hover {
-    color: var(--text);
-    border-color: rgba(79,157,255,.45);
-    transform: translateY(-1px);
-}
 
 /* =========================================================
-   SEARCH
+   ICON / CONTROL BUTTONS
+   ========================================================= */
+
+.icon-button,
+.control-button {
+    width: 40px;
+    height: 40px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: var(--surface);
+    color: var(--text-muted);
+
+    transition:
+        transform var(--transition),
+        background var(--transition),
+        color var(--transition),
+        border-color var(--transition);
+}
+
+.icon-button:hover,
+.control-button:hover {
+    transform: translateY(-1px);
+    background: var(--surface-alt);
+    color: var(--text);
+    border-color: rgba(79,157,255,.45);
+}
+
+
+/* =========================================================
+   UNIT SWITCH
+   ========================================================= */
+
+.unit-toggle {
+    display: flex;
+    align-items: center;
+
+    padding: 3px;
+
+    border: 1px solid var(--border);
+    border-radius: 12px;
+
+    background: var(--surface);
+}
+
+.unit-toggle button {
+    min-width: 38px;
+    height: 32px;
+
+    border: 0;
+    border-radius: 9px;
+
+    background: transparent;
+    color: var(--text-muted);
+
+    font-size: 12px;
+    font-weight: 800;
+
+    transition:
+        background var(--transition),
+        color var(--transition);
+}
+
+.unit-toggle button:hover {
+    color: var(--text);
+}
+
+.unit-toggle button.active {
+    background: var(--accent);
+    color: #04122b;
+}
+
+
+/* =========================================================
+   SEARCH AREA
    ========================================================= */
 
 .search-section {
-    width: min(1240px, 100%);
-    margin: 0 auto 22px;
+    margin-bottom: 17px;
 }
 
 .search-row {
-    display: flex;
-    align-items: center;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 176px 168px;
     gap: 10px;
 }
 
 .search-box {
-    flex: 1;
+    position: relative;
     min-width: 0;
-    height: 52px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 0 16px;
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    background: var(--surface);
-    box-shadow: var(--shadow-soft);
-    transition: .18s ease;
 }
 
-.search-box:focus-within {
-    border-color: rgba(79,157,255,.65);
-    box-shadow:
-        0 0 0 4px rgba(79,157,255,.10),
-        var(--shadow-soft);
-}
-
-.search-icon {
-    color: var(--muted);
-    flex: 0 0 auto;
-}
-
-.search-box input {
+.city-input {
     width: 100%;
-    height: 100%;
-    min-width: 0;
-    border: 0;
-    outline: 0;
-    background: transparent;
+    height: 50px;
+
+    padding: 0 17px 0 46px;
+
+    border: 1px solid var(--border);
+    border-radius: 15px;
+
+    background: var(--surface);
     color: var(--text);
+
     font-size: 14px;
     font-weight: 500;
+
+    outline: none;
+
+    box-shadow:
+        0 5px 20px rgba(0,0,0,.08);
+
+    transition:
+        border-color var(--transition),
+        box-shadow var(--transition);
 }
 
-.search-box input::placeholder {
-    color: var(--faint);
+.city-input::placeholder {
+    color: var(--text-faint);
 }
 
-.clear-search {
-    width: 28px;
-    height: 28px;
-    border: 0;
-    border-radius: 8px;
-    background: transparent;
-    color: var(--muted);
-    display: none;
-    align-items: center;
-    justify-content: center;
+.city-input:focus {
+    border-color: var(--accent);
+
+    box-shadow:
+        0 0 0 3px rgba(79,157,255,.11);
 }
 
-.clear-search:hover {
-    background: var(--surface-alt);
-    color: var(--text);
+.search-box::before {
+    content: "⌕";
+
+    position: absolute;
+    left: 17px;
+    top: 50%;
+
+    transform: translateY(-53%);
+
+    color: var(--text-muted);
+
+    font-size: 25px;
+    line-height: 1;
+
+    pointer-events: none;
 }
 
 .search-actions {
-    display: flex;
-    gap: 9px;
+    display: contents;
 }
 
 .primary-button,
 .secondary-button {
-    height: 52px;
-    padding: 0 18px;
+    height: 50px;
+
     border-radius: 15px;
-    border: 1px solid transparent;
+
     font-size: 13px;
     font-weight: 800;
-    display: inline-flex;
+
+    display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
-    white-space: nowrap;
-    transition: .18s ease;
+
+    transition:
+        transform var(--transition),
+        background var(--transition),
+        box-shadow var(--transition);
 }
 
 .primary-button {
-    background: var(--accent);
+    border: 1px solid var(--accent);
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--accent),
+            var(--accent-dark)
+        );
+
     color: #fff;
-    box-shadow: 0 8px 22px rgba(37,99,235,.22);
+
+    box-shadow:
+        0 10px 25px rgba(37,99,235,.22);
 }
 
 .primary-button:hover {
-    background: var(--accent-hover);
     transform: translateY(-1px);
+    background: var(--accent-hover);
+
+    box-shadow:
+        0 13px 30px rgba(37,99,235,.28);
 }
 
 .secondary-button {
+    border: 1px solid var(--border);
+
     background: var(--surface);
-    border-color: var(--border);
     color: var(--text);
+
     box-shadow: var(--shadow-soft);
 }
 
 .secondary-button:hover {
-    border-color: rgba(79,157,255,.45);
     transform: translateY(-1px);
+
+    border-color: rgba(79,157,255,.45);
+    background: var(--surface-alt);
+}
+
+.button-icon {
+    font-size: 15px;
+}
+
+.button-arrow {
+    font-size: 16px;
+    opacity: .8;
 }
 
 .search-error {
-    margin-top: 8px;
-    min-height: 18px;
+    margin: 8px 3px 0;
+
     color: var(--danger);
+
     font-size: 12px;
     font-weight: 600;
 }
 
+
+/* =========================================================
+   TRY / RECENT
+   ========================================================= */
+
+.try-cities,
 .recent-row {
     display: flex;
     align-items: center;
-    gap: 9px;
+    flex-wrap: wrap;
+    gap: 7px;
+
     margin-top: 10px;
-    min-height: 30px;
-    overflow-x: auto;
 }
 
+.try-label,
 .recent-label {
-    color: var(--faint);
+    color: var(--text-faint);
+
     font-size: 11px;
     font-weight: 700;
-    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+
+    margin-right: 2px;
+}
+
+.try-city,
+.recent-chip {
+    height: 29px;
+
+    padding: 0 11px;
+
+    border: 1px solid var(--border);
+    border-radius: 999px;
+
+    background: var(--surface);
+    color: var(--text-muted);
+
+    font-size: 11px;
+    font-weight: 700;
+
+    transition:
+        background var(--transition),
+        color var(--transition),
+        border-color var(--transition),
+        transform var(--transition);
+}
+
+.try-city:hover,
+.recent-chip:hover {
+    transform: translateY(-1px);
+
+    color: var(--text);
+    border-color: rgba(79,157,255,.42);
+    background: var(--surface-alt);
 }
 
 .recent-list {
     display: flex;
+    flex-wrap: wrap;
     gap: 7px;
-    flex-wrap: wrap;
 }
 
-.recent-chip {
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--muted);
-    padding: 6px 10px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 700;
-    transition: .16s ease;
-}
-
-.recent-chip:hover {
-    color: var(--text);
-    border-color: rgba(79,157,255,.42);
-}
 
 /* =========================================================
-   MAIN CONTENT
+   GENERAL STATES
    ========================================================= */
 
-main {
-    width: min(1240px, 100%);
-    margin: 0 auto;
-}
+.welcome-state,
+.loading-state,
+.error-state {
+    min-height: 420px;
 
-.state {
-    width: 100%;
-}
+    display: grid;
+    place-items: center;
 
-/* =========================================================
-   WELCOME
-   ========================================================= */
-
-.welcome-card {
-    min-height: 360px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 28px;
-    padding: 42px 46px;
-    background:
-        radial-gradient(
-            circle at 80% 25%,
-            rgba(79,157,255,.30),
-            transparent 28%
-        ),
-        radial-gradient(
-            circle at 15% 90%,
-            rgba(74,222,154,.09),
-            transparent 30%
-        ),
-        linear-gradient(135deg, #101B34 0%, #131F39 52%, #0D1529 100%);
-    border: 1px solid rgba(255,255,255,.07);
-    box-shadow: 0 28px 70px rgba(0,0,0,.30);
-}
-
-.welcome-card::before {
-    content: "";
-    position: absolute;
-    width: 330px;
-    height: 330px;
-    border-radius: 50%;
-    right: -110px;
-    top: -130px;
-    background: rgba(79,157,255,.10);
-    filter: blur(3px);
-}
-
-.welcome-icons {
-    position: relative;
-    display: flex;
-    gap: 12px;
-    margin-bottom: 30px;
-}
-
-.welcome-icons > * {
-    width: 48px;
-    height: 48px;
-    border-radius: 15px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(255,255,255,.075);
-    border: 1px solid rgba(255,255,255,.08);
-}
-
-.welcome-eyebrow,
-.loading-eyebrow,
-.error-eyebrow {
-    color: #74B2FF;
-    font-size: 10px;
-    font-weight: 900;
-    letter-spacing: .16em;
-    text-transform: uppercase;
-}
-
-.welcome-card h1 {
-    position: relative;
-    margin: 10px 0 12px;
-    color: #F5F8FF;
-    font-size: clamp(34px, 5vw, 58px);
-    line-height: .98;
-    letter-spacing: -.055em;
-    font-weight: 850;
-    max-width: 700px;
-}
-
-.welcome-card p {
-    position: relative;
-    max-width: 650px;
-    margin: 0;
-    color: #AAB8D1;
-    font-size: 14px;
-    line-height: 1.7;
-}
-
-.welcome-tips {
-    position: relative;
-    display: flex;
-    gap: 9px;
-    flex-wrap: wrap;
-    margin-top: 25px;
-}
-
-.welcome-tips > * {
-    padding: 8px 11px;
-    border-radius: 999px;
-    color: #C7D4EA;
-    background: rgba(255,255,255,.06);
-    border: 1px solid rgba(255,255,255,.08);
-    font-size: 11px;
-    font-weight: 700;
-}
-
-/* =========================================================
-   LOADING
-   ========================================================= */
-
-.loading-card {
-    min-height: 330px;
-    border-radius: 28px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
     padding: 40px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-}
 
-.loading-spinner {
-    width: 46px;
-    height: 46px;
-    border: 3px solid var(--border);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-}
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
 
-@keyframes spin {
-    to { transform: rotate(360deg); }
-}
-
-.loading-copy {
-    margin-top: 18px;
-}
-
-.loading-copy h2 {
-    margin: 7px 0 0;
-    font-size: 22px;
-    letter-spacing: -.025em;
-}
-
-.loading-skeletons {
-    width: min(600px, 100%);
-    display: flex;
-    gap: 10px;
-    margin-top: 24px;
-}
-
-.loading-skeletons span {
-    height: 8px;
-    flex: 1;
-    border-radius: 999px;
-    background: var(--surface-alt);
-    overflow: hidden;
-}
-
-.loading-skeletons span::after {
-    content: "";
-    display: block;
-    height: 100%;
-    width: 45%;
-    background: rgba(79,157,255,.22);
-    animation: skeleton 1.3s ease-in-out infinite;
-}
-
-@keyframes skeleton {
-    from { transform: translateX(-130%); }
-    to { transform: translateX(240%); }
-}
-
-/* =========================================================
-   ERROR
-   ========================================================= */
-
-.error-card {
-    min-height: 330px;
-    border-radius: 28px;
     background: var(--surface);
-    border: 1px solid rgba(255,107,122,.20);
-    box-shadow: var(--shadow);
-    padding: 42px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+
+    box-shadow: var(--shadow-soft);
+}
+
+.loading-state {
+    color: var(--text-muted);
+}
+
+.error-state {
     text-align: center;
 }
 
-.error-icon {
-    width: 60px;
-    height: 60px;
-    border-radius: 20px;
-    background: rgba(255,107,122,.10);
-    color: var(--danger);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 25px;
+.error-title {
+    font-size: 20px;
+    font-weight: 800;
 }
 
-.error-card h2 {
-    margin: 17px 0 7px;
-    font-size: 24px;
-}
+.error-message {
+    max-width: 520px;
+    margin: 8px auto 20px;
 
-.error-card p {
-    max-width: 600px;
-    margin: 0 0 22px;
-    color: var(--muted);
-    font-size: 13px;
+    color: var(--text-muted);
     line-height: 1.6;
 }
+
 
 /* =========================================================
    WEATHER DASHBOARD
    ========================================================= */
 
 .weather-dashboard {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 20px;
+    display: block;
 }
+
+.current-weather-layout {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+
+    gap: 28px;
+
+    margin-top: 22px;
+}
+
 
 /* =========================================================
    HERO CARD
    ========================================================= */
 
 .hero-card {
-    min-height: 292px;
     position: relative;
+
+    min-height: 296px;
+
+    padding: 25px 28px;
+
     overflow: hidden;
-    border-radius: 28px;
-    padding: 27px 30px;
+
+    border-radius: var(--radius-xl);
+
     color: #fff;
+
     background:
-        radial-gradient(
-            circle at 84% 24%,
-            rgba(126,207,255,.25),
-            transparent 25%
-        ),
-        linear-gradient(135deg, #1D5FB8 0%, #0B7C8F 100%);
+        linear-gradient(
+            145deg,
+            #1d5fb8 0%,
+            #0b7c8f 100%
+        );
+
     box-shadow:
-        0 26px 60px rgba(10,40,90,.28),
-        inset 0 1px 0 rgba(255,255,255,.12);
-    border: 1px solid rgba(255,255,255,.10);
-    transition: background .3s ease;
+        0 24px 60px rgba(11,74,145,.25);
+
+    isolation: isolate;
 }
 
-.hero-card[data-kind="clouds"] {
+.hero-card[data-weather="clear"] {
     background:
-        radial-gradient(circle at 85% 18%, rgba(255,255,255,.13), transparent 25%),
-        linear-gradient(135deg, #3A4D6E, #1F2C46);
+        linear-gradient(
+            145deg,
+            #1d5fb8,
+            #0b7c8f
+        );
 }
 
-.hero-card[data-kind="rain"] {
+.hero-card[data-weather="clouds"] {
     background:
-        radial-gradient(circle at 80% 15%, rgba(120,180,255,.14), transparent 25%),
-        linear-gradient(135deg, #24466F, #101F3A);
+        linear-gradient(
+            145deg,
+            #3a4d6e,
+            #1f2c46
+        );
 }
 
-.hero-card[data-kind="storm"] {
+.hero-card[data-weather="rain"] {
     background:
-        radial-gradient(circle at 80% 15%, rgba(180,150,255,.13), transparent 25%),
-        linear-gradient(135deg, #2E2852, #12101F);
+        linear-gradient(
+            145deg,
+            #24466f,
+            #101f3a
+        );
 }
 
-.hero-card[data-kind="snow"] {
+.hero-card[data-weather="storm"] {
     background:
-        radial-gradient(circle at 80% 15%, rgba(255,255,255,.16), transparent 25%),
-        linear-gradient(135deg, #41607F, #24374F);
+        linear-gradient(
+            145deg,
+            #2e2852,
+            #12101f
+        );
 }
 
-.hero-card[data-kind="fog"] {
+.hero-card[data-weather="snow"] {
     background:
-        radial-gradient(circle at 80% 15%, rgba(255,255,255,.10), transparent 25%),
-        linear-gradient(135deg, #404D5F, #232B38);
+        linear-gradient(
+            145deg,
+            #41607f,
+            #24374f
+        );
+}
+
+.hero-card[data-weather="fog"] {
+    background:
+        linear-gradient(
+            145deg,
+            #404d5f,
+            #232b38
+        );
 }
 
 .hero-card.night {
     background:
-        radial-gradient(circle at 80% 18%, rgba(93,115,255,.22), transparent 26%),
-        linear-gradient(135deg, #151D42, #090D22);
+        linear-gradient(
+            145deg,
+            #151d42,
+            #090d22
+        );
+}
+
+.hero-card::before {
+    content: "";
+
+    position: absolute;
+    inset: -30% -10% auto auto;
+
+    width: 330px;
+    height: 330px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,.15),
+            rgba(255,255,255,0) 67%
+        );
+
+    pointer-events: none;
+    z-index: -1;
+}
+
+.hero-card::after {
+    content: "";
+
+    position: absolute;
+    inset: auto -5% -45% 20%;
+
+    height: 240px;
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(255,255,255,.07),
+            transparent 65%
+        );
+
+    pointer-events: none;
+    z-index: -1;
 }
 
 .hero-stars {
     position: absolute;
     inset: 0;
+
     pointer-events: none;
+
     opacity: .65;
-}
 
-.hero-stars::before,
-.hero-stars::after {
-    content: "";
-    position: absolute;
-    width: 3px;
-    height: 3px;
-    border-radius: 50%;
-    background: rgba(255,255,255,.75);
-    box-shadow:
-        100px 34px rgba(255,255,255,.55),
-        220px 80px rgba(255,255,255,.40),
-        420px 35px rgba(255,255,255,.55),
-        650px 100px rgba(255,255,255,.35),
-        800px 45px rgba(255,255,255,.45);
-}
-
-.hero-stars::after {
-    width: 2px;
-    height: 2px;
-    left: 20%;
-    top: 40%;
-    box-shadow:
-        120px 30px rgba(255,255,255,.45),
-        310px -20px rgba(255,255,255,.38),
-        560px 50px rgba(255,255,255,.45);
+    background:
+        radial-gradient(circle at 75% 20%, #fff 0 1px, transparent 2px),
+        radial-gradient(circle at 84% 31%, #fff 0 1px, transparent 2px),
+        radial-gradient(circle at 67% 34%, #fff 0 1px, transparent 2px),
+        radial-gradient(circle at 91% 17%, #fff 0 1px, transparent 2px),
+        radial-gradient(circle at 59% 23%, #fff 0 1px, transparent 2px);
 }
 
 .hero-rain {
     position: absolute;
     inset: 0;
+
     pointer-events: none;
-    opacity: .15;
+
+    opacity: .16;
+
     background:
         repeating-linear-gradient(
             105deg,
-            transparent 0 45px,
-            rgba(255,255,255,.20) 46px,
-            transparent 47px 78px
+            transparent 0 20px,
+            rgba(255,255,255,.45) 21px,
+            transparent 22px 38px
         );
+
+    transform: skewX(-10deg);
 }
+
+
+/* =========================================================
+   HERO CONTENT
+   ========================================================= */
 
 .hero-content {
     position: relative;
     z-index: 2;
+
     height: 100%;
 }
 
@@ -766,150 +776,204 @@ main {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 15px;
-}
 
-.weather-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 7px 10px;
-    border-radius: 999px;
-    color: rgba(255,255,255,.90);
-    background: rgba(255,255,255,.10);
-    border: 1px solid rgba(255,255,255,.12);
-    backdrop-filter: blur(10px);
-    font-size: 10px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: .08em;
-}
-
-.favorite-button {
-    width: 38px;
-    height: 38px;
-    border-radius: 12px;
-    border: 1px solid rgba(255,255,255,.14);
-    background: rgba(255,255,255,.09);
-    color: rgba(255,255,255,.72);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    transition: .18s ease;
-}
-
-.favorite-button:hover,
-.favorite-button.active {
-    color: #FFC53D;
-    background: rgba(255,255,255,.14);
+    min-height: 30px;
 }
 
 .hero-location {
-    margin-top: 19px;
+    min-width: 0;
 }
 
-.city-name,
-#cityName {
-    color: #fff;
-    font-size: 27px;
-    line-height: 1;
+.hero-status,
+.weather-status {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 25px;
+
+    padding: 0 10px;
+
+    border: 1px solid rgba(255,255,255,.16);
+    border-radius: 999px;
+
+    background: rgba(255,255,255,.12);
+
+    color: rgba(255,255,255,.94);
+
+    font-size: 10px;
     font-weight: 800;
-    letter-spacing: -.035em;
+
+    letter-spacing: .5px;
+    text-transform: uppercase;
+
+    backdrop-filter: blur(8px);
 }
 
-.country-name,
-#countryName {
-    margin-top: 5px;
-    color: rgba(255,255,255,.64);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .08em;
-    text-transform: uppercase;
+.favorite-button {
+    width: 35px;
+    height: 35px;
+
+    display: grid;
+    place-items: center;
+
+    border: 1px solid rgba(255,255,255,.18);
+    border-radius: 11px;
+
+    background: rgba(255,255,255,.08);
+
+    color: rgba(255,255,255,.72);
+
+    font-size: 19px;
+
+    transition:
+        background var(--transition),
+        color var(--transition),
+        transform var(--transition);
+}
+
+.favorite-button:hover {
+    transform: scale(1.04);
+    background: rgba(255,255,255,.15);
+    color: #fff;
+}
+
+.favorite-button.active {
+    color: #ffd45c;
 }
 
 .hero-main {
-    min-height: 160px;
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 190px;
-    align-items: center;
-    gap: 20px;
-}
+    position: relative;
 
-.hero-temperature {
+    min-height: 180px;
+
     display: flex;
-    align-items: flex-start;
-    gap: 3px;
-}
-
-.temperature,
-#temperature {
-    font-size: clamp(64px, 7vw, 84px);
-    line-height: .86;
-    font-weight: 850;
-    letter-spacing: -.07em;
-    color: #fff;
-}
-
-.temperature-unit {
-    margin-top: 7px;
-    color: rgba(255,255,255,.72);
-    font-size: 18px;
-    font-weight: 800;
+    align-items: center;
 }
 
 .hero-details {
-    margin-top: 13px;
+    position: relative;
+    z-index: 3;
+
+    min-width: 0;
 }
 
-.feels-like {
-    color: rgba(255,255,255,.68);
-    font-size: 11px;
+.city-name {
+    margin-top: 14px;
+
+    font-size: clamp(25px, 3vw, 34px);
+    line-height: 1.05;
+
+    font-weight: 800;
+    letter-spacing: -.8px;
+
+    color: #fff;
+}
+
+.country-name {
+    margin-top: 5px;
+
+    color: rgba(255,255,255,.67);
+
+    font-size: 12px;
     font-weight: 600;
 }
 
-.condition {
-    margin-top: 5px;
+.temperature {
+    margin-top: 13px;
+
+    font-size: clamp(66px, 6vw, 84px);
+    line-height: .92;
+
+    font-weight: 800;
+    letter-spacing: -4px;
+
     color: #fff;
-    font-size: 14px;
-    font-weight: 750;
 }
 
-.high-low {
-    margin-top: 8px;
-    color: rgba(255,255,255,.70);
-    font-size: 11px;
+.feels-like {
+    margin-top: 7px;
+
+    color: rgba(255,255,255,.68);
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.condition-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 8px;
+
+    margin-top: 10px;
+}
+
+.condition {
+    color: rgba(255,255,255,.94);
+
+    font-size: 13px;
     font-weight: 700;
 }
 
-.hero-icon-area {
-    min-height: 145px;
+.high-low {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    gap: 8px;
+
+    color: rgba(255,255,255,.68);
+
+    font-size: 12px;
+    font-weight: 600;
 }
 
-#heroWeatherIcon {
-    width: 150px;
-    height: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 108px;
-    filter: drop-shadow(0 12px 18px rgba(0,0,0,.20));
+.hero-icon-area {
+    position: absolute;
+
+    right: 4px;
+    top: 50%;
+
+    width: 185px;
+    height: 185px;
+
+    transform: translateY(-43%);
+
+    display: grid;
+    place-items: center;
+
+    pointer-events: none;
+}
+
+.hero-weather-image {
+    width: 145px;
+    height: 145px;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(0 18px 20px rgba(0,0,0,.20));
 }
 
 .hero-footer {
+    position: absolute;
+
+    left: 0;
+    right: 0;
+    bottom: 0;
+
     display: flex;
     justify-content: space-between;
-    gap: 20px;
-    color: rgba(255,255,255,.58);
+    gap: 12px;
+
+    padding-top: 11px;
+
+    border-top: 1px solid rgba(255,255,255,.12);
+
+    color: rgba(255,255,255,.55);
+
     font-size: 10px;
-    font-weight: 650;
+    font-weight: 600;
 }
 
-.hero-footer > * {
-    white-space: nowrap;
-}
 
 /* =========================================================
    METRICS
@@ -917,396 +981,595 @@ main {
 
 .metrics-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 12px;
+
+    grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+
+    grid-template-rows:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 10px;
+
+    min-width: 0;
 }
 
 .metric-card {
-    min-height: 124px;
-    border-radius: 20px;
-    background: var(--surface);
+    min-width: 0;
+    min-height: 143px;
+
+    padding: 17px;
+
     border: 1px solid var(--border);
+    border-radius: 18px;
+
+    background: var(--surface);
+
     box-shadow: var(--shadow-soft);
-    padding: 18px;
-    display: flex;
-    align-items: flex-start;
-    gap: 13px;
-    transition: .18s ease;
+
+    transition:
+        transform var(--transition),
+        border-color var(--transition),
+        background var(--transition);
 }
 
 .metric-card:hover {
     transform: translateY(-2px);
-    border-color: rgba(79,157,255,.30);
-    box-shadow: var(--shadow);
+    border-color: rgba(79,157,255,.32);
+    background: var(--surface-alt);
+}
+
+.metric-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 8px;
 }
 
 .metric-icon {
-    width: 38px;
-    height: 38px;
-    flex: 0 0 38px;
-    border-radius: 12px;
-    background: rgba(79,157,255,.10);
-    color: var(--accent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 17px;
-}
+    width: 30px;
+    height: 30px;
 
-.metric-content {
-    min-width: 0;
+    display: grid;
+    place-items: center;
+
+    border-radius: 9px;
+
+    background:
+        rgba(79,157,255,.10);
+
+    color: var(--accent);
+
+    font-size: 15px;
 }
 
 .metric-label {
-    color: var(--muted);
-    font-size: 10px;
+    margin-left: auto;
+
+    color: var(--text-faint);
+
+    font-size: 9px;
     font-weight: 800;
+
+    letter-spacing: .75px;
     text-transform: uppercase;
-    letter-spacing: .07em;
 }
 
 .metric-value {
-    margin-top: 7px;
+    margin-top: 17px;
+
     color: var(--text);
+
     font-size: 19px;
     line-height: 1.05;
-    font-weight: 820;
-    letter-spacing: -.025em;
+
+    font-weight: 800;
+    letter-spacing: -.3px;
+
+    white-space: nowrap;
 }
 
 .metric-sub {
-    margin-top: 5px;
-    color: var(--faint);
+    margin-top: 6px;
+
+    color: var(--text-muted);
+
     font-size: 10px;
-    line-height: 1.35;
-    font-weight: 650;
+    font-weight: 600;
+
+    line-height: 1.3;
 }
+
 
 /* =========================================================
    FORECAST SECTIONS
    ========================================================= */
 
 .forecast-section {
-    margin-top: 2px;
+    margin-top: 28px;
 }
 
-.section-heading {
+.forecast-heading {
     display: flex;
-    align-items: flex-end;
+    align-items: baseline;
     justify-content: space-between;
-    gap: 15px;
-    margin: 4px 2px 12px;
+
+    margin-bottom: 12px;
 }
 
-.section-heading h2 {
-    margin: 0;
+.forecast-title {
     color: var(--text);
+
     font-size: 17px;
-    font-weight: 820;
-    letter-spacing: -.025em;
+    font-weight: 800;
+
+    letter-spacing: -.25px;
 }
 
-.section-note {
-    color: var(--faint);
-    font-size: 10px;
+.forecast-subtitle,
+.forecast-location {
+    color: var(--text-faint);
+
+    font-size: 11px;
     font-weight: 600;
 }
 
+
+/* =========================================================
+   HOURLY FORECAST
+   ========================================================= */
+
 .hourly-grid {
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+
+    grid-template-columns:
+        repeat(6, minmax(0, 1fr));
+
     gap: 10px;
 }
 
 .hour-card {
-    min-height: 172px;
-    border-radius: 22px;
-    background: var(--surface);
+    min-width: 0;
+    min-height: 168px;
+
+    padding: 15px 11px;
+
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-soft);
-    padding: 17px 13px;
+    border-radius: 17px;
+
+    background: var(--surface);
+
     text-align: center;
-    transition: .18s ease;
+
+    box-shadow: var(--shadow-soft);
+
+    transition:
+        transform var(--transition),
+        border-color var(--transition),
+        background var(--transition);
 }
 
 .hour-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(79,157,255,.30);
-    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+    border-color: rgba(79,157,255,.35);
+    background: var(--surface-alt);
 }
 
 .hour-time {
-    color: var(--muted);
+    color: var(--text-muted);
+
     font-size: 10px;
-    font-weight: 750;
+    font-weight: 700;
 }
 
 .hour-icon {
-    height: 57px;
-    margin: 7px 0 4px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 35px;
+    width: 54px;
+    height: 54px;
+
+    display: grid;
+    place-items: center;
+
+    margin: 9px auto 3px;
+}
+
+.forecast-weather-image {
+    width: 50px;
+    height: 50px;
+
+    object-fit: contain;
+
+    filter:
+        drop-shadow(0 7px 8px rgba(0,0,0,.13));
 }
 
 .hour-temp {
     color: var(--text);
-    font-size: 19px;
-    font-weight: 830;
+
+    font-size: 18px;
+    font-weight: 800;
 }
 
 .hour-condition {
     margin-top: 5px;
-    min-height: 27px;
-    color: var(--muted);
-    font-size: 9px;
+
+    min-height: 28px;
+
+    color: var(--text-muted);
+
+    font-size: 10px;
+    font-weight: 600;
+
     line-height: 1.35;
-    font-weight: 650;
 }
 
-.hour-pop {
+.hour-rain {
     margin-top: 8px;
+
     color: var(--accent);
+
     font-size: 9px;
-    font-weight: 800;
+    font-weight: 700;
 }
+
+.hour-rain.muted {
+    color: var(--text-faint);
+}
+
+
+/* =========================================================
+   DAILY FORECAST
+   ========================================================= */
 
 .daily-grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 12px;
+
+    grid-template-columns:
+        repeat(5, minmax(0, 1fr));
+
+    gap: 10px;
 }
 
 .day-card {
+    min-width: 0;
     min-height: 222px;
-    position: relative;
-    overflow: hidden;
-    border-radius: 24px;
-    background: var(--surface);
+
+    padding: 16px;
+
     border: 1px solid var(--border);
+    border-radius: 18px;
+
+    background: var(--surface);
+
     box-shadow: var(--shadow-soft);
-    padding: 18px;
-    transition: .18s ease;
+
+    transition:
+        transform var(--transition),
+        border-color var(--transition),
+        background var(--transition);
 }
 
 .day-card:hover {
-    transform: translateY(-3px);
-    border-color: rgba(79,157,255,.30);
-    box-shadow: var(--shadow);
+    transform: translateY(-2px);
+    border-color: rgba(79,157,255,.35);
+    background: var(--surface-alt);
 }
 
-.day-card.today {
-    border-color: rgba(79,157,255,.42);
-    background:
-        radial-gradient(circle at 90% 10%, rgba(79,157,255,.10), transparent 34%),
-        var(--surface);
-}
-
-.day-top {
+.day-header {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
+
     gap: 8px;
 }
 
 .day-name {
     color: var(--text);
-    font-size: 13px;
-    font-weight: 820;
+
+    font-size: 12px;
+    font-weight: 800;
 }
 
 .day-date {
-    color: var(--faint);
-    font-size: 10px;
-    font-weight: 650;
+    margin-top: 3px;
+
+    color: var(--text-faint);
+
+    font-size: 9px;
+    font-weight: 600;
 }
 
 .today-badge {
     padding: 4px 7px;
+
     border-radius: 999px;
-    color: #fff;
-    background: var(--accent);
-    font-size: 8px;
-    font-weight: 850;
-    text-transform: uppercase;
-    letter-spacing: .06em;
+
+    background: rgba(79,157,255,.12);
+    color: var(--accent);
+
+    font-size: 7px;
+    font-weight: 900;
+
+    letter-spacing: .6px;
+}
+
+.day-main {
+    margin-top: 12px;
+
+    text-align: center;
 }
 
 .day-icon {
-    height: 65px;
-    margin: 9px 0 2px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 43px;
+    width: 62px;
+    height: 62px;
+
+    margin: 0 auto;
+
+    display: grid;
+    place-items: center;
+}
+
+.day-icon .forecast-weather-image {
+    width: 57px;
+    height: 57px;
 }
 
 .day-condition {
-    color: var(--muted);
-    font-size: 10px;
-    font-weight: 650;
-    text-align: center;
-    min-height: 15px;
+    margin-top: 5px;
+
+    min-height: 26px;
+
+    color: var(--text-muted);
+
+    font-size: 9px;
+    font-weight: 600;
+
+    line-height: 1.3;
 }
 
-.day-high-low {
+.day-temperatures {
     display: flex;
-    align-items: center;
     justify-content: center;
+    align-items: baseline;
+
     gap: 8px;
-    margin-top: 9px;
+
+    margin-top: 7px;
 }
 
-.day-high {
+.day-temperatures strong {
     color: var(--text);
-    font-size: 14px;
-    font-weight: 820;
+
+    font-size: 17px;
+    font-weight: 800;
 }
 
-.day-low {
-    color: var(--muted);
+.day-temperatures span {
+    color: var(--text-faint);
+
     font-size: 12px;
-    font-weight: 650;
+    font-weight: 700;
 }
 
 .day-range {
-    height: 5px;
-    margin-top: 10px;
+    position: relative;
+
+    height: 4px;
+
+    margin: 13px 0 11px;
+
     border-radius: 999px;
-    overflow: hidden;
+
     background: var(--surface-alt);
+
+    overflow: hidden;
 }
 
-.day-range span {
-    display: block;
-    height: 100%;
+.range-fill {
+    position: absolute;
+
+    left: 12%;
+    right: 12%;
+
+    top: 0;
+    bottom: 0;
+
     border-radius: inherit;
-    background: linear-gradient(90deg, #4F9DFF, #74B2FF);
+
+    background:
+        linear-gradient(
+            90deg,
+            var(--accent),
+            #74b2ff
+        );
 }
 
-.day-pop {
-    margin-top: 8px;
-    color: var(--accent);
-    text-align: center;
+.day-footer {
+    display: flex;
+    justify-content: space-between;
+
+    gap: 8px;
+
+    color: var(--text-faint);
+
     font-size: 9px;
-    font-weight: 800;
+    font-weight: 700;
 }
+
+
+/* =========================================================
+   EMPTY FORECAST
+   ========================================================= */
+
+.forecast-empty {
+    grid-column: 1 / -1;
+
+    padding: 35px;
+
+    border: 1px dashed var(--border);
+    border-radius: 17px;
+
+    color: var(--text-muted);
+
+    text-align: center;
+
+    font-size: 12px;
+}
+
 
 /* =========================================================
    FOOTER
    ========================================================= */
 
 .app-footer {
-    width: min(1240px, 100%);
-    margin: 25px auto 0;
+    margin-top: 34px;
     padding-top: 17px;
+
     border-top: 1px solid var(--border);
+
     display: flex;
-    align-items: center;
     justify-content: space-between;
     gap: 15px;
-    color: var(--faint);
+
+    color: var(--text-faint);
+
     font-size: 10px;
-    font-weight: 650;
+    font-weight: 600;
 }
 
-.app-footer a {
-    color: var(--muted);
-}
 
 /* =========================================================
-   COMMON SVG / ICON HELPERS
+   HIDDEN
    ========================================================= */
 
-svg {
-    max-width: 100%;
+[hidden] {
+    display: none !important;
 }
 
-.icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
 
 /* =========================================================
-   LIGHT MODE
+   LIGHT THEME HERO
    ========================================================= */
 
-html[data-theme="light"] .hero-card,
-body[data-theme="light"] .hero-card {
+:root[data-theme="light"] .hero-card[data-weather="clear"] {
     background:
-        radial-gradient(circle at 84% 24%, rgba(255,255,255,.38), transparent 25%),
-        linear-gradient(135deg, #FFE9B0 0%, #8CCBFA 100%);
-    color: #0E1A33;
-    border-color: rgba(255,255,255,.55);
-    box-shadow: 0 25px 55px rgba(70,110,150,.18);
+        linear-gradient(
+            145deg,
+            #ffe9b0,
+            #8ccbfA
+        );
 }
 
-html[data-theme="light"] .hero-card[data-kind="clouds"],
-body[data-theme="light"] .hero-card[data-kind="clouds"] {
+:root[data-theme="light"] .hero-card[data-weather="clouds"] {
     background:
-        radial-gradient(circle at 85% 18%, rgba(255,255,255,.45), transparent 25%),
-        linear-gradient(135deg, #DDE7F3, #A9BDD6);
+        linear-gradient(
+            145deg,
+            #dde7f3,
+            #a9bdd6
+        );
 }
 
-html[data-theme="light"] .hero-card[data-kind="rain"],
-body[data-theme="light"] .hero-card[data-kind="rain"] {
+:root[data-theme="light"] .hero-card[data-weather="rain"] {
     background:
-        radial-gradient(circle at 80% 15%, rgba(255,255,255,.28), transparent 25%),
-        linear-gradient(135deg, #BCCBE0, #7F98B9);
+        linear-gradient(
+            145deg,
+            #bccbe0,
+            #7f98b9
+        );
 }
 
-html[data-theme="light"] .hero-card[data-kind="storm"],
-body[data-theme="light"] .hero-card[data-kind="storm"] {
+:root[data-theme="light"] .hero-card[data-weather="storm"] {
     background:
-        radial-gradient(circle at 80% 15%, rgba(255,255,255,.22), transparent 25%),
-        linear-gradient(135deg, #7E8CA9, #48567A);
+        linear-gradient(
+            145deg,
+            #7e8ca9,
+            #48567a
+        );
 }
 
-html[data-theme="light"] .hero-card.night,
-body[data-theme="light"] .hero-card.night {
+:root[data-theme="light"] .hero-card[data-weather="snow"] {
     background:
-        radial-gradient(circle at 80% 18%, rgba(255,255,255,.15), transparent 26%),
-        linear-gradient(135deg, #5B6FAE, #2C3868);
+        linear-gradient(
+            145deg,
+            #dce9f7,
+            #a6c3e4
+        );
 }
 
-html[data-theme="light"] .city-name,
-html[data-theme="light"] #cityName,
-body[data-theme="light"] .city-name,
-body[data-theme="light"] #cityName,
-html[data-theme="light"] .temperature,
-html[data-theme="light"] #temperature,
-body[data-theme="light"] .temperature,
-body[data-theme="light"] #temperature,
-html[data-theme="light"] .condition,
-body[data-theme="light"] .condition {
+:root[data-theme="light"] .hero-card[data-weather="fog"] {
+    background:
+        linear-gradient(
+            145deg,
+            #e6ebf1,
+            #b7c1cf
+        );
+}
+
+:root[data-theme="light"] .hero-card.night {
+    background:
+        linear-gradient(
+            145deg,
+            #5b6fae,
+            #2c3868
+        );
+}
+
+:root[data-theme="light"] .hero-card .hero-status,
+:root[data-theme="light"] .hero-card .weather-status,
+:root[data-theme="light"] .hero-card .favorite-button {
+    border-color: rgba(14,26,51,.13);
+    background: rgba(255,255,255,.20);
+}
+
+:root[data-theme="light"] .hero-card .city-name,
+:root[data-theme="light"] .hero-card .temperature,
+:root[data-theme="light"] .hero-card .condition {
     color: #fff;
 }
 
+
 /* =========================================================
-   RESPONSIVE
+   RESPONSIVE — 1100
    ========================================================= */
 
 @media (max-width: 1100px) {
-    .app-shell {
-        padding: 20px;
+
+    #appShell {
+        width: min(1100px, calc(100% - 32px));
+    }
+
+    .current-weather-layout {
+        gap: 18px;
     }
 
     .metrics-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
     }
 
-    .hourly-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+    .metric-card {
+        padding: 14px;
     }
 
-    .daily-grid {
-        grid-template-columns: repeat(5, minmax(0, 1fr));
+    .hero-card {
+        padding: 22px;
+    }
+
+    .hero-icon-area {
+        right: -4px;
+    }
+
+    .hero-weather-image {
+        width: 125px;
+        height: 125px;
     }
 }
 
+
+/* =========================================================
+   RESPONSIVE — 900
+   ========================================================= */
+
 @media (max-width: 900px) {
+
     .topbar {
         align-items: flex-start;
     }
@@ -1316,3993 +1579,213 @@ body[data-theme="light"] .condition {
         justify-content: flex-end;
     }
 
-    .search-row {
-        flex-wrap: wrap;
+    .local-clock {
+        display: none;
     }
 
-    .search-box {
-        flex-basis: 100%;
+    .current-weather-layout {
+        grid-template-columns: 1fr;
     }
 
-    .search-actions {
-        width: 100%;
-    }
-
-    .primary-button,
-    .secondary-button {
-        flex: 1;
-    }
-
-    .hero-main {
-        grid-template-columns: minmax(0, 1fr) 145px;
+    .hero-card {
+        min-height: 300px;
     }
 
     .metrics-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(4, minmax(0, 1fr));
+
+        grid-template-rows: none;
+    }
+
+    .metric-card {
+        min-height: 130px;
     }
 
     .daily-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(5, minmax(145px, 1fr));
+
+        overflow-x: auto;
+        padding-bottom: 5px;
+    }
+
+    .day-card {
+        min-width: 145px;
     }
 }
 
-@media (max-width: 650px) {
-    .app-shell {
-        padding: 14px;
+
+/* =========================================================
+   RESPONSIVE — 760
+   ========================================================= */
+
+@media (max-width: 760px) {
+
+    #appShell {
+        width: min(100% - 24px, 680px);
+        padding-top: 16px;
     }
 
     .topbar {
         flex-direction: column;
-        gap: 15px;
+        align-items: stretch;
+        gap: 14px;
     }
 
     .top-controls {
-        width: 100%;
         justify-content: flex-start;
     }
 
-    #localClock {
-        display: none;
-    }
-
-    .search-actions {
-        flex-direction: column;
+    .search-row {
+        grid-template-columns: 1fr;
     }
 
     .primary-button,
     .secondary-button {
         width: 100%;
-        flex: none;
-    }
-
-    .welcome-card {
-        min-height: 330px;
-        padding: 30px 25px;
-    }
-
-    .welcome-card h1 {
-        font-size: 38px;
     }
 
     .hero-card {
-        padding: 22px;
-    }
-
-    .hero-main {
-        grid-template-columns: 1fr;
+        min-height: 330px;
     }
 
     .hero-icon-area {
-        position: absolute;
-        right: 5px;
-        top: 65px;
-        width: 130px;
-        min-height: 130px;
-        opacity: .85;
+        right: -8px;
+        opacity: .72;
     }
 
-    #heroWeatherIcon {
-        width: 125px;
-        height: 125px;
-        font-size: 82px;
-    }
-
-    .hero-temperature {
-        padding-right: 90px;
-    }
-
-    .temperature,
-    #temperature {
-        font-size: 64px;
+    .hero-weather-image {
+        width: 115px;
+        height: 115px;
     }
 
     .metrics-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(2, minmax(0, 1fr));
+
+        grid-template-rows:
+            repeat(4, minmax(0, 1fr));
+    }
+
+    .metric-card {
+        min-height: 125px;
     }
 
     .hourly-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns:
+            repeat(6, 130px);
+
+        overflow-x: auto;
+        padding-bottom: 5px;
     }
 
-    .daily-grid {
-        grid-template-columns: 1fr;
+    .hour-card {
+        min-width: 130px;
+    }
+
+    .forecast-heading {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 4px;
     }
 
     .app-footer {
         flex-direction: column;
-        align-items: flex-start;
     }
 }
 
-@media (max-width: 400px) {
-    .metrics-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .hourly-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-}
 
 /* =========================================================
-   HIDDEN STATE
+   RESPONSIVE — 520
    ========================================================= */
 
-[hidden],
-.state[hidden],
-#weatherDashboard[hidden],
-#loadingState[hidden],
-#errorState[hidden],
-#welcomeState[hidden] {
-    display: none !important;
-}
-/* =========================================================
-   SKYPLUSE DESKTOP MATCH — FINAL
-   Browser layout matched to the Tkinter SkyPulse screen
-   ========================================================= */
+@media (max-width: 520px) {
 
-html,
-body {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100%;
-    min-height: 100%;
-    background: #0A0F1E !important;
-    color: #EAF0FB;
-}
-
-body {
-    font-family: "Segoe UI", Arial, sans-serif !important;
-    overflow-x: hidden;
-}
-
-.app-shell {
-    width: 100% !important;
-    max-width: none !important;
-    min-height: 100vh !important;
-    padding: 0 24px 24px !important;
-    box-sizing: border-box;
-    background: #0A0F1E !important;
-}
-
-/* ---------- TOP BAR ---------- */
-
-.topbar {
-    width: 100% !important;
-    max-width: none !important;
-    height: 98px !important;
-    margin: 0 !important;
-    padding: 18px 0 12px !important;
-    box-sizing: border-box;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-}
-
-.brand {
-    display: flex !important;
-    align-items: center !important;
-    gap: 14px !important;
-}
-
-.brand-mark {
-    width: 46px !important;
-    height: 46px !important;
-    min-width: 46px !important;
-    border-radius: 13px !important;
-    background: linear-gradient(145deg, #4F9DFF, #2563EB) !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    box-shadow: 0 8px 24px rgba(37,99,235,.25) !important;
-}
-
-.brand-copy {
-    display: flex !important;
-    flex-direction: column !important;
-    gap: 2px !important;
-}
-
-.brand-name {
-    font-size: 24px !important;
-    line-height: 1 !important;
-    font-weight: 800 !important;
-    color: #EAF0FB !important;
-}
-
-.brand-tagline {
-    font-size: 12px !important;
-    color: #95A3C0 !important;
-}
-
-.top-controls {
-    display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
-}
-
-#clockText {
-    color: #95A3C0 !important;
-    font-size: 14px !important;
-    margin-right: 8px !important;
-}
-
-/* ---------- UNIT / ICON BUTTONS ---------- */
-
-.unit-toggle {
-    height: 40px !important;
-    display: flex !important;
-    align-items: center !important;
-    padding: 3px !important;
-    border: 1px solid #25314F !important;
-    border-radius: 22px !important;
-    background: #131B2E !important;
-}
-
-.unit-btn {
-    height: 34px !important;
-    min-width: 48px !important;
-    padding: 0 14px !important;
-    border: 0 !important;
-    border-radius: 18px !important;
-    background: transparent !important;
-    color: #95A3C0 !important;
-    font-weight: 700 !important;
-}
-
-.unit-btn.active {
-    background: #4F9DFF !important;
-    color: #04122B !important;
-}
-
-.icon-button {
-    width: 42px !important;
-    height: 42px !important;
-    border-radius: 50% !important;
-    border: 1px solid #25314F !important;
-    background: #131B2E !important;
-    color: #EAF0FB !important;
-}
-
-/* ---------- SEARCH ---------- */
-
-.search-section {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.search-row {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) 176px 166px !important;
-    gap: 14px !important;
-    align-items: center !important;
-}
-
-.search-box {
-    height: 52px !important;
-    box-sizing: border-box !important;
-    border: 2px solid #4F9DFF !important;
-    border-radius: 28px !important;
-    background: #131B2E !important;
-    box-shadow: 0 0 0 1px rgba(79,157,255,.08) !important;
-}
-
-.search-box input,
-#cityInput {
-    height: 100% !important;
-    color: #EAF0FB !important;
-    background: transparent !important;
-    font-size: 15px !important;
-}
-
-.search-box input::placeholder,
-#cityInput::placeholder {
-    color: #5F6E8C !important;
-    opacity: 1 !important;
-}
-
-.search-actions {
-    display: contents !important;
-}
-
-.primary-button {
-    height: 52px !important;
-    min-width: 176px !important;
-    border-radius: 28px !important;
-    background: #4F9DFF !important;
-    color: #04122B !important;
-    border: none !important;
-    font-weight: 800 !important;
-    font-size: 14px !important;
-    box-shadow: none !important;
-}
-
-.secondary-button {
-    height: 52px !important;
-    min-width: 166px !important;
-    border-radius: 28px !important;
-    background: #131B2E !important;
-    color: #EAF0FB !important;
-    border: 1px solid #25314F !important;
-    font-weight: 700 !important;
-}
-
-/* ---------- TRY CITIES ---------- */
-
-.try-cities {
-    display: flex !important;
-    align-items: center !important;
-    gap: 9px !important;
-    margin: 28px 0 16px !important;
-    min-height: 34px !important;
-}
-
-.try-label {
-    color: #95A3C0 !important;
-    font-size: 14px !important;
-    margin-right: 3px !important;
-}
-
-.try-city {
-    border: 1px solid #25314F !important;
-    background: #1B2640 !important;
-    color: #EAF0FB !important;
-    border-radius: 22px !important;
-    padding: 9px 17px !important;
-    font-weight: 700 !important;
-    font-size: 14px !important;
-    cursor: pointer !important;
-}
-
-.try-city:hover {
-    background: #253657 !important;
-    border-color: #4F9DFF !important;
-}
-
-/* Hide recent row on welcome screen */
-#recentRow {
-    display: none !important;
-}
-
-/* ---------- WELCOME ---------- */
-
-#welcomeState {
-    width: 100% !important;
-    margin: 0 !important;
-}
-
-.welcome-card {
-    position: relative !important;
-    width: 100% !important;
-    min-height: 368px !important;
-    height: 368px !important;
-    box-sizing: border-box !important;
-    margin: 0 !important;
-    padding: 34px 40px 30px !important;
-    border-radius: 28px !important;
-    background: #1B2B48 !important;
-    border: 1px solid #253B5F !important;
-    box-shadow: 0 12px 35px rgba(0,0,0,.18) !important;
-    overflow: hidden !important;
-
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    text-align: center !important;
-}
-
-.welcome-card::after {
-    content: "" !important;
-    position: absolute !important;
-    width: 280px !important;
-    height: 280px !important;
-    right: -80px !important;
-    top: -110px !important;
-    border-radius: 50% !important;
-    background: rgba(79,157,255,.08) !important;
-    pointer-events: none !important;
-}
-
-.welcome-icons {
-    position: relative !important;
-    z-index: 2 !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 27px !important;
-    margin: 2px 0 25px !important;
-}
-
-.welcome-weather-icon {
-    width: auto !important;
-    height: auto !important;
-    padding: 0 !important;
-    border: 0 !important;
-    background: transparent !important;
-    box-shadow: none !important;
-    font-size: 38px !important;
-    line-height: 1 !important;
-}
-
-.welcome-eyebrow {
-    position: relative !important;
-    z-index: 2 !important;
-    color: #4F9DFF !important;
-    font-size: 11px !important;
-    font-weight: 800 !important;
-    letter-spacing: 1.7px !important;
-    margin-bottom: 12px !important;
-}
-
-.welcome-card h1 {
-    position: relative !important;
-    z-index: 2 !important;
-    margin: 0 !important;
-    font-size: 34px !important;
-    line-height: 1.15 !important;
-    font-weight: 800 !important;
-    color: #EAF0FB !important;
-}
-
-.welcome-card p {
-    position: relative !important;
-    z-index: 2 !important;
-    max-width: 680px !important;
-    margin: 34px auto 0 !important;
-    color: #95A3C0 !important;
-    font-size: 16px !important;
-    line-height: 1.5 !important;
-}
-
-.welcome-tips {
-    position: relative !important;
-    z-index: 2 !important;
-    display: flex !important;
-    justify-content: center !important;
-    align-items: center !important;
-    gap: 38px !important;
-    margin-top: 60px !important;
-}
-
-.welcome-tips span {
-    color: #6F8CB9 !important;
-    font-size: 14px !important;
-    white-space: nowrap !important;
-}
-
-/* ---------- FOOTER ---------- */
-
-.app-footer {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 26px 0 0 !important;
-    padding: 16px 0 !important;
-    border-top: 1px solid #25314F !important;
-    color: #5F6E8C !important;
-    font-size: 11px !important;
-}
-
-.app-footer > * {
-    color: inherit !important;
-}
-
-/* ---------- RESPONSIVE ---------- */
-
-@media (max-width: 900px) {
-    .app-shell {
-        padding: 0 16px 20px !important;
-    }
-
-    .search-row {
-        grid-template-columns: 1fr !important;
-    }
-
-    .primary-button,
-    .secondary-button {
-        width: 100% !important;
-    }
-
-    .welcome-card {
-        height: auto !important;
-        min-height: 400px !important;
-    }
-
-    .welcome-tips {
-        flex-direction: column !important;
-        gap: 14px !important;
-        margin-top: 35px !important;
-    }
-
-    .try-cities {
-        flex-wrap: wrap !important;
-    }
-}
-
-@media (max-width: 650px) {
-    .topbar {
-        height: auto !important;
-        padding-top: 14px !important;
-        padding-bottom: 14px !important;
-    }
-
-    .top-controls #clockText {
-        display: none !important;
+    #appShell {
+        width: calc(100% - 18px);
+        padding-bottom: 25px;
     }
 
     .brand-name {
-        font-size: 20px !important;
+        font-size: 20px;
     }
 
-    .welcome-icons {
-        gap: 13px !important;
+    .brand-tagline {
+        font-size: 9px;
     }
 
-    .welcome-weather-icon {
-        font-size: 29px !important;
+    .brand-mark {
+        width: 43px;
+        height: 43px;
+        flex-basis: 43px;
     }
 
-    .welcome-card h1 {
-        font-size: 28px !important;
-    }
-
-    .welcome-card p {
-        margin-top: 20px !important;
-        font-size: 14px !important;
-    }
-}
-
-/* =========================================================
-   SKYPLUSE LIGHT / DARK MODE
-   ========================================================= */
-
-/* DARK */
-html[data-theme="dark"],
-body[data-theme="dark"] {
-    background: #0A0F1E !important;
-    color: #EAF0FB !important;
-}
-
-body[data-theme="dark"] .app-shell {
-    background: #0A0F1E !important;
-}
-
-body[data-theme="dark"] .search-box,
-body[data-theme="dark"] .unit-toggle,
-body[data-theme="dark"] .icon-button,
-body[data-theme="dark"] .secondary-button {
-    background: #131B2E !important;
-    border-color: #25314F !important;
-    color: #EAF0FB !important;
-}
-
-body[data-theme="dark"] .welcome-card {
-    background: #1B2B48 !important;
-    border-color: #253B5F !important;
-}
-
-body[data-theme="dark"] .brand-name,
-body[data-theme="dark"] .welcome-card h1 {
-    color: #EAF0FB !important;
-}
-
-body[data-theme="dark"] .welcome-card p,
-body[data-theme="dark"] .brand-tagline,
-body[data-theme="dark"] #clockText {
-    color: #95A3C0 !important;
-}
-
-
-/* LIGHT */
-html[data-theme="light"],
-body[data-theme="light"] {
-    background: #EDF1F7 !important;
-    color: #0E1A33 !important;
-}
-
-body[data-theme="light"] .app-shell {
-    background: #EDF1F7 !important;
-}
-
-body[data-theme="light"] .topbar {
-    background: transparent !important;
-}
-
-body[data-theme="light"] .brand-name {
-    color: #0E1A33 !important;
-}
-
-body[data-theme="light"] .brand-tagline,
-body[data-theme="light"] #clockText {
-    color: #5A6A87 !important;
-}
-
-body[data-theme="light"] .search-box {
-    background: #FFFFFF !important;
-    border-color: #2563EB !important;
-}
-
-body[data-theme="light"] #cityInput,
-body[data-theme="light"] .search-box input {
-    color: #0E1A33 !important;
-}
-
-body[data-theme="light"] #cityInput::placeholder,
-body[data-theme="light"] .search-box input::placeholder {
-    color: #93A0B8 !important;
-}
-
-body[data-theme="light"] .secondary-button,
-body[data-theme="light"] .unit-toggle,
-body[data-theme="light"] .icon-button {
-    background: #FFFFFF !important;
-    border-color: #DCE4F0 !important;
-    color: #0E1A33 !important;
-}
-
-body[data-theme="light"] .unit-btn {
-    color: #5A6A87 !important;
-}
-
-body[data-theme="light"] .unit-btn.active {
-    background: #2563EB !important;
-    color: #FFFFFF !important;
-}
-
-body[data-theme="light"] .welcome-card {
-    background: linear-gradient(135deg, #DDEAF9, #C9DCF3) !important;
-    border-color: #C5D5E8 !important;
-}
-
-body[data-theme="light"] .welcome-card h1 {
-    color: #0E1A33 !important;
-}
-
-body[data-theme="light"] .welcome-card p {
-    color: #5A6A87 !important;
-}
-
-body[data-theme="light"] .welcome-tips span {
-    color: #526B91 !important;
-}
-
-body[data-theme="light"] .try-city {
-    background: #FFFFFF !important;
-    border-color: #DCE4F0 !important;
-    color: #0E1A33 !important;
-}
-
-body[data-theme="light"] .try-city:hover {
-    border-color: #2563EB !important;
-    background: #F1F5FB !important;
-}
-
-body[data-theme="light"] .app-footer {
-    border-color: #DCE4F0 !important;
-    color: #93A0B8 !important;
-}
-
-
-/* Smooth transition */
-body,
-.app-shell,
-.search-box,
-.secondary-button,
-.unit-toggle,
-.icon-button,
-.welcome-card,
-.try-city {
-    transition:
-        background-color .2s ease,
-        color .2s ease,
-        border-color .2s ease,
-        box-shadow .2s ease;
-}
-/* EXACT SKYPULSE TRY-CITY ROW */
-
-.try-cities {
-    display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
-    width: 100% !important;
-    margin: 24px 0 16px !important;
-    padding: 0 6px !important;
-    box-sizing: border-box !important;
-}
-
-.try-label {
-    color: #95A3C0 !important;
-    font-size: 14px !important;
-    font-weight: 500 !important;
-    margin-right: 2px !important;
-}
-
-.try-city {
-    height: 36px !important;
-    padding: 0 17px !important;
-    border-radius: 20px !important;
-    border: 1px solid #25314F !important;
-    background: #1B2640 !important;
-    color: #EAF0FB !important;
-    font-size: 14px !important;
-    font-weight: 700 !important;
-    cursor: pointer !important;
-}
-
-.try-city:hover {
-    background: #253657 !important;
-    border-color: #4F9DFF !important;
-}
-
-body[data-theme="light"] .try-label {
-    color: #5A6A87 !important;
-}
-
-body[data-theme="light"] .try-city {
-    background: #FFFFFF !important;
-    color: #0E1A33 !important;
-    border-color: #DCE4F0 !important;
-}
-
-body[data-theme="light"] .try-city:hover {
-    background: #F1F5FB !important;
-    border-color: #2563EB !important;
-}
-/* SkyPulse search action sizing */
-.search-actions {
-    gap: 14px !important;
-}
-
-.primary-button,
-.secondary-button {
-    min-height: 56px !important;
-    padding: 0 24px !important;
-    font-size: 16px !important;
-    font-weight: 700 !important;
-    gap: 10px !important;
-}
-
-.primary-button .button-icon,
-.secondary-button .button-icon {
-    font-size: 20px !important;
-    line-height: 1 !important;
-}
-
-.primary-button .button-arrow {
-    font-size: 18px !important;
-}
-
-@media (max-width: 700px) {
-    .primary-button,
-    .secondary-button {
-        min-height: 54px !important;
-        font-size: 15px !important;
-    }
-}
-/* SkyPulse top section sizing */
-.topbar {
-    min-height: 82px !important;
-    padding-top: 16px !important;
-    padding-bottom: 16px !important;
-}
-
-.brand-mark {
-    width: 50px !important;
-    height: 50px !important;
-}
-
-.brand-name {
-    font-size: 27px !important;
-}
-
-.brand-tagline {
-    font-size: 13px !important;
-}
-
-.top-controls {
-    gap: 12px !important;
-}
-
-.icon-button {
-    width: 46px !important;
-    height: 46px !important;
-    font-size: 23px !important;
-}
-
-.unit-toggle {
-    min-height: 42px !important;
-}
-
-.unit-toggle button {
-    min-width: 48px !important;
-    min-height: 38px !important;
-    font-size: 14px !important;
-    font-weight: 700 !important;
-}
-
-.local-clock {
-    font-size: 14px !important;
-}
-/* Remove the previous oversized top-section override */
-.topbar {
-    min-height: unset !important;
-    padding-top: unset !important;
-    padding-bottom: unset !important;
-}
-
-.brand-mark {
-    width: unset !important;
-    height: unset !important;
-}
-
-.brand-name {
-    font-size: unset !important;
-}
-
-.brand-tagline {
-    font-size: unset !important;
-}
-
-.top-controls {
-    gap: unset !important;
-}
-
-.icon-button {
-    width: unset !important;
-    height: unset !important;
-    font-size: unset !important;
-}
-
-.unit-toggle {
-    min-height: unset !important;
-}
-
-.unit-toggle button {
-    min-width: unset !important;
-    min-height: unset !important;
-    font-size: unset !important;
-    font-weight: unset !important;
-}
-
-.local-clock {
-    font-size: unset !important;
-}
-/* =========================================================
-   FINAL SKYPULSE BROWSER LAYOUT
-   Matches the desktop SkyPulse welcome screen
-   ========================================================= */
-
-/* ---------- PAGE / HEADER ---------- */
-
-html,
-body {
-    min-height: 100%;
-}
-
-body {
-    background: #0A0F1E !important;
-    color: #EAF0FB !important;
-}
-
-#appShell {
-    width: 100% !important;
-    max-width: none !important;
-    padding: 22px 24px 28px !important;
-    box-sizing: border-box !important;
-}
-
-.topbar {
-    width: 100% !important;
-    min-height: 76px !important;
-    padding: 0 0 18px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: space-between !important;
-    box-sizing: border-box !important;
-}
-
-.brand-mark {
-    width: 50px !important;
-    height: 50px !important;
-}
-
-.brand-name {
-    font-size: 27px !important;
-    line-height: 1 !important;
-}
-
-.brand-tagline {
-    font-size: 13px !important;
-}
-
-.top-controls {
-    display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
-}
-
-.icon-button {
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    min-height: 44px !important;
-    border-radius: 50% !important;
-    font-size: 21px !important;
-}
-
-/* ---------- SEARCH AREA ---------- */
-
-.search-section {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: visible !important;
-}
-
-.search-row {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto auto !important;
-    gap: 16px !important;
-    align-items: center !important;
-    overflow: visible !important;
-}
-
-.search-box {
-    width: 100% !important;
-    min-width: 0 !important;
-    height: 52px !important;
-    box-sizing: border-box !important;
-}
-
-.cityInput {
-    font-size: 15px !important;
-}
-
-.search-icon {
-    font-size: 18px !important;
-}
-
-/* ---------- SEARCH BUTTONS ---------- */
-
-.search-actions {
-    display: contents !important;
-}
-
-.primary-button,
-.secondary-button {
-    height: 52px !important;
-    min-height: 52px !important;
-    white-space: nowrap !important;
-    padding: 0 22px !important;
-    border-radius: 28px !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
-    gap: 9px !important;
-    box-sizing: border-box !important;
-}
-
-.primary-button .button-icon,
-.secondary-button .button-icon {
-    font-size: 18px !important;
-}
-
-.primary-button .button-arrow {
-    font-size: 17px !important;
-}
-
-/* ---------- TRY CITIES ---------- */
-
-.try-cities {
-    width: 100% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    gap: 9px !important;
-    margin: 18px 0 16px !important;
-    padding: 0 6px !important;
-    box-sizing: border-box !important;
-    overflow: visible !important;
-    white-space: nowrap !important;
-}
-
-.try-label {
-    margin-right: 2px !important;
-}
-
-.try-city {
-    flex: 0 0 auto !important;
-    height: 36px !important;
-    min-height: 36px !important;
-    padding: 0 16px !important;
-    border-radius: 20px !important;
-    font-size: 14px !important;
-    font-weight: 700 !important;
-}
-
-/* Never show the old Recent row on the welcome screen */
-#recentRow {
-    display: none !important;
-}
-
-/* ---------- WELCOME CARD ---------- */
-
-.welcome-card {
-    width: 100% !important;
-    min-height: 365px !important;
-    height: 365px !important;
-    box-sizing: border-box !important;
-    margin-top: 4px !important;
-    border-radius: 28px !important;
-    background: #131F38 !important;
-    border: 1px solid #253A5C !important;
-    color: #EAF0FB !important;
-}
-
-/* Keep welcome content centered like desktop */
-.welcome-card {
-    display: flex !important;
-    flex-direction: column !important;
-    align-items: center !important;
-    justify-content: center !important;
-    text-align: center !important;
-}
-
-/* ---------- FOOTER ---------- */
-
-footer,
-.footer {
-    margin-top: 18px !important;
-}
-
-/* ---------- REMOVE OLD LIGHT OVERRIDES ---------- */
-
-body[data-theme="light"] {
-    background: #0A0F1E !important;
-    color: #EAF0FB !important;
-}
-
-body[data-theme="light"] .welcome-card {
-    background: #131F38 !important;
-    color: #EAF0FB !important;
-}
-
-/* ---------- DESKTOP PROPORTIONS ---------- */
-
-@media (min-width: 1200px) {
-    #appShell {
-        padding-left: 24px !important;
-        padding-right: 24px !important;
-    }
-
-    .search-row {
-        grid-template-columns: minmax(0, 1fr) auto auto !important;
-    }
-}
-
-/* ---------- SMALLER SCREENS ---------- */
-
-@media (max-width: 850px) {
-    #appShell {
-        padding: 16px !important;
-    }
-
-    .search-row {
-        grid-template-columns: 1fr !important;
-    }
-
-    .search-actions {
-        display: flex !important;
-        gap: 10px !important;
-    }
-
-    .primary-button,
-    .secondary-button {
-        flex: 1 !important;
-    }
-
-    .try-cities {
-        flex-wrap: wrap !important;
-        white-space: normal !important;
-    }
-}
-/* =========================================================
-   SKYPULSE FINAL DESKTOP-MATCH BROWSER OVERRIDE
-   ========================================================= */
-
-/* PAGE */
-html,
-body {
-    margin: 0 !important;
-    min-height: 100% !important;
-    background: #0A0F1E !important;
-    color: #EAF0FB !important;
-}
-
-#appShell {
-    width: 100% !important;
-    max-width: none !important;
-    min-height: 100vh !important;
-    box-sizing: border-box !important;
-    padding: 22px 24px 28px !important;
-    background: #0A0F1E !important;
-    color: #EAF0FB !important;
-}
-
-/* HEADER */
-.topbar {
-    width: 100% !important;
-    min-height: 76px !important;
-    padding: 0 0 18px !important;
-    box-sizing: border-box !important;
-}
-
-.brand-name {
-    font-size: 27px !important;
-}
-
-.brand-tagline {
-    font-size: 13px !important;
-}
-
-.brand-mark {
-    width: 50px !important;
-    height: 50px !important;
-}
-
-.top-controls {
-    display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
-}
-
-.icon-button {
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    min-height: 44px !important;
-    border-radius: 50% !important;
-    font-size: 21px !important;
-}
-
-/* =========================================================
-   SEARCH — IMPORTANT: BUTTONS MUST BE OUTSIDE SEARCH BOX
-   ========================================================= */
-
-.search-section {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    box-sizing: border-box !important;
-    overflow: visible !important;
-}
-
-.search-row {
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    gap: 16px !important;
-    overflow: visible !important;
-}
-
-/* Search field only */
-.search-box {
-    flex: 1 1 auto !important;
-    width: auto !important;
-    min-width: 0 !important;
-    height: 52px !important;
-    min-height: 52px !important;
-    box-sizing: border-box !important;
-}
-
-/* Buttons must stay beside the search field */
-.search-actions {
-    display: flex !important;
-    flex: 0 0 auto !important;
-    align-items: center !important;
-    gap: 12px !important;
-}
-
-.primary-button,
-.secondary-button {
-    flex: 0 0 auto !important;
-    height: 52px !important;
-    min-height: 52px !important;
-    border-radius: 28px !important;
-    padding: 0 22px !important;
-    white-space: nowrap !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
-    gap: 9px !important;
-    box-sizing: border-box !important;
-}
-
-.primary-button {
-    min-width: 175px !important;
-}
-
-.secondary-button {
-    min-width: 166px !important;
-}
-
-.primary-button .button-icon,
-.secondary-button .button-icon {
-    font-size: 18px !important;
-}
-
-.primary-button .button-arrow {
-    font-size: 17px !important;
-}
-
-/* =========================================================
-   TRY CITY ROW
-   ========================================================= */
-
-.try-cities {
-    width: 100% !important;
-    display: flex !important;
-    flex-direction: row !important;
-    align-items: center !important;
-    justify-content: flex-start !important;
-    flex-wrap: nowrap !important;
-    gap: 9px !important;
-    margin: 18px 0 16px !important;
-    padding: 0 6px !important;
-    box-sizing: border-box !important;
-    overflow: visible !important;
-    white-space: nowrap !important;
-}
-
-.try-label {
-    flex: 0 0 auto !important;
-}
-
-.try-city {
-    flex: 0 0 auto !important;
-    height: 36px !important;
-    min-height: 36px !important;
-    padding: 0 16px !important;
-    border-radius: 20px !important;
-    font-size: 14px !important;
-    font-weight: 700 !important;
-}
-
-/* Hide old recent row */
-#recentRow {
-    display: none !important;
-}
-
-/* =========================================================
-   WELCOME CARD
-   ========================================================= */
-
-.welcome-card {
-    width: 100% !important;
-    height: 367px !important;
-    min-height: 367px !important;
-    max-height: 367px !important;
-    margin-top: 4px !important;
-    padding: 30px !important;
-    box-sizing: border-box !important;
-    border-radius: 28px !important;
-    background: #131F38 !important;
-    border: 1px solid #253A5C !important;
-    color: #EAF0FB !important;
-}
-
-/* Fix welcome text visibility */
-.welcome-card h1,
-.welcome-card h2,
-.welcome-card p,
-.welcome-card .welcome-title,
-.welcome-card .welcome-description,
-.welcome-card .eyebrow {
-    color: #EAF0FB !important;
-}
-
-.welcome-card h1,
-.welcome-card h2,
-.welcome-title {
-    color: #EAF0FB !important;
-    font-weight: 800 !important;
-}
-
-.welcome-card p,
-.welcome-description {
-    color: #95A3C0 !important;
-}
-
-/* Bottom hint text */
-.welcome-tips,
-.welcome-tips * {
-    color: #6E8DBB !important;
-}
-
-/* =========================================================
-   FOOTER
-   ========================================================= */
-
-footer,
-.footer {
-    color: #6E8DBB !important;
-    margin-top: 18px !important;
-}
-
-/* =========================================================
-   REMOVE LIGHT MODE VISUAL OVERRIDE
-   Desktop SkyPulse starts dark.
-   ========================================================= */
-
-body[data-theme="light"],
-html[data-theme="light"] {
-    background: #0A0F1E !important;
-}
-
-body[data-theme="light"] #appShell {
-    background: #0A0F1E !important;
-    color: #EAF0FB !important;
-}
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 850px) {
-
-    #appShell {
-        padding: 16px !important;
-    }
-
-    .search-row {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: stretch !important;
-    }
-
-    .search-actions {
-        display: flex !important;
-        width: 100% !important;
-    }
-
-    .primary-button,
-    .secondary-button {
-        flex: 1 1 50% !important;
-        min-width: 0 !important;
-    }
-
-    .try-cities {
-        flex-wrap: wrap !important;
-        white-space: normal !important;
-    }
-
-    .welcome-card {
-        height: 367px !important;
-        min-height: 367px !important;
-    }
-}
-
-
-/* =========================================================
-   FINAL SKYPULSE BROWSER MATCH
-   Matches the desktop SkyPulse layout
-   ========================================================= */
-
-/* ---------- Main page ---------- */
-
-body {
-    overflow-x: hidden !important;
-}
-
-/* ---------- Header ---------- */
-
-.topbar {
-    min-height: 88px !important;
-    padding: 18px 24px 14px !important;
-}
-
-.brand {
-    gap: 14px !important;
-}
-
-.brand-mark {
-    width: 50px !important;
-    height: 50px !important;
-    min-width: 50px !important;
-}
-
-.brand-name {
-    font-size: 27px !important;
-    line-height: 1.05 !important;
-    font-weight: 800 !important;
-}
-
-.brand-tagline {
-    font-size: 13px !important;
-    margin-top: 4px !important;
-}
-
-.top-controls {
-    gap: 12px !important;
-}
-
-.local-clock {
-    font-size: 14px !important;
-    font-weight: 600 !important;
-}
-
-.unit-toggle {
-    min-width: 132px !important;
-    height: 44px !important;
-}
-
-.unit-toggle button {
-    min-width: 58px !important;
-    height: 38px !important;
-    font-size: 14px !important;
-    font-weight: 700 !important;
-}
-
-.icon-button {
-    width: 46px !important;
-    height: 46px !important;
-    min-width: 46px !important;
-    font-size: 23px !important;
-}
-
-/* ---------- Search section ---------- */
-
-.search-section {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 8px 0 24px !important;
-}
-
-.search-row {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto !important;
-    gap: 16px !important;
-    align-items: center !important;
-}
-
-.search-box {
-    width: 100% !important;
-    min-height: 54px !important;
-    height: 54px !important;
-    border-radius: 28px !important;
-}
-
-.cityInput {
-    height: 52px !important;
-    font-size: 16px !important;
-    font-weight: 500 !important;
-}
-
-.search-icon {
-    font-size: 19px !important;
-}
-
-/* ---------- Search buttons ---------- */
-
-.search-actions {
-    display: flex !important;
-    align-items: center !important;
-    gap: 12px !important;
-    flex-shrink: 0 !important;
-}
-
-.primary-button,
-.secondary-button {
-    height: 54px !important;
-    min-height: 54px !important;
-    border-radius: 28px !important;
-    padding: 0 24px !important;
-    font-size: 15px !important;
-    font-weight: 750 !important;
-    white-space: nowrap !important;
-}
-
-.primary-button {
-    min-width: 176px !important;
-}
-
-.secondary-button {
-    min-width: 168px !important;
-}
-
-.primary-button .button-icon,
-.secondary-button .button-icon {
-    font-size: 18px !important;
-    line-height: 1 !important;
-}
-
-.primary-button .button-arrow {
-    font-size: 17px !important;
-    margin-left: 3px !important;
-}
-
-/* ---------- Try cities ---------- */
-
-.try-cities {
-    display: flex !important;
-    align-items: center !important;
-    flex-wrap: wrap !important;
-    gap: 9px !important;
-    width: 100% !important;
-    margin: 14px 0 18px !important;
-    padding: 0 6px !important;
-    box-sizing: border-box !important;
-}
-
-.try-label {
-    font-size: 14px !important;
-    font-weight: 600 !important;
-    margin-right: 2px !important;
-}
-
-.try-city {
-    height: 38px !important;
-    min-height: 38px !important;
-    padding: 0 16px !important;
-    border-radius: 20px !important;
-    font-size: 14px !important;
-    font-weight: 700 !important;
-    cursor: pointer !important;
-}
-
-/* ---------- Welcome card ---------- */
-
-.welcome-card {
-    min-height: 365px !important;
-    border-radius: 28px !important;
-    padding: 42px 30px 34px !important;
-}
-
-.welcome-card h1 {
-    font-size: 34px !important;
-    line-height: 1.15 !important;
-    font-weight: 800 !important;
-    margin: 16px 0 18px !important;
-}
-
-.welcome-card p {
-    font-size: 16px !important;
-    line-height: 1.55 !important;
-    max-width: 720px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
-
-.welcome-eyebrow {
-    font-size: 12px !important;
-    font-weight: 800 !important;
-    letter-spacing: 1.5px !important;
-}
-
-/* Weather icons across welcome card */
-
-.welcome-weather-icons {
-    gap: 22px !important;
-}
-
-.welcome-weather-icons span {
-    font-size: 38px !important;
-}
-
-/* ---------- Welcome tips ---------- */
-
-.welcome-tips {
-    margin-top: 42px !important;
-    gap: 14px !important;
-}
-
-.welcome-tip {
-    font-size: 13px !important;
-    padding: 11px 16px !important;
-    border-radius: 20px !important;
-}
-
-/* ---------- DARK THEME ---------- */
-
-html[data-theme="dark"] body,
-body[data-theme="dark"] {
-    background: #080D1B !important;
-    color: #EAF0FB !important;
-}
-
-html[data-theme="dark"] .brand-name,
-body[data-theme="dark"] .brand-name {
-    color: #EAF0FB !important;
-}
-
-html[data-theme="dark"] .brand-tagline,
-body[data-theme="dark"] .brand-tagline {
-    color: #95A3C0 !important;
-}
-
-html[data-theme="dark"] .welcome-card,
-body[data-theme="dark"] .welcome-card {
-    background: #182946 !important;
-    color: #EAF0FB !important;
-    border: 1px solid #263A5D !important;
-}
-
-html[data-theme="dark"] .welcome-card h1,
-body[data-theme="dark"] .welcome-card h1 {
-    color: #F4F7FC !important;
-}
-
-html[data-theme="dark"] .welcome-card p,
-body[data-theme="dark"] .welcome-card p {
-    color: #95A3C0 !important;
-}
-
-html[data-theme="dark"] .welcome-eyebrow,
-body[data-theme="dark"] .welcome-eyebrow {
-    color: #4F9DFF !important;
-}
-
-html[data-theme="dark"] .welcome-tip,
-body[data-theme="dark"] .welcome-tip {
-    color: #6E8DBB !important;
-    background: rgba(255,255,255,.035) !important;
-    border: 1px solid rgba(255,255,255,.06) !important;
-}
-
-html[data-theme="dark"] .try-label,
-body[data-theme="dark"] .try-label {
-    color: #8191AF !important;
-}
-
-html[data-theme="dark"] .try-city,
-body[data-theme="dark"] .try-city {
-    color: #EAF0FB !important;
-    background: #182946 !important;
-    border: 1px solid #263A5D !important;
-}
-
-html[data-theme="dark"] .try-city:hover,
-body[data-theme="dark"] .try-city:hover {
-    background: #22385D !important;
-    border-color: #4F9DFF !important;
-}
-
-html[data-theme="dark"] .cityInput,
-body[data-theme="dark"] .cityInput {
-    color: #EAF0FB !important;
-}
-
-html[data-theme="dark"] .cityInput::placeholder,
-body[data-theme="dark"] .cityInput::placeholder {
-    color: #7182A2 !important;
-}
-
-/* ---------- LIGHT THEME ---------- */
-
-html[data-theme="light"] body,
-body[data-theme="light"] {
-    background: #EDF1F7 !important;
-    color: #0E1A33 !important;
-}
-
-html[data-theme="light"] .welcome-card,
-body[data-theme="light"] .welcome-card {
-    background: #D7E7F8 !important;
-    color: #0E1A33 !important;
-}
-
-html[data-theme="light"] .welcome-card h1,
-body[data-theme="light"] .welcome-card h1 {
-    color: #0E1A33 !important;
-}
-
-html[data-theme="light"] .welcome-card p,
-body[data-theme="light"] .welcome-card p {
-    color: #5A6A87 !important;
-}
-
-html[data-theme="light"] .try-city,
-body[data-theme="light"] .try-city {
-    color: #0E1A33 !important;
-    background: #FFFFFF !important;
-    border: 1px solid #DCE4F0 !important;
-}
-
-/* ---------- Responsive ---------- */
-
-@media (max-width: 1050px) {
-
-    .search-row {
-        grid-template-columns: 1fr !important;
-    }
-
-    .search-actions {
-        width: 100% !important;
-    }
-
-    .primary-button,
-    .secondary-button {
-        flex: 1 !important;
-    }
-}
-
-@media (max-width: 700px) {
-
-    .topbar {
-        padding: 14px 16px !important;
-    }
-
-    .local-clock {
-        display: none !important;
-    }
-
-    .search-actions {
-        flex-direction: column !important;
-    }
-
-    .primary-button,
-    .secondary-button {
-        width: 100% !important;
-    }
-
-    .welcome-card {
-        min-height: 330px !important;
-        padding: 30px 18px !important;
-    }
-
-    .welcome-card h1 {
-        font-size: 28px !important;
-    }
-}
-
-
-/* =========================================================
-   FINAL SKYPULSE LIGHT / DARK THEME
-   ========================================================= */
-
-/* ---------- DARK MODE ---------- */
-
-html[data-theme="dark"],
-html[data-theme="dark"] body,
-body[data-theme="dark"] {
-    background: #080D1B !important;
-    color: #EAF0FB !important;
-}
-
-html[data-theme="dark"] .topbar,
-body[data-theme="dark"] .topbar {
-    background: #080D1B !important;
-}
-
-html[data-theme="dark"] .search-section,
-body[data-theme="dark"] .search-section {
-    background: transparent !important;
-}
-
-html[data-theme="dark"] .search-box,
-body[data-theme="dark"] .search-box {
-    background: #111A2D !important;
-    border-color: #4F9DFF !important;
-}
-
-html[data-theme="dark"] .cityInput,
-body[data-theme="dark"] .cityInput {
-    background: transparent !important;
-    color: #EAF0FB !important;
-}
-
-html[data-theme="dark"] .cityInput::placeholder,
-body[data-theme="dark"] .cityInput::placeholder {
-    color: #8191AF !important;
-}
-
-html[data-theme="dark"] .try-city,
-body[data-theme="dark"] .try-city {
-    background: #182946 !important;
-    color: #EAF0FB !important;
-    border-color: #263A5D !important;
-}
-
-html[data-theme="dark"] .try-label,
-body[data-theme="dark"] .try-label {
-    color: #8191AF !important;
-}
-
-html[data-theme="dark"] .welcome-card,
-body[data-theme="dark"] .welcome-card {
-    background: #182946 !important;
-    background-image: none !important;
-    color: #EAF0FB !important;
-    border: 1px solid #263A5D !important;
-}
-
-html[data-theme="dark"] .welcome-card h1,
-body[data-theme="dark"] .welcome-card h1 {
-    color: #F4F7FC !important;
-}
-
-html[data-theme="dark"] .welcome-card p,
-body[data-theme="dark"] .welcome-card p {
-    color: #95A3C0 !important;
-}
-
-html[data-theme="dark"] .welcome-eyebrow,
-body[data-theme="dark"] .welcome-eyebrow {
-    color: #4F9DFF !important;
-}
-
-html[data-theme="dark"] .welcome-tip,
-body[data-theme="dark"] .welcome-tip {
-    background: rgba(255,255,255,.035) !important;
-    color: #8191AF !important;
-    border-color: rgba(255,255,255,.08) !important;
-}
-
-html[data-theme="dark"] footer,
-body[data-theme="dark"] footer {
-    color: #7182A2 !important;
-}
-
-
-/* ---------- LIGHT MODE ---------- */
-
-html[data-theme="light"],
-html[data-theme="light"] body,
-body[data-theme="light"] {
-    background: #EDF1F7 !important;
-    color: #0E1A33 !important;
-}
-
-html[data-theme="light"] .topbar,
-body[data-theme="light"] .topbar {
-    background: #EDF1F7 !important;
-}
-
-html[data-theme="light"] .search-section,
-body[data-theme="light"] .search-section {
-    background: transparent !important;
-}
-
-html[data-theme="light"] .search-box,
-body[data-theme="light"] .search-box {
-    background: #FFFFFF !important;
-    border-color: #2563EB !important;
-}
-
-html[data-theme="light"] .cityInput,
-body[data-theme="light"] .cityInput {
-    background: transparent !important;
-    color: #0E1A33 !important;
-}
-
-html[data-theme="light"] .cityInput::placeholder,
-body[data-theme="light"] .cityInput::placeholder {
-    color: #7B8AA5 !important;
-}
-
-html[data-theme="light"] .try-city,
-body[data-theme="light"] .try-city {
-    background: #FFFFFF !important;
-    color: #0E1A33 !important;
-    border-color: #D4DEEC !important;
-}
-
-html[data-theme="light"] .try-city:hover,
-body[data-theme="light"] .try-city:hover {
-    background: #E8F0FC !important;
-    border-color: #2563EB !important;
-}
-
-html[data-theme="light"] .try-label,
-body[data-theme="light"] .try-label {
-    color: #5A6A87 !important;
-}
-
-html[data-theme="light"] .welcome-card,
-body[data-theme="light"] .welcome-card {
-    background: #D8E8F8 !important;
-    background-image: none !important;
-    color: #0E1A33 !important;
-    border: 1px solid #C7D8EC !important;
-}
-
-html[data-theme="light"] .welcome-card h1,
-body[data-theme="light"] .welcome-card h1 {
-    color: #0E1A33 !important;
-}
-
-html[data-theme="light"] .welcome-card p,
-body[data-theme="light"] .welcome-card p {
-    color: #5A6A87 !important;
-}
-
-html[data-theme="light"] .welcome-eyebrow,
-body[data-theme="light"] .welcome-eyebrow {
-    color: #2563EB !important;
-}
-
-html[data-theme="light"] .welcome-tip,
-body[data-theme="light"] .welcome-tip {
-    background: rgba(255,255,255,.28) !important;
-    color: #5A6A87 !important;
-    border-color: rgba(255,255,255,.45) !important;
-}
-
-html[data-theme="light"] footer,
-body[data-theme="light"] footer {
-    color: #71809A !important;
-}
-
-
-/* ---------- HEADER TEXT ---------- */
-
-html[data-theme="dark"] .brand-name,
-body[data-theme="dark"] .brand-name {
-    color: #EAF0FB !important;
-}
-
-html[data-theme="dark"] .brand-tagline,
-body[data-theme="dark"] .brand-tagline {
-    color: #95A3C0 !important;
-}
-
-html[data-theme="light"] .brand-name,
-body[data-theme="light"] .brand-name {
-    color: #0E1A33 !important;
-}
-
-html[data-theme="light"] .brand-tagline,
-body[data-theme="light"] .brand-tagline {
-    color: #5A6A87 !important;
-}
-
-
-/* ---------- THEME BUTTON ---------- */
-
-#themeBtn {
-    font-size: 21px !important;
-    font-weight: 700 !important;
-}
-
-
-/* FINAL LIGHT MODE PAGE BACKGROUND */
-html[data-theme="light"],
-body[data-theme="light"] {
-    background: #EDF1F7 !important;
-}
-
-html[data-theme="light"] #appShell {
-    background: #EDF1F7 !important;
-}
-
-
-/* FINAL LIGHT MODE PAGE BACKGROUND */
-html[data-theme="light"],
-html[data-theme="light"] body,
-body[data-theme="light"],
-body[data-theme="light"] #appShell,
-body[data-theme="light"] .app-shell {
-    background: #EDF1F7 !important;
-    color: #0E1A33 !important;
-}
-
-body[data-theme="light"] main,
-body[data-theme="light"] .main-content {
-    background: #EDF1F7 !important;
-}
-
-body[data-theme="dark"],
-html[data-theme="dark"] {
-    background: #0A0F1E !important;
-}
-
-body[data-theme="dark"] #appShell,
-body[data-theme="dark"] .app-shell {
-    background: #0A0F1E !important;
-}
-/* =========================================================
-   SKYPULSE DESKTOP-EXACT DASHBOARD LAYOUT
-   HERO LEFT + 8 METRICS RIGHT
-   ========================================================= */
-
-/* Main weather dashboard */
-#weatherDashboard {
-    width: 100% !important;
-    max-width: 1240px !important;
-    margin: 0 auto !important;
-}
-
-/* The upper dashboard area */
-#weatherDashboard > .dashboard-top,
-#weatherDashboard > .dashboard-grid,
-#weatherDashboard > .dashboard-main,
-#weatherDashboard > .weather-dashboard-top {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-    gap: 28px !important;
-    align-items: stretch !important;
-    width: 100% !important;
-}
-
-/* Hero = LEFT */
-#weatherDashboard .hero-card {
-    grid-column: 1 !important;
-    grid-row: 1 !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    min-height: 292px !important;
-    height: 292px !important;
-    box-sizing: border-box !important;
-}
-
-/* Metrics section = RIGHT */
-#weatherDashboard .metrics-section {
-    grid-column: 2 !important;
-    grid-row: 1 !important;
-    width: 100% !important;
-    min-width: 0 !important;
-}
-
-/* 8 metric cards = 4 columns × 2 rows */
-#weatherDashboard .metrics-grid,
-#metricsGrid {
-    display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    grid-template-rows: repeat(2, 124px) !important;
-    gap: 16px !important;
-    width: 100% !important;
-}
-
-/* Metric card size */
-#weatherDashboard .metric-card {
-    width: 100% !important;
-    height: 124px !important;
-    min-height: 124px !important;
-    box-sizing: border-box !important;
-}
-
-/* =========================================================
-   HOURLY SECTION
-   ========================================================= */
-
-#weatherDashboard .hourly-section {
-    width: 100% !important;
-    margin-top: 30px !important;
-}
-
-#weatherDashboard .hourly-grid,
-#hourlyGrid {
-    display: grid !important;
-    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-    width: 100% !important;
-}
-
-#weatherDashboard .hour-card {
-    width: 100% !important;
-    min-height: 172px !important;
-    height: 172px !important;
-    box-sizing: border-box !important;
-}
-
-/* =========================================================
-   5-DAY FORECAST
-   ========================================================= */
-
-#weatherDashboard .daily-section {
-    width: 100% !important;
-    margin-top: 30px !important;
-}
-
-#weatherDashboard .daily-grid,
-#dailyGrid {
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-    gap: 16px !important;
-    width: 100% !important;
-}
-
-#weatherDashboard .day-card {
-    width: 100% !important;
-    min-height: 222px !important;
-    height: 222px !important;
-    box-sizing: border-box !important;
-}
-
-/* =========================================================
-   DESKTOP PROPORTIONS
-   ========================================================= */
-
-@media (min-width: 1040px) {
-
-    #weatherDashboard {
-        max-width: 1240px !important;
-    }
-
-    #weatherDashboard > .dashboard-top,
-    #weatherDashboard > .dashboard-grid,
-    #weatherDashboard > .dashboard-main,
-    #weatherDashboard > .weather-dashboard-top {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-        gap: 28px !important;
-    }
-}
-
-/* =========================================================
-   TABLET / SMALL SCREEN
-   ========================================================= */
-
-@media (max-width: 1039px) {
-
-    #weatherDashboard > .dashboard-top,
-    #weatherDashboard > .dashboard-grid,
-    #weatherDashboard > .dashboard-main,
-    #weatherDashboard > .weather-dashboard-top {
-        display: block !important;
-    }
-
-    #weatherDashboard .hero-card {
-        width: 100% !important;
-        margin-bottom: 20px !important;
-    }
-
-    #weatherDashboard .metrics-grid,
-    #metricsGrid {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-        grid-template-rows: auto !important;
-    }
-
-    #weatherDashboard .hourly-grid,
-    #hourlyGrid {
-        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    }
-
-    #weatherDashboard .daily-grid,
-    #dailyGrid {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    }
-}
-
-/* =========================================================
-   REMOVE CORRUPTED LARGE WEATHER TEXT
-   ========================================================= */
-
-#weatherDashboard .hero-weather-icon {
-    font-size: 0 !important;
-}
-
-/* Keep actual weather icon visible if it is an image */
-#weatherDashboard .hero-weather-icon img {
-    font-size: initial !important;
-}
-
-/* =========================================================
-   DESKTOP-SIZE SEARCH / HEADER
-   ========================================================= */
-
-.search-section {
-    width: 100% !important;
-    max-width: 1240px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
-
-.search-row {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto !important;
-    gap: 16px !important;
-    align-items: center !important;
-}
-
-.search-box {
-    height: 50px !important;
-    min-height: 50px !important;
-}
-
-.search-actions {
-    display: flex !important;
-    gap: 12px !important;
-}
-
-.primary-button,
-.secondary-button {
-    height: 54px !important;
-    min-height: 54px !important;
-    padding-left: 24px !important;
-    padding-right: 24px !important;
-    border-radius: 28px !important;
-}
-
-/* =========================================================
-   EXACT TRY CITY ROW
-   ========================================================= */
-
-.try-cities {
-    display: flex !important;
-    align-items: center !important;
-    flex-wrap: wrap !important;
-    gap: 9px !important;
-    margin-top: 18px !important;
-    margin-bottom: 18px !important;
-}
-
-.try-city {
-    height: 36px !important;
-    min-height: 36px !important;
-    padding: 0 15px !important;
-    border-radius: 20px !important;
-    font-weight: 700 !important;
-}
-
-/* =========================================================
-   FIX TOP HEADER SIZE
-   ========================================================= */
-
-.topbar {
-    min-height: 82px !important;
-}
-
-.brand-mark {
-    width: 50px !important;
-    height: 50px !important;
-}
-
-.brand-name {
-    font-size: 25px !important;
-}
-
-.brand-tagline {
-    font-size: 13px !important;
-}
-
-.top-controls {
-    gap: 12px !important;
-}
-
-.icon-button {
-    width: 44px !important;
-    height: 44px !important;
-    font-size: 21px !important;
-}
-
-.unit-toggle {
-    min-height: 42px !important;
-}
-
-/* =========================================================
-   REMOVE OLD FORCED CENTERED HERO WIDTH
-   ========================================================= */
-
-.hero-card {
-    max-width: none !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-}
-
-/* =========================================================
-   FIX FOOTER
-   ========================================================= */
-
-.footer {
-    width: 100% !important;
-    max-width: 1240px !important;
-    margin-left: auto !important;
-    margin-right: auto !important;
-}
-
-/* =========================================================
-   MOBILE
-   ========================================================= */
-
-@media (max-width: 700px) {
-
-    .search-row {
-        display: block !important;
-    }
-
-    .search-actions {
-        margin-top: 12px !important;
-    }
-
-    .primary-button,
-    .secondary-button {
-        width: 100% !important;
-    }
-
-    #weatherDashboard .hourly-grid,
-    #hourlyGrid,
-    #weatherDashboard .daily-grid,
-    #dailyGrid {
-        grid-template-columns: 1fr 1fr !important;
-    }
-}
-
-/* ============================================================
-   SKY PULSE — DESKTOP APP MATCH
-   Browser layout intentionally mirrors the Tkinter desktop app
-   ============================================================ */
-
-html,
-body {
-    margin: 0 !important;
-    padding: 0 !important;
-    width: 100% !important;
-    min-height: 100% !important;
-}
-
-body {
-    overflow-x: hidden !important;
-}
-
-#appShell,
-.app-shell {
-    width: 100% !important;
-    max-width: none !important;
-    min-height: 100vh !important;
-    box-sizing: border-box !important;
-}
-
-/* ------------------------------------------------------------
-   TOP HEADER — desktop proportions
-   ------------------------------------------------------------ */
-
-.topbar {
-    width: 100% !important;
-    min-height: 86px !important;
-    padding: 20px 26px !important;
-    box-sizing: border-box !important;
-    display: flex !important;
-    align-items: center !important;
-}
-
-.brand {
-    gap: 14px !important;
-}
-
-.brand-mark {
-    width: 50px !important;
-    height: 50px !important;
-    min-width: 50px !important;
-}
-
-.brand-name {
-    font-size: 25px !important;
-    line-height: 1.05 !important;
-}
-
-.brand-tagline {
-    font-size: 12px !important;
-    margin-top: 5px !important;
-}
-
-.top-controls {
-    gap: 10px !important;
-}
-
-.local-clock,
-.clock-text {
-    font-size: 13px !important;
-}
-
-.unit-toggle {
-    height: 42px !important;
-    min-height: 42px !important;
-}
-
-.icon-button {
-    width: 44px !important;
-    height: 44px !important;
-    min-width: 44px !important;
-    font-size: 21px !important;
-}
-
-/* ------------------------------------------------------------
-   SEARCH — desktop app proportions
-   ------------------------------------------------------------ */
-
-.search-section {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 26px 18px !important;
-    box-sizing: border-box !important;
-}
-
-.search-row {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto auto !important;
-    gap: 14px !important;
-    align-items: center !important;
-}
-
-.search-box {
-    width: 100% !important;
-    min-height: 52px !important;
-    height: 52px !important;
-    box-sizing: border-box !important;
-}
-
-.cityInput {
-    font-size: 16px !important;
-}
-
-.search-actions {
-    display: contents !important;
-}
-
-.primary-button,
-.secondary-button {
-    height: 52px !important;
-    min-height: 52px !important;
-    padding: 0 24px !important;
-    font-size: 15px !important;
-    font-weight: 700 !important;
-    white-space: nowrap !important;
-}
-
-.primary-button .button-icon,
-.secondary-button .button-icon {
-    font-size: 18px !important;
-}
-
-/* Try cities exactly under search */
-
-.try-cities {
-    width: 100% !important;
-    display: flex !important;
-    align-items: center !important;
-    gap: 10px !important;
-    margin: 16px 0 18px !important;
-    padding: 0 6px !important;
-    box-sizing: border-box !important;
-}
-
-.try-city {
-    height: 36px !important;
-    min-height: 36px !important;
-    padding: 0 15px !important;
-    border-radius: 18px !important;
-    font-size: 13px !important;
-    font-weight: 700 !important;
-}
-
-/* ------------------------------------------------------------
-   MAIN DASHBOARD
-   THIS IS THE IMPORTANT PART
-   ------------------------------------------------------------ */
-
-#weatherDashboard,
-.weather-dashboard,
-.dashboard {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 24px 28px !important;
-    box-sizing: border-box !important;
-}
-
-/* Hero + metrics side-by-side */
-
-.dashboard-grid,
-.dashboard-layout,
-.weather-layout {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-    gap: 28px !important;
-    align-items: stretch !important;
-}
-
-/* Hero occupies left half */
-
-#heroCard,
-.hero-card,
-.hero {
-    width: 100% !important;
-    min-width: 0 !important;
-    height: 296px !important;
-    min-height: 296px !important;
-    margin: 0 !important;
-}
-
-/* Metrics occupy right half */
-
-.metrics-grid,
-.metrics {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    grid-template-rows: repeat(2, 1fr) !important;
-    gap: 16px !important;
-    margin: 0 !important;
-}
-
-.metric-card {
-    width: 100% !important;
-    min-width: 0 !important;
-    height: 124px !important;
-    min-height: 124px !important;
-    box-sizing: border-box !important;
-}
-
-/* ------------------------------------------------------------
-   HERO
-   ------------------------------------------------------------ */
-
-.hero-card,
-#heroCard {
-    border-radius: 26px !important;
-    overflow: hidden !important;
-}
-
-.hero-content {
-    height: 100% !important;
-    box-sizing: border-box !important;
-}
-
-/* ------------------------------------------------------------
-   HOURLY — six cards across
-   ------------------------------------------------------------ */
-
-.hourly-section,
-.hourly {
-    width: 100% !important;
-    margin-top: 30px !important;
-}
-
-.hourly-grid {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-}
-
-.hour-card {
-    width: 100% !important;
-    min-width: 0 !important;
-    height: 168px !important;
-    box-sizing: border-box !important;
-}
-
-/* ------------------------------------------------------------
-   DAILY — five cards across
-   ------------------------------------------------------------ */
-
-.daily-section,
-.daily {
-    width: 100% !important;
-    margin-top: 30px !important;
-}
-
-.daily-grid {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-}
-
-.day-card {
-    width: 100% !important;
-    min-width: 0 !important;
-    height: 220px !important;
-    box-sizing: border-box !important;
-}
-
-/* ------------------------------------------------------------
-   FOOTER
-   ------------------------------------------------------------ */
-
-.footer {
-    width: 100% !important;
-    box-sizing: border-box !important;
-    margin: 0 24px !important;
-}
-
-/* ------------------------------------------------------------
-   DARK — desktop SkyPulse
-   ------------------------------------------------------------ */
-
-html[data-theme="dark"],
-body[data-theme="dark"] {
-    background: #0A0F1E !important;
-    color: #EAF0FB !important;
-}
-
-body[data-theme="dark"] #appShell,
-body[data-theme="dark"] .app-shell {
-    background: #0A0F1E !important;
-}
-
-/* ------------------------------------------------------------
-   LIGHT — desktop SkyPulse
-   ------------------------------------------------------------ */
-
-html[data-theme="light"],
-body[data-theme="light"] {
-    background: #EDF1F7 !important;
-    color: #0E1A33 !important;
-}
-
-body[data-theme="light"] #appShell,
-body[data-theme="light"] .app-shell {
-    background: #EDF1F7 !important;
-}
-
-/* ------------------------------------------------------------
-   RESPONSIVE ONLY BELOW desktop breakpoint
-   ------------------------------------------------------------ */
-
-@media (max-width: 1100px) {
-
-    .dashboard-grid,
-    .dashboard-layout,
-    .weather-layout {
-        grid-template-columns: 1fr !important;
-    }
-
-    .metrics-grid,
-    .metrics {
-        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    }
-
-    .hourly-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    }
-
-    .daily-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    }
-}
-
-@media (max-width: 760px) {
-
-    .topbar {
-        padding: 16px !important;
-    }
-
-    .search-section {
-        padding: 0 16px 16px !important;
-    }
-
-    .search-row {
-        grid-template-columns: 1fr !important;
-    }
-
-    .primary-button,
-    .secondary-button {
-        width: 100% !important;
-    }
-
-    #weatherDashboard,
-    .weather-dashboard,
-    .dashboard {
-        padding-left: 16px !important;
-        padding-right: 16px !important;
-    }
-
-    .metrics-grid,
-    .metrics {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    }
-
-    .hourly-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    }
-
-    .daily-grid {
-        grid-template-columns: 1fr !important;
-    }
-}
-
-/* =========================================================
-   SKYPULSE DESKTOP-MATCH LAYOUT
-   Browser version follows the original Tkinter dashboard
-   ========================================================= */
-
-/* Main app width — same compact desktop proportion */
-#appShell {
-    width: min(1240px, calc(100% - 48px));
-    max-width: 1240px;
-    margin: 0 auto;
-}
-
-/* ---------------------------------------------------------
-   CURRENT WEATHER
-   Hero LEFT + Metrics RIGHT
-   --------------------------------------------------------- */
-
-.current-weather-layout {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-    gap: 16px !important;
-    align-items: stretch !important;
-    width: 100% !important;
-}
-
-/* ---------------------------------------------------------
-   HERO
-   --------------------------------------------------------- */
-
-.hero-card {
-    position: relative !important;
-    height: 292px !important;
-    min-height: 292px !important;
-    width: 100% !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
-    border-radius: 28px !important;
-}
-
-.hero-content {
-    position: relative !important;
-    width: 100% !important;
-    height: 100% !important;
-    box-sizing: border-box !important;
-    padding: 26px !important;
-}
-
-.hero-top {
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-}
-
-.hero-location {
-    margin-top: 18px !important;
-}
-
-.hero-location h1 {
-    margin: 0 !important;
-}
-
-.hero-main {
-    display: flex !important;
-    align-items: flex-end !important;
-    justify-content: space-between !important;
-    width: 100% !important;
-    margin-top: 22px !important;
-}
-
-.hero-temperature {
-    display: flex !important;
-    align-items: flex-start !important;
-    line-height: .9 !important;
-}
-
-.hero-temperature #temperature {
-    font-size: 76px !important;
-    font-weight: 800 !important;
-    letter-spacing: -4px !important;
-}
-
-.temperature-unit {
-    font-size: 22px !important;
-    font-weight: 700 !important;
-    margin-top: 7px !important;
-}
-
-.hero-details {
-    margin-right: 10px !important;
-    margin-bottom: 4px !important;
-}
-
-.hero-icon-area {
-    position: absolute !important;
-    right: 35px !important;
-    top: 75px !important;
-    width: 145px !important;
-    height: 145px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    pointer-events: none !important;
-}
-
-.hero-weather-icon {
-    font-size: 108px !important;
-    line-height: 1 !important;
-    display: block !important;
-}
-
-/* Keep hero text away from the weather icon */
-.hero-main {
-    padding-right: 150px !important;
-}
-
-.hero-footer {
-    position: absolute !important;
-    left: 26px !important;
-    bottom: 20px !important;
-}
-
-/* ---------------------------------------------------------
-   METRICS — EXACTLY 4 × 2
-   --------------------------------------------------------- */
-
-.metrics-grid {
-    display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    grid-template-rows: repeat(2, 1fr) !important;
-    gap: 16px !important;
-    width: 100% !important;
-    height: 292px !important;
-}
-
-.metric-card {
-    min-width: 0 !important;
-    height: 138px !important;
-    box-sizing: border-box !important;
-}
-
-/* ---------------------------------------------------------
-   HOURLY — 6 CARDS IN ONE ROW
-   --------------------------------------------------------- */
-
-.hourly-grid {
-    display: grid !important;
-    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-    gap: 12px !important;
-    width: 100% !important;
-}
-
-.hour-card {
-    min-width: 0 !important;
-}
-
-/* ---------------------------------------------------------
-   DAILY — 5 CARDS IN ONE ROW
-   --------------------------------------------------------- */
-
-.daily-grid {
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-    gap: 12px !important;
-    width: 100% !important;
-}
-
-.day-card {
-    min-width: 0 !important;
-}
-
-/* ---------------------------------------------------------
-   DASHBOARD SECTIONS
-   --------------------------------------------------------- */
-
-.weather-dashboard {
-    width: 100% !important;
-}
-
-.forecast-section {
-    width: 100% !important;
-}
-
-/* ---------------------------------------------------------
-   SEARCH AREA
-   --------------------------------------------------------- */
-
-.search-section,
-.search-row {
-    width: 100% !important;
-    box-sizing: border-box !important;
-}
-
-/* ---------------------------------------------------------
-   RESPONSIVE
-   --------------------------------------------------------- */
-
-@media (max-width: 1050px) {
-
-    #appShell {
-        width: min(100% - 32px, 900px);
-    }
-
-    .current-weather-layout {
-        grid-template-columns: 1fr !important;
-    }
-
-    .metrics-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-        height: auto !important;
-    }
-
-    .metric-card {
-        height: 124px !important;
-    }
-}
-
-@media (max-width: 760px) {
-
-    #appShell {
-        width: calc(100% - 24px);
-    }
-
-    .metrics-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    }
-
-    .hourly-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-    }
-
-    .daily-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
-    }
-
-    .hero-main {
-        padding-right: 0 !important;
-    }
-
-    .hero-icon-area {
-        right: 15px !important;
-        top: 80px !important;
-        opacity: .45 !important;
-    }
-}
-/* =========================================================
-   SKYPULSE HERO — MATCH DESKTOP APP
-   ========================================================= */
-
-#appShell {
-    width: calc(100% - 48px) !important;
-    max-width: none !important;
-    margin-left: 24px !important;
-    margin-right: 24px !important;
-}
-
-.current-weather-layout {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-    gap: 28px !important;
-    align-items: stretch !important;
-}
-
-.hero-card {
-    position: relative !important;
-    height: 295px !important;
-    min-height: 295px !important;
-    overflow: hidden !important;
-    border-radius: 28px !important;
-}
-
-.hero-content {
-    position: relative !important;
-    height: 100% !important;
-    width: 100% !important;
-    padding: 26px 32px !important;
-    box-sizing: border-box !important;
-}
-
-.hero-top {
-    position: absolute !important;
-    left: 32px !important;
-    right: 32px !important;
-    top: 26px !important;
-    z-index: 5 !important;
-}
-
-.hero-location {
-    position: absolute !important;
-    left: 32px !important;
-    top: 78px !important;
-    margin: 0 !important;
-    z-index: 4 !important;
-}
-
-.hero-location h1 {
-    margin: 0 !important;
-}
-
-.hero-main {
-    position: absolute !important;
-    left: 32px !important;
-    right: 32px !important;
-    bottom: 48px !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    display: block !important;
-    z-index: 4 !important;
-}
-
-.hero-temperature {
-    position: absolute !important;
-    left: 0 !important;
-    bottom: 0 !important;
-    display: flex !important;
-    align-items: flex-start !important;
-    margin: 0 !important;
-}
-
-.hero-temperature #temperature {
-    font-size: 76px !important;
-    line-height: .86 !important;
-    font-weight: 800 !important;
-    letter-spacing: -4px !important;
-}
-
-.temperature-unit {
-    font-size: 22px !important;
-    line-height: 1 !important;
-    font-weight: 700 !important;
-    margin-top: 4px !important;
-}
-
-.hero-details {
-    position: absolute !important;
-    right: 0 !important;
-    bottom: 2px !important;
-    width: 205px !important;
-    margin: 0 !important;
-    text-align: left !important;
-}
-
-.hero-details .feels-like,
-.hero-details .condition,
-.hero-details .high-low {
-    margin: 0 !important;
-}
-
-.hero-details .condition {
-    margin-top: 8px !important;
-    font-size: 17px !important;
-    font-weight: 700 !important;
-}
-
-.hero-details .high-low {
-    margin-top: 7px !important;
-}
-
-.hero-icon-area {
-    position: absolute !important;
-    right: 40px !important;
-    top: 66px !important;
-    width: 150px !important;
-    height: 150px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    z-index: 2 !important;
-}
-
-.hero-weather-icon {
-    display: block !important;
-    width: auto !important;
-    height: auto !important;
-    font-size: 100px !important;
-    line-height: 1 !important;
-}
-
-.hero-footer {
-    position: absolute !important;
-    left: 32px !important;
-    bottom: 13px !important;
-    z-index: 5 !important;
-    margin: 0 !important;
-}
-
-/* =========================================================
-   METRICS — DESKTOP APP SIZE
-   ========================================================= */
-
-.metrics-grid {
-    display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    grid-template-rows: repeat(2, 1fr) !important;
-    gap: 16px !important;
-    height: 295px !important;
-}
-
-.metric-card {
-    height: auto !important;
-    min-height: 0 !important;
-    border-radius: 20px !important;
-}
-
-/* =========================================================
-   FORECASTS
-   ========================================================= */
-
-.hourly-grid {
-    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-}
-
-.daily-grid {
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-}
-/* =========================================================
-   FINAL SKYPULSE DESKTOP-MATCH OVERRIDE
-   ========================================================= */
-
-/* Use the same wide content area as the desktop app */
-#appShell {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding-left: 24px !important;
-    padding-right: 24px !important;
-    box-sizing: border-box !important;
-}
-
-/* Header/search/dashboard all use the same width */
-.topbar,
-.search-section,
-.weather-dashboard {
-    width: 100% !important;
-    max-width: none !important;
-}
-
-/* Desktop current-weather arrangement */
-.current-weather-layout {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-    gap: 28px !important;
-    align-items: stretch !important;
-}
-
-/* HERO */
-.hero-card {
-    width: 100% !important;
-    height: 295px !important;
-    min-height: 295px !important;
-    border-radius: 28px !important;
-    overflow: hidden !important;
-}
-
-.hero-content {
-    width: 100% !important;
-    height: 100% !important;
-    padding: 26px 32px !important;
-    box-sizing: border-box !important;
-}
-
-/* status + star */
-.hero-top {
-    position: absolute !important;
-    top: 26px !important;
-    left: 32px !important;
-    right: 32px !important;
-    z-index: 10 !important;
-}
-
-/* city */
-.hero-location {
-    position: absolute !important;
-    top: 78px !important;
-    left: 32px !important;
-    z-index: 10 !important;
-    margin: 0 !important;
-}
-
-/* temperature */
-.hero-main {
-    position: absolute !important;
-    left: 32px !important;
-    right: 32px !important;
-    bottom: 48px !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    display: block !important;
-    z-index: 10 !important;
-}
-
-.hero-temperature {
-    position: absolute !important;
-    left: 0 !important;
-    bottom: 0 !important;
-    display: flex !important;
-    align-items: flex-start !important;
-}
-
-.hero-temperature #temperature {
-    font-size: 76px !important;
-    line-height: .86 !important;
-    font-weight: 800 !important;
-    letter-spacing: -4px !important;
-}
-
-.temperature-unit {
-    font-size: 22px !important;
-    margin-top: 5px !important;
-}
-
-/* right-side hero details */
-.hero-details {
-    position: absolute !important;
-    right: 0 !important;
-    bottom: 0 !important;
-    width: 210px !important;
-    margin: 0 !important;
-}
-
-.hero-details .condition {
-    margin-top: 8px !important;
-    font-size: 17px !important;
-    font-weight: 700 !important;
-}
-
-.hero-details .high-low {
-    margin-top: 7px !important;
-}
-
-/* BIG WEATHER ICON — desktop position */
-.hero-icon-area {
-    position: absolute !important;
-    top: 65px !important;
-    right: 45px !important;
-    width: 155px !important;
-    height: 155px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    z-index: 5 !important;
-}
-
-.hero-weather-icon {
-    display: block !important;
-    font-size: 105px !important;
-    line-height: 1 !important;
-    width: auto !important;
-    height: auto !important;
-}
-
-/* footer */
-.hero-footer {
-    position: absolute !important;
-    left: 32px !important;
-    bottom: 14px !important;
-    margin: 0 !important;
-    z-index: 10 !important;
-}
-
-/* METRICS */
-.metrics-grid {
-    width: 100% !important;
-    height: 295px !important;
-    display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    grid-template-rows: repeat(2, 1fr) !important;
-    gap: 16px !important;
-}
-
-.metric-card {
-    width: 100% !important;
-    height: auto !important;
-    min-height: 0 !important;
-    box-sizing: border-box !important;
-}
-
-/* HOURLY */
-.hourly-grid {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-}
-
-/* DAILY */
-.daily-grid {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-}
-
-/* Keep desktop layout until genuinely narrow */
-@media (max-width: 1100px) {
-    .current-weather-layout {
-        grid-template-columns: 1fr !important;
-    }
-
-    .metrics-grid {
-        height: auto !important;
-    }
-}
-
-@media (max-width: 700px) {
-    #appShell {
-        padding-left: 14px !important;
-        padding-right: 14px !important;
-    }
-
-    .metrics-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-
-    .hourly-grid {
-        grid-template-columns: repeat(3, 1fr) !important;
-    }
-
-    .daily-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-}
-
-/* =========================================================
-   SKYPULSE DESKTOP MATCH — FINAL BROWSER OVERRIDE
-   Match the Tkinter SkyPulse desktop dashboard
-   ========================================================= */
-
-html,
-body {
-    margin: 0 !important;
-    padding: 0 !important;
-    min-height: 100% !important;
-}
-
-body {
-    background: #0A0F1E !important;
-}
-
-#appShell {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 24px !important;
-    box-sizing: border-box !important;
-}
-
-/* ---------- HEADER ---------- */
-
-.topbar {
-    height: 72px !important;
-    min-height: 72px !important;
-    margin-bottom: 24px !important;
-}
-
-.brand-mark {
-    width: 50px !important;
-    height: 50px !important;
-    min-width: 50px !important;
-}
-
-.brand-name {
-    font-size: 25px !important;
-}
-
-.brand-tagline {
-    font-size: 13px !important;
-}
-
-/* ---------- SEARCH ---------- */
-
-.search-row {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) auto auto !important;
-    gap: 16px !important;
-    align-items: center !important;
-    margin-bottom: 16px !important;
-}
-
-.search-box {
-    height: 50px !important;
-    min-height: 50px !important;
-}
-
-.cityInput {
-    font-size: 16px !important;
-}
-
-.primary-button,
-.secondary-button {
-    height: 52px !important;
-    min-height: 52px !important;
-    padding: 0 26px !important;
-}
-
-/* ---------- RECENT ---------- */
-
-.recent-row {
-    margin: 0 0 16px 6px !important;
-}
-
-/* ---------- MAIN DASHBOARD ---------- */
-
-.weather-dashboard {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-.current-weather-layout {
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-    gap: 28px !important;
-    align-items: stretch !important;
-    width: 100% !important;
-}
-
-/* ---------- HERO ---------- */
-
-.hero-card {
-    position: relative !important;
-    height: 294px !important;
-    min-height: 294px !important;
-    max-height: 294px !important;
-    overflow: hidden !important;
-    box-sizing: border-box !important;
-    border-radius: 28px !important;
-}
-
-.hero-content {
-    position: relative !important;
-    width: 100% !important;
-    height: 100% !important;
-    box-sizing: border-box !important;
-    padding: 26px 32px 18px !important;
-}
-
-.hero-top {
-    position: relative !important;
-    z-index: 5 !important;
-    display: flex !important;
-    justify-content: space-between !important;
-    align-items: center !important;
-}
-
-.hero-location {
-    position: absolute !important;
-    left: 32px !important;
-    top: 80px !important;
-    z-index: 4 !important;
-}
-
-.hero-location h1 {
-    margin: 0 !important;
-    font-size: 31px !important;
-    line-height: 1.1 !important;
-}
-
-.country-name {
-    margin-top: 8px !important;
-    font-size: 15px !important;
-}
-
-/* Main temperature — FIX CLIPPING */
-
-.hero-main {
-    position: absolute !important;
-    left: 32px !important;
-    bottom: 48px !important;
-    z-index: 4 !important;
-    display: block !important;
-    width: 48% !important;
-}
-
-.hero-temperature {
-    display: flex !important;
-    align-items: flex-start !important;
-    margin: 0 !important;
-}
-
-.hero-temperature #temperature {
-    font-size: 84px !important;
-    line-height: .9 !important;
-    font-weight: 800 !important;
-}
-
-.temperature-unit {
-    font-size: 25px !important;
-    font-weight: 600 !important;
-    margin-top: 4px !important;
-}
-
-/* Feels / condition / high-low */
-
-.hero-details {
-    margin-top: 8px !important;
-}
-
-.feels-like {
-    font-size: 14px !important;
-}
-
-.condition {
-    display: none !important;
-}
-
-.high-low {
-    display: none !important;
-}
-
-/* Weather icon — FIX MISSING ICON */
-
-.hero-icon-area {
-    position: absolute !important;
-    right: 42px !important;
-    top: 68px !important;
-    width: 260px !important;
-    height: 170px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    z-index: 4 !important;
-}
-
-.hero-weather-icon {
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    width: 160px !important;
-    height: 160px !important;
-    font-size: 112px !important;
-    line-height: 1 !important;
-}
-
-/* Condition belongs beneath icon */
-
-.hero-icon-area::after {
-    content: "" !important;
-}
-
-.hero-footer {
-    position: absolute !important;
-    left: 32px !important;
-    bottom: 14px !important;
-    z-index: 5 !important;
-    font-size: 12px !important;
-}
-
-/* ---------- METRICS ---------- */
-
-.metrics-grid {
-    display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    grid-template-rows: repeat(2, 1fr) !important;
-    gap: 16px !important;
-    height: 294px !important;
-}
-
-.metric-card {
-    height: auto !important;
-    min-height: 0 !important;
-    box-sizing: border-box !important;
-    border-radius: 20px !important;
-    padding: 16px !important;
-}
-
-.metric-icon {
-    width: 40px !important;
-    height: 40px !important;
-    min-width: 40px !important;
-}
-
-/* ---------- HOURLY ---------- */
-
-.hourly-section {
-    margin-top: 30px !important;
-}
-
-.hourly-grid {
-    display: grid !important;
-    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-}
-
-.hour-card {
-    height: 168px !important;
-    min-height: 168px !important;
-    box-sizing: border-box !important;
-    border-radius: 22px !important;
-}
-
-/* ---------- DAILY ---------- */
-
-.daily-section {
-    margin-top: 28px !important;
-}
-
-.daily-grid {
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-}
-
-.day-card {
-    height: 220px !important;
-    min-height: 220px !important;
-    box-sizing: border-box !important;
-    border-radius: 24px !important;
-}
-
-/* ---------- DESKTOP WIDTH ---------- */
-
-@media (min-width: 1200px) {
-    #appShell {
-        padding: 24px !important;
-    }
-
-    .current-weather-layout {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-        gap: 28px !important;
-    }
-}
-
-/* ---------- LAPTOP ---------- */
-
-@media (max-width: 1199px) {
-    #appShell {
-        padding: 20px !important;
-    }
-
-    .current-weather-layout {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-        gap: 18px !important;
+    .top-controls {
+        width: 100%;
     }
 
     .hero-card {
-        height: 294px !important;
+        min-height: 350px;
+        padding: 19px;
     }
 
-    .hero-weather-icon {
-        font-size: 90px !important;
+    .city-name {
+        font-size: 27px;
     }
-}
 
-/* ---------- SMALL SCREEN ---------- */
+    .temperature {
+        font-size: 65px;
+    }
 
-@media (max-width: 900px) {
-    .current-weather-layout {
-        grid-template-columns: 1fr !important;
+    .hero-main {
+        min-height: 220px;
+    }
+
+    .hero-icon-area {
+        right: -24px;
+        top: 46%;
+        opacity: .48;
+    }
+
+    .hero-footer {
+        font-size: 9px;
     }
 
     .metrics-grid {
-        height: auto !important;
-        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 7px;
     }
 
-    .hourly-grid {
-        grid-template-columns: repeat(3, 1fr) !important;
+    .metric-card {
+        min-height: 115px;
+        padding: 13px;
     }
 
-    .daily-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
-}
-
-
-/* ============================================================
-   SKYPULSE BROWSER — FINAL DESKTOP MATCH
-   Match the original Tkinter SkyPulse dashboard layout
-   ============================================================ */
-
-/* Page width / outer spacing */
-html body #appShell {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 24px 40px !important;
-    box-sizing: border-box !important;
-}
-
-/* Header */
-html body .topbar {
-    width: 100% !important;
-    min-height: 96px !important;
-    padding: 20px 0 18px !important;
-    box-sizing: border-box !important;
-}
-
-/* Search row — same 3-part structure as desktop app */
-html body .search-row {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) 176px 168px !important;
-    gap: 16px !important;
-    align-items: center !important;
-    margin: 0 0 16px !important;
-}
-
-/* Search input */
-html body .search-box {
-    width: 100% !important;
-    height: 50px !important;
-    box-sizing: border-box !important;
-}
-
-html body .cityInput {
-    height: 50px !important;
-    font-size: 16px !important;
-}
-
-/* Search buttons */
-html body .primary-button,
-html body .secondary-button {
-    height: 50px !important;
-    min-height: 50px !important;
-    box-sizing: border-box !important;
-}
-
-/* Desktop app shows Recent after weather loads, not Try */
-html body:has(#weatherDashboard:not([hidden])) .try-cities {
-    display: none !important;
-}
-
-/* Dashboard */
-html body #weatherDashboard.weather-dashboard {
-    width: 100% !important;
-    max-width: none !important;
-    margin: 0 !important;
-    padding: 0 !important;
-}
-
-/* HERO + METRICS = two equal columns */
-html body #weatherDashboard .current-weather-layout {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) !important;
-    gap: 28px !important;
-    align-items: stretch !important;
-}
-
-/* Hero card */
-html body #weatherDashboard .hero-card {
-    position: relative !important;
-    width: 100% !important;
-    height: 296px !important;
-    min-height: 296px !important;
-    max-height: 296px !important;
-    margin: 0 !important;
-    box-sizing: border-box !important;
-    overflow: hidden !important;
-    border-radius: 28px !important;
-}
-
-/* Hero inner area */
-html body #weatherDashboard .hero-content {
-    position: relative !important;
-    width: 100% !important;
-    height: 100% !important;
-    box-sizing: border-box !important;
-    padding: 25px 32px 16px !important;
-}
-
-/* Hero top */
-html body #weatherDashboard .hero-top {
-    position: absolute !important;
-    left: 32px !important;
-    right: 32px !important;
-    top: 25px !important;
-    z-index: 5 !important;
-}
-
-/* City */
-html body #weatherDashboard .hero-location {
-    position: absolute !important;
-    left: 32px !important;
-    top: 79px !important;
-    z-index: 5 !important;
-    margin: 0 !important;
-}
-
-html body #weatherDashboard .hero-location h1 {
-    margin: 0 !important;
-    font-size: 32px !important;
-    line-height: 1.1 !important;
-}
-
-/* Country */
-html body #weatherDashboard .country-name {
-    margin-top: 7px !important;
-    font-size: 15px !important;
-}
-
-/* Main temperature block */
-html body #weatherDashboard .hero-main {
-    position: absolute !important;
-    left: 32px !important;
-    right: 32px !important;
-    top: 161px !important;
-    height: 105px !important;
-    margin: 0 !important;
-    display: block !important;
-    z-index: 5 !important;
-}
-
-/* Temperature */
-html body #weatherDashboard .hero-temperature {
-    position: absolute !important;
-    left: 0 !important;
-    top: 0 !important;
-    display: flex !important;
-    align-items: flex-start !important;
-    margin: 0 !important;
-}
-
-html body #weatherDashboard .hero-temperature #temperature {
-    font-size: 84px !important;
-    line-height: .86 !important;
-    font-weight: 800 !important;
-    letter-spacing: -4px !important;
-}
-
-html body #weatherDashboard .hero-temperature .temperature-unit {
-    font-size: 28px !important;
-    line-height: 1 !important;
-    margin: 2px 0 0 5px !important;
-    font-weight: 700 !important;
-}
-
-/* Feels like / condition / high-low on right */
-html body #weatherDashboard .hero-details {
-    position: absolute !important;
-    right: 0 !important;
-    top: 47px !important;
-    width: 225px !important;
-    margin: 0 !important;
-    text-align: center !important;
-}
-
-html body #weatherDashboard .feels-like {
-    font-size: 15px !important;
-    margin: 0 0 8px !important;
-}
-
-html body #weatherDashboard .condition {
-    font-size: 20px !important;
-    font-weight: 700 !important;
-    margin: 0 0 5px !important;
-}
-
-html body #weatherDashboard .high-low {
-    font-size: 15px !important;
-}
-
-/* Weather icon */
-html body #weatherDashboard .hero-icon-area {
-    position: absolute !important;
-    right: 70px !important;
-    top: 70px !important;
-    width: 180px !important;
-    height: 115px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    z-index: 4 !important;
-}
-
-html body #weatherDashboard .hero-weather-icon {
-    font-size: 82px !important;
-    line-height: 1 !important;
-    width: auto !important;
-    height: auto !important;
-}
-
-/* Hero footer */
-html body #weatherDashboard .hero-footer {
-    position: absolute !important;
-    left: 32px !important;
-    bottom: 14px !important;
-    z-index: 6 !important;
-    margin: 0 !important;
-    font-size: 13px !important;
-}
-
-/* Metrics = exactly 4 x 2 */
-html body #weatherDashboard .metrics-grid {
-    width: 100% !important;
-    height: 296px !important;
-    display: grid !important;
-    grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-    grid-template-rows: repeat(2, 1fr) !important;
-    gap: 16px !important;
-    margin: 0 !important;
-}
-
-/* Metric cards */
-html body #weatherDashboard .metric-card {
-    width: 100% !important;
-    min-width: 0 !important;
-    height: auto !important;
-    min-height: 0 !important;
-    margin: 0 !important;
-    padding: 16px !important;
-    box-sizing: border-box !important;
-    border-radius: 20px !important;
-}
-
-/* Hourly section */
-html body #weatherDashboard .hourly-section {
-    width: 100% !important;
-    margin-top: 30px !important;
-}
-
-html body #weatherDashboard .hourly-grid {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: repeat(6, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-}
-
-html body #weatherDashboard .hour-card {
-    height: 168px !important;
-    min-height: 168px !important;
-    box-sizing: border-box !important;
-    border-radius: 22px !important;
-}
-
-/* Five-day section */
-html body #weatherDashboard .daily-section {
-    width: 100% !important;
-    margin-top: 30px !important;
-}
-
-html body #weatherDashboard .daily-grid {
-    width: 100% !important;
-    display: grid !important;
-    grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
-    gap: 14px !important;
-}
-
-html body #weatherDashboard .day-card {
-    width: 100% !important;
-    height: 222px !important;
-    min-height: 222px !important;
-    box-sizing: border-box !important;
-    border-radius: 24px !important;
-}
-
-/* Keep layout stable on smaller browser windows */
-@media (max-width: 1100px) {
-    html body #weatherDashboard .current-weather-layout {
-        grid-template-columns: 1fr !important;
+    .metric-value {
+        font-size: 17px;
     }
 
-    html body #weatherDashboard .hero-card {
-        height: 296px !important;
+    .metric-label {
+        font-size: 8px;
     }
 
-    html body #weatherDashboard .metrics-grid {
-        height: auto !important;
-        grid-template-rows: repeat(2, 140px) !important;
+    .forecast-section {
+        margin-top: 23px;
     }
 }
 
-@media (max-width: 800px) {
-    html body #appShell {
-        padding-left: 14px !important;
-        padding-right: 14px !important;
-    }
 
-    html body .search-row {
-        grid-template-columns: 1fr !important;
-    }
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
 
-    html body #weatherDashboard .hourly-grid {
-        grid-template-columns: repeat(2, 1fr) !important;
-    }
+@media (prefers-reduced-motion: reduce) {
 
-    html body #weatherDashboard .daily-grid {
-        grid-template-columns: 1fr !important;
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        transition: none !important;
+        animation: none !important;
     }
 }
-
