@@ -1,0 +1,807 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SkyPulse - Your Weather, At a Glance</title>
+
+    <meta
+        name="description"
+        content="SkyPulse real-time weather dashboard with current conditions, hourly forecast and five-day forecast."
+    >
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+
+<div id="appShell" class="app-shell">
+
+    <!-- =========================================================
+         HEADER
+         ========================================================= -->
+    <header class="topbar">
+
+        <div class="brand">
+
+            <div class="brand-mark" aria-hidden="true">
+                <span class="brand-sun"></span>
+                <span class="brand-pulse"></span>
+            </div>
+
+            <div class="brand-copy">
+                <div class="brand-name">SkyPulse</div>
+                <div class="brand-tagline">Your Weather, At a Glance</div>
+            </div>
+
+        </div>
+
+
+        <div class="top-controls">
+
+            <div id="localClock" class="local-clock">
+                <span class="clock-icon">â—·</span>
+                <span id="clockText">--:--</span>
+            </div>
+
+
+            <div class="unit-toggle" role="group" aria-label="Temperature unit">
+
+                <button
+                    id="celsiusBtn"
+                    class="unit-btn active"
+                    type="button"
+                    aria-pressed="true"
+                >
+                    Â°C
+                </button>
+
+                <button
+                    id="fahrenheitBtn"
+                    class="unit-btn"
+                    type="button"
+                    aria-pressed="false"
+                >
+                    Â°F
+                </button>
+
+            </div>
+
+
+            <button
+                id="refreshBtn"
+                class="icon-button"
+                type="button"
+                title="Refresh weather"
+                aria-label="Refresh weather"
+            >
+                â†»
+            </button>
+
+
+            <button
+                id="themeBtn"
+                class="icon-button"
+                type="button"
+                title="Switch theme"
+                aria-label="Switch theme"
+            >
+                â˜¼
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- =========================================================
+         SEARCH
+         ========================================================= -->
+    <section class="search-section">
+
+        <div class="search-row">
+
+            <div class="search-box">
+
+                <span class="search-icon" aria-hidden="true">⌕</span>
+
+                <input
+                    id="cityInput"
+                    type="text"
+                    autocomplete="off"
+                    spellcheck="false"
+                    placeholder="Search a city — e.g. Hyderabad, Bengaluru or Mumbai<button
+                    id="clearSearchBtn"
+                    class="clear-search"
+                    type="button"
+                    aria-label="Clear search"
+                    title="Clear"
+                >
+                    Ã—
+                </button>
+
+            </div>
+
+
+            <div class="search-actions">
+
+                <button
+                    id="searchBtn"
+                    class="primary-button"
+                    type="button"
+                >
+                    <span>â˜</span>
+                    <span>Get Weather</span>
+                    <span>→</span>
+                </button>
+
+
+                <button
+                    id="locationBtn"
+                    class="secondary-button"
+                    type="button"
+                >
+                    <span>⌖</span>
+                    <span>My Location</span>
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- Validation message -->
+        <div
+            id="searchError"
+            class="search-error"
+            role="alert"
+            aria-live="polite"
+        ></div>
+
+
+        <!-- Recent searches -->
+        <div id="recentRow" class="recent-row">
+
+            <span class="recent-label">Recent</span>
+
+            <div id="recentList" class="recent-list"></div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         WELCOME STATE
+         ========================================================= -->
+    <section id="welcomeState" class="state">
+    <div class="welcome-card">
+
+        <div class="welcome-icons">
+            <div class="welcome-weather-icon">☀️</div>
+            <div class="welcome-weather-icon">🌤️</div>
+            <div class="welcome-weather-icon">🌧️</div>
+            <div class="welcome-weather-icon">🌨️</div>
+            <div class="welcome-weather-icon">🌙</div>
+        </div>
+
+        <div class="welcome-eyebrow">YOUR WEATHER, AT A GLANCE</div>
+
+        <h1>Welcome to SkyPulse</h1>
+
+        <p>
+            Search any city or use your location to see live conditions,
+            the next six hours and a five-day outlook.
+        </p>
+
+        <div class="welcome-tips">
+            <span>⌕ Type a city and press Enter</span>
+            <span>⌖ Or detect your location</span>
+            <span>★ Star cities to pin them</span>
+        </div>
+
+    </div>
+</section>
+
+
+    <!-- =========================================================
+         LOADING STATE
+         ========================================================= -->
+    <section
+        id="loadingState"
+        class="state-section"
+        hidden
+    >
+
+        <div class="loading-card">
+
+            <div class="loading-spinner"></div>
+
+            <div class="loading-copy">
+
+                <div class="loading-eyebrow">
+                    SKY PULSE
+                </div>
+
+                <h2>
+                    Reading the sky
+                </h2>
+
+                <p>
+                    Fetching the latest weather information...
+                </p>
+
+            </div>
+
+            <div class="loading-skeletons">
+
+                <span></span>
+                <span></span>
+                <span></span>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         ERROR STATE
+         ========================================================= -->
+    <section
+        id="errorState"
+        class="state-section"
+        hidden
+    >
+
+        <div class="error-card">
+
+            <div class="error-icon">
+                !
+            </div>
+
+            <div class="error-eyebrow">
+                WEATHER SERVICE
+            </div>
+
+            <h2 id="errorTitle">
+                Weather unavailable
+            </h2>
+
+            <p id="errorMessage">
+                We couldn't retrieve weather information.
+            </p>
+
+            <button
+                id="retryBtn"
+                class="primary-button"
+                type="button"
+            >
+                Try Again
+            </button>
+
+        </div>
+
+    </section>
+
+
+    <!-- =========================================================
+         WEATHER DASHBOARD
+         ========================================================= -->
+    <main
+        id="weatherDashboard"
+        class="weather-dashboard"
+        hidden
+    >
+
+        <!-- =====================================================
+             CURRENT WEATHER AREA
+             ===================================================== -->
+        <section class="current-weather-layout">
+
+
+            <!-- HERO CARD -->
+            <article
+                id="heroCard"
+                class="hero-card"
+            >
+
+                <!-- Decorative atmosphere -->
+                <div
+                    id="heroStars"
+                    class="hero-stars"
+                    aria-hidden="true"
+                ></div>
+
+                <div
+                    id="heroRain"
+                    class="hero-rain"
+                    aria-hidden="true"
+                ></div>
+
+
+                <div class="hero-content">
+
+
+                    <!-- Hero top -->
+                    <div class="hero-top">
+
+                        <div
+                            id="weatherStatus"
+                            class="weather-status"
+                        >
+                            Cloudy
+                        </div>
+
+
+                        <button
+                            id="favoriteBtn"
+                            class="favorite-button"
+                            type="button"
+                            aria-label="Add city to favorites"
+                            title="Favorite city"
+                        >
+                            ☆
+                        </button>
+
+                    </div>
+
+
+                    <!-- Location -->
+                    <div class="hero-location">
+
+                        <h1 id="cityName">
+                            Hyderabad
+                        </h1>
+
+                        <div id="countryName" class="country-name">
+                            India
+                        </div>
+
+                    </div>
+
+
+                    <!-- Main temperature -->
+                    <div class="hero-main">
+
+                        <div class="hero-temperature">
+
+                            <span id="temperature">
+                                --
+                            </span>
+
+                            <span class="temperature-unit">
+                                Â°C
+                            </span>
+
+                        </div>
+
+
+                        <div class="hero-details">
+
+                            <div class="feels-like">
+                                Feels like
+                                <span id="feelsLike">--</span>
+                            </div>
+
+                            <div
+                                id="condition"
+                                class="condition"
+                            >
+                                --
+                            </div>
+
+                            <div class="high-low">
+
+                                <span>
+                                    High
+                                    <strong id="highTemp">--</strong>
+                                </span>
+
+                                <span class="separator">Â·</span>
+
+                                <span>
+                                    Low
+                                    <strong id="lowTemp">--</strong>
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Weather icon -->
+                    <div class="hero-icon-area">
+
+                        <div
+                            id="heroWeatherIcon"
+                            class="hero-weather-icon"
+                            aria-hidden="true"
+                        >
+                            â˜
+                        </div>
+
+                    </div>
+
+
+                    <!-- Updated -->
+                    <div class="hero-footer">
+
+                        <span>
+                            Last updated
+                            <strong id="updatedTime">--</strong>
+                        </span>
+
+                        <span class="hero-dot">Â·</span>
+
+                        <span>
+                            Local time
+                            <strong id="heroLocalTime">--</strong>
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+
+            <!-- =================================================
+                 METRICS
+                 ================================================= -->
+            <div class="metrics-grid">
+
+
+                <!-- Humidity -->
+                <article class="metric-card">
+
+                    <div class="metric-icon humidity-icon">
+                        ðŸ’§
+                    </div>
+
+                    <div class="metric-content">
+
+                        <div class="metric-label">
+                            Humidity
+                        </div>
+
+                        <div
+                            id="humidityValue"
+                            class="metric-value"
+                        >
+                            --
+                        </div>
+
+                        <div
+                            id="humiditySub"
+                            class="metric-sub"
+                        >
+                            --
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Wind -->
+                <article class="metric-card">
+
+                    <div class="metric-icon wind-icon">
+                        â‰‹
+                    </div>
+
+                    <div class="metric-content">
+
+                        <div class="metric-label">
+                            Wind
+                        </div>
+
+                        <div
+                            id="windValue"
+                            class="metric-value"
+                        >
+                            --
+                        </div>
+
+                        <div
+                            id="windSub"
+                            class="metric-sub"
+                        >
+                            --
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Pressure -->
+                <article class="metric-card">
+
+                    <div class="metric-icon pressure-icon">
+                        â—‰
+                    </div>
+
+                    <div class="metric-content">
+
+                        <div class="metric-label">
+                            Pressure
+                        </div>
+
+                        <div
+                            id="pressureValue"
+                            class="metric-value"
+                        >
+                            --
+                        </div>
+
+                        <div
+                            id="pressureSub"
+                            class="metric-sub"
+                        >
+                            --
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Visibility -->
+                <article class="metric-card">
+
+                    <div class="metric-icon visibility-icon">
+                        â—‰
+                    </div>
+
+                    <div class="metric-content">
+
+                        <div class="metric-label">
+                            Visibility
+                        </div>
+
+                        <div
+                            id="visibilityValue"
+                            class="metric-value"
+                        >
+                            --
+                        </div>
+
+                        <div
+                            id="visibilitySub"
+                            class="metric-sub"
+                        >
+                            --
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Clouds -->
+                <article class="metric-card">
+
+                    <div class="metric-icon clouds-icon">
+                        â˜
+                    </div>
+
+                    <div class="metric-content">
+
+                        <div class="metric-label">
+                            Cloud cover
+                        </div>
+
+                        <div
+                            id="cloudsValue"
+                            class="metric-value"
+                        >
+                            --
+                        </div>
+
+                        <div
+                            id="cloudsSub"
+                            class="metric-sub"
+                        >
+                            --
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Sunrise -->
+                <article class="metric-card">
+
+                    <div class="metric-icon sunrise-icon">
+                        â†‘
+                    </div>
+
+                    <div class="metric-content">
+
+                        <div class="metric-label">
+                            Sunrise
+                        </div>
+
+                        <div
+                            id="sunriseValue"
+                            class="metric-value"
+                        >
+                            --
+                        </div>
+
+                        <div
+                            id="sunriseSub"
+                            class="metric-sub"
+                        >
+                            Local time
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Sunset -->
+                <article class="metric-card">
+
+                    <div class="metric-icon sunset-icon">
+                        â†“
+                    </div>
+
+                    <div class="metric-content">
+
+                        <div class="metric-label">
+                            Sunset
+                        </div>
+
+                        <div
+                            id="sunsetValue"
+                            class="metric-value"
+                        >
+                            --
+                        </div>
+
+                        <div
+                            id="sunsetSub"
+                            class="metric-sub"
+                        >
+                            Local time
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Daylight -->
+                <article class="metric-card">
+
+                    <div class="metric-icon daylight-icon">
+                        â—·
+                    </div>
+
+                    <div class="metric-content">
+
+                        <div class="metric-label">
+                            Daylight
+                        </div>
+
+                        <div
+                            id="daylightValue"
+                            class="metric-value"
+                        >
+                            --
+                        </div>
+
+                        <div
+                            id="daylightSub"
+                            class="metric-sub"
+                        >
+                            Sunrise to sunset
+                        </div>
+
+                    </div>
+
+                </article>
+
+            </div>
+
+        </section>
+
+
+        <!-- =====================================================
+             NEXT 6 HOURS
+             ===================================================== -->
+        <section class="forecast-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>
+                        Next 6 hours
+                    </h2>
+                </div>
+
+                <div class="section-note">
+                    Hourly temperatures are interpolated from 3-hour data
+                </div>
+
+            </div>
+
+
+            <div
+                id="hourlyGrid"
+                class="hourly-grid"
+            ></div>
+
+        </section>
+
+
+        <!-- =====================================================
+             5-DAY FORECAST
+             ===================================================== -->
+        <section class="forecast-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>
+                        5-day forecast
+                    </h2>
+
+                    <div
+                        id="forecastLocation"
+                        class="forecast-location"
+                    >
+                        --
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div
+                id="dailyGrid"
+                class="daily-grid"
+            ></div>
+
+        </section>
+
+    </main>
+
+
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
+    <footer class="app-footer">
+
+        <div>
+            <strong>SkyPulse Weather App</strong>
+            Built with Python, Flask &amp; OpenWeatherMap
+        </div>
+
+        <div class="footer-shortcuts">
+            F5 Refresh&nbsp;&nbsp;&nbsp;
+            Ctrl + L Search&nbsp;&nbsp;&nbsp;
+            Ctrl + T Theme
+        </div>
+
+    </footer>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+
+</body>
+</html>
+
+
+

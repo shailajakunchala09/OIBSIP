@@ -1,0 +1,318 @@
+/* =========================================================
+   FINAL OVERRIDES — SKY PULSE DESKTOP MATCH
+   ========================================================= */
+
+/* Full-width desktop application */
+html,
+body {
+    width: 100%;
+    min-width: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, "Segoe UI", sans-serif;
+}
+
+.app-shell {
+    width: 100% !important;
+    max-width: none !important;
+    min-height: 100vh;
+    margin: 0 !important;
+    padding: 24px !important;
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.topbar {
+    width: 100%;
+    min-height: 72px;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+}
+
+.brand {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 14px !important;
+}
+
+.brand-copy {
+    display: block !important;
+}
+
+.brand-name,
+.brand-title {
+    font-family: Arial, "Segoe UI", sans-serif !important;
+    color: #EAF0FB !important;
+    font-size: 25px !important;
+    font-weight: 800 !important;
+    line-height: 1.05 !important;
+}
+
+.brand-tagline {
+    font-family: Arial, "Segoe UI", sans-serif !important;
+    font-size: 13px !important;
+    color: #95A3C0 !important;
+}
+
+/* =========================================================
+   HEADER CONTROLS — ALL ON ONE LINE
+   ========================================================= */
+
+.top-controls {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 10px !important;
+    white-space: nowrap !important;
+}
+
+.local-clock {
+    display: flex !important;
+    align-items: center !important;
+    margin-right: 8px !important;
+    white-space: nowrap !important;
+}
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.search-section {
+    width: 100%;
+    margin-top: 10px !important;
+}
+
+.search-row {
+    width: 100%;
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) auto auto !important;
+    align-items: center !important;
+    gap: 12px !important;
+}
+
+.search-box {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* =========================================================
+   RECENT / TRY CHIPS
+   ========================================================= */
+
+.recent-row {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    width: 100%;
+    margin-top: 10px !important;
+}
+
+.recent-list {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+}
+
+/* =========================================================
+   WELCOME CARD
+   ========================================================= */
+
+.welcome-card {
+    width: 100% !important;
+    min-height: 365px !important;
+    margin-top: 4px !important;
+    padding: 40px 50px !important;
+    box-sizing: border-box !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    text-align: center !important;
+}
+
+/* THIS IS THE IMPORTANT FIX */
+.welcome-card .welcome-content {
+    width: 100% !important;
+    max-width: 820px !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    margin: 0 auto !important;
+}
+
+/* Icons MUST stay in one row */
+.welcome-card .welcome-icons,
+.welcome-card .welcome-weather-icons {
+    width: 100% !important;
+
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 28px !important;
+    margin: 0 0 18px !important;
+}
+
+.welcome-card .welcome-icons span,
+.welcome-card .welcome-weather-icons span {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    width: 46px !important;
+    height: 46px !important;
+
+    font-family: "Segoe UI Emoji", "Apple Color Emoji", sans-serif !important;
+    font-size: 38px !important;
+    line-height: 1 !important;
+}
+
+/* Welcome title */
+.welcome-card h1,
+.welcome-card h2 {
+    width: 100% !important;
+
+    margin: 8px 0 16px !important;
+
+    font-family: Arial, "Segoe UI", sans-serif !important;
+    font-size: 30px !important;
+    font-weight: 800 !important;
+    line-height: 1.2 !important;
+
+    color: #EAF0FB !important;
+    text-align: center !important;
+}
+
+/* Welcome paragraph */
+.welcome-card p {
+    width: 100% !important;
+    max-width: 720px !important;
+
+    margin: 0 auto !important;
+
+    font-family: Arial, "Segoe UI", sans-serif !important;
+    font-size: 15px !important;
+    line-height: 1.55 !important;
+
+    color: #95A3C0 !important;
+    text-align: center !important;
+}
+
+/* Welcome bottom hints */
+.welcome-card .welcome-hints {
+    width: 100% !important;
+
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    gap: 30px !important;
+
+    margin-top: 40px !important;
+
+    font-family: Arial, "Segoe UI", sans-serif !important;
+    font-size: 12px !important;
+    color: #6F82A5 !important;
+}
+
+.welcome-card .welcome-hints span {
+    display: inline-flex !important;
+    align-items: center !important;
+    white-space: nowrap !important;
+}
+
+/* =========================================================
+   DASHBOARD
+   ========================================================= */
+
+.weather-dashboard,
+.current-weather-layout,
+.forecast-section {
+    width: 100% !important;
+}
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer,
+.app-footer {
+    width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* =========================================================
+   LARGE DESKTOP — MATCH THE TKINTER WINDOW
+   ========================================================= */
+
+@media (min-width: 1200px) {
+    .app-shell {
+        padding: 24px !important;
+    }
+
+    .welcome-card {
+        min-height: 365px !important;
+    }
+}
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .app-shell {
+        padding: 14px !important;
+    }
+
+    .topbar {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    .top-controls {
+        justify-content: flex-end !important;
+    }
+
+    .search-row {
+        grid-template-columns: 1fr !important;
+    }
+
+    .welcome-card {
+        min-height: 340px !important;
+        padding: 28px 20px !important;
+    }
+
+    .welcome-card .welcome-icons,
+    .welcome-card .welcome-weather-icons {
+        gap: 12px !important;
+    }
+
+    .welcome-card .welcome-icons span,
+    .welcome-card .welcome-weather-icons span {
+        font-size: 30px !important;
+        width: 34px !important;
+        height: 34px !important;
+    }
+
+    .welcome-card .welcome-hints {
+        flex-direction: column !important;
+        gap: 12px !important;
+    }
+}
