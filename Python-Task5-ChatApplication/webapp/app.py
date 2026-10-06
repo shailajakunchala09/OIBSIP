@@ -269,7 +269,7 @@ def me():
         }
     })
 
-    if __name__ == "__main__":
+if __name__ == "__main__":
     import os
 
     app.run(
