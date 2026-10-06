@@ -1,270 +1,650 @@
-# VANTA CHAT
 
-**Private conversations. Simple connection.**
+🔐 VANTA CHAT
+<p align="center"> <b>Real-Time Private Chat Application</b><br/> <i>Private conversations. Simple connection.</i> </p> <p align="center"> <img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white"> <img alt="GUI" src="https://img.shields.io/badge/GUI-Tkinter-4B8BBE"> <img alt="Networking" src="https://img.shields.io/badge/Networking-TCP-2563EB"> <img alt="Database" src="https://img.shields.io/badge/Database-SQLite-003B57"> <img alt="Protocol" src="https://img.shields.io/badge/Protocol-JSON%20over%20TCP-7C3AED"> <img alt="Testing" src="https://img.shields.io/badge/Testing-Manual%20%2B%20Automated-16a34a"> <img alt="License" src="https://img.shields.io/badge/License-Educational-lightgrey"> <img alt="Status" src="https://img.shields.io/badge/Status-Complete-16a34a"> </p>
+🔗 Project Repository
+https://github.com/shailajakunchala09/OIBSIP
 
-A multi-user desktop chat application written in Python. A threaded TCP server stores users, rooms and
-message history in SQLite, and a Tkinter client gives each person a sign-in screen, chat rooms, live
-messages, unread badges and desktop pop-ups. It uses the Python standard library only, with no packages to install.
+Project: Python-Task5-ChatApplication
 
-Built for **OASIS INFOBYTE Python Programming Internship, Task 5: Chat Application**.
+VANTA CHAT is a desktop Tkinter application using a threaded TCP server and SQLite database. It is designed for local or trusted-network use rather than public web hosting.
 
-> **Please read the [Security & privacy](#security--privacy) section.** Passwords are hashed, but messages are
-> stored as plain text and sent over unencrypted TCP. This is a learning project meant for localhost or a
-> trusted network.
+📖 Project Overview
 
----
+VANTA CHAT is a real-time desktop chat application built for the OASIS INFOBYTE Python Programming Internship — Task 5: Chat Application.
 
-## Features
+The project provides a complete client-server messaging experience with user accounts, chat rooms, real-time message delivery, persistent message history, online presence, typing indicators, unread message badges, desktop notifications, search, themes, and automatic reconnection.
 
-| Area | What it does |
-|---|---|
-| Accounts | Register and sign in. Passwords are stored as salted PBKDF2 hashes. Wrong-password and unknown-user errors are identical. |
-| Rooms | Four rooms are seeded (General, Python, Technology, Random). Users can create rooms, join, and leave. Membership is saved. |
-| Messaging | Real-time delivery to everyone in a room, with timestamps, date separators, and system lines such as "You joined #General". |
-| History | The last 100 messages of a room are loaded when you open it. Everything is kept in SQLite across restarts. |
-| Presence | Online and last-seen status per member, plus online counts per room. |
-| Typing indicator | "alice is typing…" is shown to others in the room. |
-| Unread badges | Rooms you are not looking at count new messages from other people. |
-| Notifications | An always-on-top pop-up appears for new messages **only while the window is unfocused**. Optional sound. Clicking it opens the room. |
-| Emoji | Shortcodes such as `:smile:` are converted on send. An emoji picker is built in. |
-| Search | Find a room (Ctrl+K) or search the messages you have loaded in the current room (Ctrl+F). |
-| Reliability | Heartbeat, idle timeout, automatic reconnect with session resume, graceful logout, abrupt-disconnect handling, per-user rate limit. |
-| Interface | Splash screen, light and dark themes, settings, About dialog, keyboard shortcuts, confirmations, empty states, friendly error messages. |
+The application is built using Python's standard library, with Tkinter for the graphical interface, TCP sockets for networking, and SQLite for persistent server-side data.
 
-### Emoji shortcodes
+The project focuses on demonstrating practical Python concepts including:
 
-`:smile:` 😄 · `:heart:` ❤️ · `:thumbsup:` 👍 · `:laughing:` 😆 · `:fire:` 🔥 · `:rocket:` 🚀 · `:wave:` 👋 · `:joy:` 😂 ·
-`:ok_hand:` 👌 · `:clap:` 👏 · `:star:` ⭐ · `:eyes:` 👀 · `:tada:` 🎉 · `:thinking:` 🤔 · `:pray:` 🙏 · `:100:` 💯
+Client-server architecture
+TCP socket programming
+Multi-threading
+JSON-based communication
+GUI development with Tkinter
+SQLite database integration
+Password hashing
+Real-time event handling
+Error handling
+Automated testing
+🎯 Why This Project?
 
-Unknown shortcodes are left as typed.
+Many basic chat applications demonstrate only a simple socket connection and message exchange.
 
-### Keyboard shortcuts
+VANTA CHAT approaches the same problem as a complete desktop application by combining:
 
-| Keys | Action |
-|---|---|
-| Ctrl+K | Find a room |
-| Ctrl+F | Search messages in the current room |
-| Ctrl+N | Create a room |
-| Ctrl+E | Emoji picker |
-| Ctrl+B | Show or hide the members panel |
-| Ctrl+, | Settings |
-| Enter / Shift+Enter | Send / new line |
-| Esc | Clear the message box, or close search |
+👤 User authentication
+💬 Real-time messaging
+🏠 Multiple chat rooms
+🗄 Persistent message history
+🟢 Online presence
+✍️ Typing indicators
+🔔 Desktop notifications
+🔎 Message and room search
+🌙 Dark and light themes
+🔄 Automatic reconnection
+🛡 Password security
 
----
+The project separates the networking, database, and interface layers so each part can be maintained and tested independently.
 
-## How this maps to the OASIS task
+✨ Key Features
+👤 User accounts with sign-in and registration
+🔐 PBKDF2 salted password hashing
+💬 Real-time messaging over TCP
+🏠 Multiple chat rooms
+➕ Create new rooms
+🚪 Join and leave rooms
+🕘 Persistent message history
+📅 Message timestamps and date separators
+🟢 Online presence indicators
+✍️ Live typing indicator
+🔔 Unread message badges
+🖥️ Desktop notifications
+🔊 Notification sound settings
+🔎 Room search
+🔍 Message search
+😊 Emoji picker
+🌙 Dark and light themes
+⚙️ Application settings
+🔄 Automatic reconnect
+❤️ Heartbeat connection monitoring
+⏱️ Idle connection timeout
+🚦 Message rate limiting
+🚪 Graceful logout
+⌨️ Keyboard shortcuts
+📜 Last 100 messages available as room history
+🛡 Security Features
+Feature	Detail
+Password protection	Passwords are stored using PBKDF2 salted hashes
+Password storage	Plain-text passwords are not stored
+Rate limiting	Helps prevent excessive message requests
+Input validation	Server validates incoming requests
+Graceful logout	Client closes the connection cleanly
+Connection monitoring	Heartbeat mechanism detects inactive connections
+Idle timeout	Inactive connections can be closed automatically
+Database storage	SQLite is used for structured persistent data
+Protocol validation	Client/server communicate using structured JSON messages
 
-| Requirement | Where |
-|---|---|
-| Server and client over sockets | `server/server.py`, `client/client.py` |
-| Real-time messaging | `ChatServer._on_send_message` broadcasts to room members |
-| Timestamps | Epoch seconds stored per message, formatted on the client (`client/state.py`) |
-| Graceful disconnect | `logout` / `bye` frames, plus abrupt-drop cleanup in `ChatServer._disconnect` |
-| Run on localhost | Default `127.0.0.1:5050` (`common/protocol.py`) |
-| GUI | Tkinter, `client/` |
-| Registration and login | `server/auth.py`, `server/server.py`, `client/login_view.py` |
-| Multiple rooms | `rooms` and `room_members` tables, `ChatServer._join` / `_on_leave_room` |
-| History on join | `Database.recent_messages`, sent inside the `joined` frame |
-| Notifications when unfocused | `App._maybe_notify` and `ToastManager` in `client/gui.py` and `client/components.py` |
-| Emoji | `common/emoji.py` (server conversion), picker in `client/chat_view.py` |
+Security note: VANTA CHAT uses unencrypted TCP communication and stores chat messages as plain text in SQLite. It is intended for localhost or trusted-network educational use and should not be treated as a production secure messaging system.
 
----
+💬 Chat Application Logic
 
-## Architecture
+VANTA CHAT follows a client-server communication model.
 
-```
-┌──────────────┐   newline-delimited JSON over TCP    ┌────────────────────────┐
-│ Tkinter      │ ───────────────────────────────────▶ │ ChatServer             │
-│ client (GUI) │ ◀─────────────────────────────────── │  one thread per client │
-└──────────────┘                                      │  ├─ auth (PBKDF2)      │
-  App (gui.py)                                        │  ├─ rooms + broadcast  │
-  ├─ LoginView / ChatView                             │  └─ SQLite (WAL)       │
-  ├─ ChatState  (pure Python)                         └────────────────────────┘
-  └─ ChatClient (reader + heartbeat threads → queue)
-```
+Message Flow
+User
+  │
+  ▼
+Tkinter Client
+  │
+  │ JSON over TCP
+  ▼
+Threaded Chat Server
+  │
+  ├── Authentication
+  ├── Room Management
+  ├── Message Processing
+  ├── Presence
+  └── Rate Limiting
+  │
+  ▼
+SQLite Database
+  │
+  └── Users / Rooms / Messages / History
 
-**Threading on the client.** Tkinter is not thread-safe, so socket reads happen on background threads that
-only put frames on a `queue.Queue`. The GUI drains that queue every 40 ms with `after()` and is the only code
-that touches widgets.
+When a user sends a message:
 
-**Threading on the server.** The accept loop starts one thread per connection. Shared state (online sessions,
-session tokens) is guarded by a lock. Each session has its own send lock so two broadcasts cannot interleave bytes.
-SQLite is accessed through one `Database` object that serialises access.
+The Tkinter client collects the message.
+The message is converted into a JSON request.
+The request is sent through the TCP connection.
+The server validates and processes the request.
+The server stores the message in SQLite.
+Connected clients receive the new message.
+The GUI updates the conversation in real time.
+🗄 Database & Persistence
 
-**Protocol.** Each frame is one UTF-8 JSON object followed by `\n`. Frames over a size limit or that are not valid
-JSON are rejected. Examples:
+The server uses SQLite to maintain application data.
 
-```json
-{"type": "login", "username": "alice", "password": "…"}
-{"type": "send_message", "room_id": 1, "text": "hello :wave:"}
-{"type": "message", "room_id": 1, "message": {"id": 12, "kind": "user", "username": "alice", "text": "hello 👋", "ts": 1767000000}}
-```
+The database manages information required for:
 
-Client to server: `register`, `login`, `resume`, `logout`, `list_rooms`, `create_room`, `join_room`, `leave_room`,
-`send_message`, `typing`, `ping`.
-Server to client: `auth_ok`, `rooms`, `joined`, `left`, `message`, `presence`, `typing`, `error`, `pong`, `bye`, `server_shutdown`.
+👤 User accounts
+🏠 Chat rooms
+💬 Messages
+🕘 Message history
+🟢 User presence-related state
 
-**Message flow.** The client sends `send_message`. The server validates it, applies the rate limit, converts emoji
-shortcodes, writes it to SQLite, then broadcasts a `message` frame to every online member of that room, including the
-sender. The sender's own message appears when that broadcast comes back, so what you see is what was stored.
+The server maintains persistent room history, allowing users to see previous messages after leaving and rejoining a room.
 
-**Reconnect.** If the connection drops, the client retries up to 8 times with a growing delay and sends a `resume`
-frame carrying an in-memory session token. If the server restarted, the token is gone and the user is returned to the
-sign-in screen with a clear message.
+The application limits displayed room history to the last 100 messages.
 
-### Database schema (`database/vanta_chat.db`)
+🧠 Architecture
 
-| Table | Columns |
-|---|---|
-| `users` | `id`, `username` (unique, case-insensitive), `password_hash`, `created_at`, `last_seen` |
-| `rooms` | `id`, `name` (unique, case-insensitive), `description`, `created_by`, `created_at` |
-| `room_members` | `room_id`, `user_id`, `joined_at` (primary key on both ids) |
-| `messages` | `id`, `room_id`, `user_id`, `kind` (`user` or `system`), `body`, `created_at` |
+VANTA CHAT uses a layered client-server architecture.
 
-Foreign keys are enforced and the journal mode is WAL. The database file is created and seeded automatically on the
-first server start.
+┌─────────────────────────────┐
+│       Tkinter Client        │
+│                             │
+│  Login / Rooms / Chat UI    │
+│  Notifications / Search     │
+└──────────────┬──────────────┘
+               │
+               │ JSON over TCP
+               ▼
+┌─────────────────────────────┐
+│       Threaded Server       │
+│                             │
+│ Authentication              │
+│ Room Management             │
+│ Messaging                   │
+│ Presence                    │
+│ Rate Limiting               │
+└──────────────┬──────────────┘
+               │
+               ▼
+┌─────────────────────────────┐
+│          SQLite             │
+│                             │
+│ Users / Rooms / Messages    │
+└─────────────────────────────┘
+Threading Model
 
-### Project structure
+The server creates a separate thread for each client connection.
 
-```
+The client also uses background reader threads so that incoming messages do not block the Tkinter GUI.
+
+Incoming events are passed into a queue and processed by the GUI safely.
+
+🧰 Technology Stack
+Layer	Technology
+Language	Python 3.10+
+GUI	Tkinter
+Networking	TCP Sockets
+Communication	Newline-delimited JSON
+Database	SQLite
+Concurrency	Python threading
+Password Security	PBKDF2 salted hashes
+Testing	Python standard library
+Dependencies	Python standard library
+
+No third-party Python packages are required for the VANTA CHAT application.
+
+🏗 Project Architecture
+Client
+  │
+  ├── GUI
+  ├── Network Reader
+  ├── Event Queue
+  └── User Interaction
+          │
+          ▼
+      TCP Socket
+          │
+          ▼
+Server
+  │
+  ├── Client Threads
+  ├── Authentication
+  ├── Room Management
+  ├── Message Handling
+  ├── Presence
+  ├── Rate Limiting
+  └── Database Layer
+          │
+          ▼
+       SQLite
+📁 Project Structure
 Python-Task5-ChatApplication/
-├── common/            protocol.py, emoji.py, validation.py   (shared by both sides)
-├── server/            server.py, database.py, auth.py, config.py
-├── client/            gui.py, client.py, state.py, chat_view.py, login_view.py,
-│                      components.py, theme.py, settings.py
-├── database/          created at runtime (the .db file is git-ignored)
-├── assets/icons/      placeholder folder (no icon files are shipped)
-├── screenshots/       see screenshots/README.md for the capture plan
-├── docs/              DEMO_SCRIPT.md
-├── tests/             test_server.py, test_client.py
-├── run_server.bat
-├── run_client.bat
+│
+├── assets/
+│
+├── client/
+│   └── gui.py
+│
+├── common/
+│
+├── database/
+│
+├── docs/
+│
+├── screenshots/
+│
+├── server/
+│   └── server.py
+│
+├── tests/
+│
+├── .gitignore
+├── README.md
 ├── requirements.txt
-└── README.md
-```
+├── run_client.bat
+└── run_server.bat
+🗂 File Overview
+File / Folder	Responsibility
+client/	Tkinter desktop client
+server/	TCP chat server and connection handling
+common/	Shared communication and application components
+database/	SQLite database-related functionality
+assets/	Application assets
+docs/	Project documentation
+screenshots/	Application screenshots
+tests/	Automated test files
+requirements.txt	Project dependency information
+run_client.bat	Windows client launcher
+run_server.bat	Windows server launcher
+README.md	Project documentation
+🖥 GUI / UX
 
----
+VANTA CHAT provides a desktop interface designed around common messaging workflows.
 
-## Requirements
+Login / Account Access
 
-* **Python 3.10 or newer** (3.12 was used for development of the server and tests).
-* **Tkinter.** It ships with the python.org Windows installer. If `import tkinter` fails, re-run the installer
-  and make sure *tcl/tk and IDLE* is ticked.
-* No third-party packages.
+Users can sign in and access the chat application through their account.
 
-## Setup on Windows
+Chat Rooms
 
-Open PowerShell or Command Prompt in the project folder:
+The application provides:
 
-```bat
-python -m venv .venv
-.venv\Scripts\activate
-```
+Room list
+Room creation
+Join room
+Leave room
+Room search
+Unread message indicators
+Chat Area
 
-The virtual environment is optional because nothing needs installing, but the `.bat` files use it automatically if it exists.
+The conversation interface provides:
 
-## Running
+Real-time messages
+Timestamps
+Date separators
+System messages
+Typing indicators
+Message history
+Online presence
+Notifications
 
-**1. Start the server** (leave this window open):
+Users can configure:
 
-```bat
+Desktop notifications
+Notification sounds
+Themes
+
+The application supports:
+
+☀️ Light theme
+🌙 Dark theme
+🔎 Search
+
+VANTA CHAT provides separate search functionality.
+
+Room Search
+Ctrl + K
+
+Allows users to search available chat rooms.
+
+Message Search
+Ctrl + F
+
+Allows users to search messages in the chat interface.
+
+🔔 Notifications & Unread Messages
+
+When a new message arrives while the user is not actively viewing the relevant conversation:
+
+An unread badge can appear.
+The unread count is updated.
+Desktop notification support can alert the user.
+
+Notification behavior can be controlled from the application settings.
+
+✍️ Typing Indicator
+
+VANTA CHAT provides a real-time typing indicator.
+
+When another user is typing, the chat interface can indicate that activity before the message is sent.
+
+This demonstrates real-time event communication beyond ordinary message delivery.
+
+🏠 Chat Rooms
+
+The application includes seeded rooms and supports creating additional rooms.
+
+Users can:
+
+View available rooms.
+Search for rooms.
+Join a room.
+Send messages.
+Leave a room.
+Rejoin later.
+View previous room history.
+🔄 Connection Reliability
+
+VANTA CHAT includes several connection-management features:
+
+❤️ Heartbeat monitoring
+⏱️ Idle timeout
+🔄 Automatic reconnect
+🚪 Graceful logout
+🧵 Background reader threads
+📥 Event queue for GUI updates
+
+These features help the client remain responsive during normal connection interruptions.
+
+🚦 Error Handling
+
+The application handles common errors without unnecessarily crashing the GUI.
+
+Examples include:
+
+Invalid login information
+Invalid room operations
+Connection interruptions
+Invalid requests
+Empty messages
+Server-side validation errors
+Disconnected clients
+
+The server also performs request validation before processing client operations.
+
+🧪 Testing
+
+VANTA CHAT was manually tested using multiple client sessions.
+
+Tested Functionality
+Test	Result
+Server startup	✅ Passed
+Client startup	✅ Passed
+Tkinter availability	✅ Passed
+User registration/login	✅ Passed
+Room joining	✅ Passed
+Message sending	✅ Passed
+Real-time two-user messaging	✅ Passed
+Leave and rejoin room	✅ Passed
+Message history	✅ Passed
+Room creation	✅ Passed
+Typing indicator	✅ Passed
+Unread message badge	✅ Passed
+Desktop notification	✅ Passed
+Room search	✅ Passed
+Message search	✅ Passed
+Dark theme	✅ Passed
+Light theme	✅ Passed
+Notification settings	✅ Passed
+Run Tests
+python -m unittest discover -s tests -v
+📸 Screenshots
+
+Application screenshots are available in:
+
+screenshots/
+
+Recommended screenshots include:
+
+01. Login
+screenshots/01-login.png
+02. Chat Dashboard
+screenshots/02-chat-dashboard.png
+03. Real-Time Conversation
+screenshots/03-chat-conversation.png
+04. Chat Rooms
+screenshots/04-chat-rooms.png
+05. Typing Indicator
+screenshots/05-typing-indicator.png
+06. Notifications
+screenshots/06-notification.png
+07. Dark Theme
+screenshots/07-dark-theme.png
+
+Rename the screenshot filenames above if your actual screenshots folder uses different names.
+
+▶️ How to Run
+Start the Server
+
+From the project directory:
+
+python -m server.server
+
+The default server address is:
+
+127.0.0.1:5050
+
+You should see:
+
+VANTA CHAT server listening on 127.0.0.1:5050
+Start the Client
+
+Open another terminal in the project directory:
+
+python -m client.gui
+
+The VANTA CHAT desktop application will open.
+
+⚙️ Installation
+
+Clone the OIBSIP repository:
+
+git clone https://github.com/shailajakunchala09/OIBSIP.git
+
+Move into the Task 5 project:
+
+cd OIBSIP/Python-Task5-ChatApplication
+
+Check Python:
+
+python --version
+
+VANTA CHAT requires:
+
+Python 3.10+
+
+No third-party packages are required.
+
+Run the server:
+
+python -m server.server
+
+Open another terminal and run the client:
+
+python -m client.gui
+🪟 Windows Launchers
+
+Windows users can also use the included batch files.
+
+Server
 run_server.bat
-```
-
-or `python -m server.server`. Options: `--host`, `--port`, `--db`.
-
-**2. Start one or more clients** (a new window each time):
-
-```bat
+Client
 run_client.bat
-```
+🕹 Usage
+1. Start the Server
 
-or `python -m client.gui`. Options: `--host`, `--port`, `--splash-seconds` (use `0` to skip the splash).
+Start the server before launching the client.
 
-### Trying it with two users (Alice and Bob)
+2. Open the Client
 
-1. Start the server, then start a client. Choose **Create an account**, register `alice` with a password of 8 or more characters.
-2. Start a second client. Register `bob`.
-3. Both users land in **#General**. Send a message from Alice and watch it arrive for Bob with a timestamp.
-4. Type `:tada:` or pick an emoji from the picker.
-5. Minimise Bob's window and send from Alice. A pop-up should appear for Bob. Click it to jump to the room.
-6. Create a room from Alice (Ctrl+N) and join it from Bob using the **BROWSE** list.
-7. Close Alice's window, then reopen and sign in again. The history is still there.
+Launch the Tkinter application.
 
-Both clients can run on one machine. To use two machines on the same network, start the server with
-`python -m server.server --host 0.0.0.0` and start clients with `--host <server-ip>`. Remember the traffic is not encrypted
-(see below), and you may need to allow the port through the Windows firewall.
+3. Create or Sign In to an Account
 
-## Testing
+Use the authentication interface to access the application.
 
-```bat
-python -m unittest discover -s tests -t .
-```
+4. Select a Room
 
-There are 31 automated tests. They start a real server on a free local port with a temporary SQLite file and talk to it over real sockets.
-They cover registration and login rules, password hashing and unique salts, duplicate users, malformed input, real-time delivery,
-room isolation, history order, join and leave notices, room creation rules, the rate limit, typing events, abrupt disconnects and presence,
-ten simultaneous clients, persistence across a server restart, the client state logic, and client connection failure and loss detection.
+Choose an existing room or create a new one.
 
-**What is not covered by automated tests:** the Tkinter windows themselves. See [Known limitations](#known-limitations).
+5. Send Messages
 
----
+Type a message and send it to the current room.
 
-## Security & privacy
+6. Chat in Real Time
 
-This section describes exactly what the application does and does not protect.
+Other connected users in the same room receive messages immediately.
 
-**What is protected**
+7. Search
 
-* Passwords are never stored. The server stores `pbkdf2_sha256$200000$<salt>$<hash>`: PBKDF2-HMAC-SHA256, 200,000 iterations, a random 16-byte salt per user.
-* Hashes are compared in constant time. An unknown username takes the same verification work as a wrong password, and both return the same message.
-* All database queries are parameterised.
-* Input is validated on the server (usernames, room names, password length, message length, control characters removed) in addition to the client.
-* A per-connection rate limit (10 messages per 5 seconds), a frame-size limit and an idle timeout reduce abuse and dead connections.
-* A second sign-in to the same account is refused while it is already online.
-* The client saves only theme, notification choices and the last username to `~/.vanta_chat/settings.json`. It never saves passwords or session tokens.
+Use room or message search when needed.
 
-**What is NOT protected**
+8. Customize Settings
 
-* **Messages are stored as plain text** in `database/vanta_chat.db`. The database holds usernames, password hashes, room names and descriptions,
-  room membership, every message body with its timestamp, and last-seen times. Anyone with access to that file, and the server operator, can read all messages.
-* **Traffic is unencrypted TCP.** There is no TLS. Anyone who can watch the network between client and server can read messages and the password at sign-in.
-  This is not end-to-end encryption.
-* The session token used for reconnect is held in server memory and in the client's memory. It is sent unencrypted like everything else.
-* There is no account recovery, no password change, no email verification, no administrator role and no message deletion or moderation.
-* The rate limit is the only abuse protection. It is not a defence against a determined attacker.
+Change:
 
-Use it on localhost or a network you trust, and do not share real passwords or sensitive conversations through it.
-Adding TLS with `ssl.SSLContext.wrap_socket` would be the first step toward a safer version.
+Theme
+Desktop notifications
+Notification sound
+9. Logout
 
----
+Use the application's logout functionality to close the session gracefully.
 
-## Known limitations
+⌨️ Keyboard Shortcuts
+Shortcut	Action
+Ctrl + K	Search chat rooms
+Ctrl + F	Search messages
 
-* **The GUI was not visually run during development of this build.** The environment used to write the code had no Tkinter, so the windows were
-  compile-checked and their controller logic was exercised against a stub, but layout, colours, hover states, the splash, pop-ups and
-  the emoji picker have not been looked at on a real screen. Expect to adjust spacing or fonts after your first run, and please capture the
-  screenshots from your own machine.
-* There are no automated tests for the Tkinter widgets.
-* Emoji rendering depends on the Tk build and font. Some systems draw them in monochrome.
-* DPI awareness is not enabled, so text can look slightly soft on scaled Windows displays.
-* Message search covers only messages loaded in the client (up to 100 on joining a room, plus new ones), not the full database history.
-* Desktop pop-ups are in-app windows, not native Windows notifications, and appear only while the app is running.
-* Rooms are public to everyone on the server. There are no private rooms or direct messages.
-* One window per account at a time.
-* The server runs in a console and has no admin interface.
+Additional application shortcuts are available through the application's shortcut/settings interface.
 
-## Future improvements
+🧪 Manual Testing Scenario
 
-TLS, password change, direct messages, private rooms, full-history server-side search, message edit and delete, file sharing,
-native notifications, a packaged Windows executable, and Tkinter widget tests.
+A basic two-user test can be performed using two client windows.
 
----
+Client 1
+User: shailaja_16
+Client 2
+User: shailaja_17
 
-## Author
+Both users can:
 
-**Kunchala Shailaja** · Python Programming Intern, OASIS INFOBYTE
-GitHub: [shailajakunchala09](https://github.com/shailajakunchala09) · Repository: `OIBSIP`
+Connect to the same server.
+Join the same room.
+Send messages.
+Receive messages in real time.
+Leave the room.
+Rejoin the room.
+Verify that previous messages remain available.
 
-Task 5: Chat Application
+This verifies the main client-server messaging workflow.
+
+🔒 Security & Privacy Considerations
+
+VANTA CHAT includes several security-oriented design choices:
+
+Passwords are protected using salted PBKDF2 hashing.
+Generated authentication data is not stored as plain-text passwords.
+Server-side validation is performed on client requests.
+Message rate limiting helps control excessive requests.
+Connection timeouts help manage inactive clients.
+The application does not claim to provide production-grade encrypted messaging.
+Important Limitation
+
+The current educational implementation uses:
+
+TCP
+
+without TLS encryption.
+
+Therefore, it should be used on:
+
+localhost
+A trusted private network
+Educational/testing environments
+
+It should not be presented as a secure production messaging platform without additional encryption and deployment hardening.
+
+🚀 Future Enhancements
+
+Possible future improvements include:
+
+🔐 TLS-encrypted communication
+📎 File and image sharing
+🖼️ Image messages
+👥 Private one-to-one conversations
+🔔 More advanced notification controls
+🟢 Richer presence states
+🛡️ Additional server-side security controls
+🌐 Web-based client
+📱 Mobile client
+☁️ Secure cloud deployment
+🔑 Password reset functionality
+👤 User profile customization
+🎓 Learning Outcomes
+
+Building VANTA CHAT reinforced practical Python development skills including:
+
+TCP socket programming
+Client-server architecture
+Python threading
+Tkinter GUI development
+SQLite database management
+JSON communication
+Authentication workflows
+Password hashing
+Real-time event handling
+Queue-based GUI updates
+Connection management
+Error handling
+Application testing
+Software architecture and separation of concerns
+
+The project also provided practical experience in designing a complete Python application rather than only implementing an isolated programming exercise.
+
+📌 OASIS INFOBYTE Internship
+
+Program: Python Programming Internship
+Organization: OASIS INFOBYTE
+Task: Task 5 – Chat Application
+
+VANTA CHAT was developed as part of the OASIS INFOBYTE Python Programming Internship.
+
+👩‍💻 Developer
+
+Kunchala Shailaja
+
+Python Programming Internship — OASIS INFOBYTE
+
+GitHub: shailajakunchala09
+
+Repository: OIBSIP
+
+📌 Project Status
+
+✅ Complete
+
+VANTA CHAT Task 5 has been implemented and manually verified for its core client-server functionality, including:
+
+User accounts
+Chat rooms
+Real-time messaging
+Message history
+Room creation
+Typing indicators
+Unread badges
+Desktop notifications
+Search
+Dark/light themes
+Settings
+Connection handling
+
+The project is available in the public OIBSIP GitHub repository under:
+
+Python-Task5-ChatApplication/
+<p align="center"> <b>🔐 VANTA CHAT</b><br/> Private conversations. Simple connection. </p>
