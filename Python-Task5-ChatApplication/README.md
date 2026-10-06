@@ -1,650 +1,641 @@
+# 🔐 VANTA CHAT
 
-🔐 VANTA CHAT
-<p align="center"> <b>Real-Time Private Chat Application</b><br/> <i>Private conversations. Simple connection.</i> </p> <p align="center"> <img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white"> <img alt="GUI" src="https://img.shields.io/badge/GUI-Tkinter-4B8BBE"> <img alt="Networking" src="https://img.shields.io/badge/Networking-TCP-2563EB"> <img alt="Database" src="https://img.shields.io/badge/Database-SQLite-003B57"> <img alt="Protocol" src="https://img.shields.io/badge/Protocol-JSON%20over%20TCP-7C3AED"> <img alt="Testing" src="https://img.shields.io/badge/Testing-Manual%20%2B%20Automated-16a34a"> <img alt="License" src="https://img.shields.io/badge/License-Educational-lightgrey"> <img alt="Status" src="https://img.shields.io/badge/Status-Complete-16a34a"> </p>
-🔗 Project Repository
-https://github.com/shailajakunchala09/OIBSIP
+<p align="center">
+  <b>Real-Time Private Chat Application</b><br/>
+  <i>Private conversations. Simple connection.</i>
+</p>
 
-Project: Python-Task5-ChatApplication
+<p align="center">
+  <img alt="Python" src="https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white">
+  <img alt="GUI" src="https://img.shields.io/badge/GUI-Tkinter-4B8BBE">
+  <img alt="Networking" src="https://img.shields.io/badge/Networking-TCP-2563EB">
+  <img alt="Database" src="https://img.shields.io/badge/Database-SQLite-003B57">
+  <img alt="Protocol" src="https://img.shields.io/badge/Protocol-JSON%20over%20TCP-7C3AED">
+  <img alt="License" src="https://img.shields.io/badge/License-Educational-lightgrey">
+  <img alt="Status" src="https://img.shields.io/badge/Status-Complete-16a34a">
+</p>
 
-VANTA CHAT is a desktop Tkinter application using a threaded TCP server and SQLite database. It is designed for local or trusted-network use rather than public web hosting.
+---
 
-📖 Project Overview
+## 📖 Project Overview
 
-VANTA CHAT is a real-time desktop chat application built for the OASIS INFOBYTE Python Programming Internship — Task 5: Chat Application.
+**VANTA CHAT** is a real-time desktop chat application built for **OASIS INFOBYTE's Python Programming Internship — Task 5: Chat Application**.
 
-The project provides a complete client-server messaging experience with user accounts, chat rooms, real-time message delivery, persistent message history, online presence, typing indicators, unread message badges, desktop notifications, search, themes, and automatic reconnection.
+It provides a complete client-server messaging experience with user accounts, chat rooms, real-time messages, persistent chat history, online presence, typing indicators, unread badges, desktop notifications, search, themes, and connection management.
 
-The application is built using Python's standard library, with Tkinter for the graphical interface, TCP sockets for networking, and SQLite for persistent server-side data.
+The application is built using **Python's standard library**, with **Tkinter** for the graphical interface, **TCP sockets** for networking, and **SQLite** for persistent server-side storage.
 
-The project focuses on demonstrating practical Python concepts including:
+The project demonstrates practical Python concepts including:
 
-Client-server architecture
-TCP socket programming
-Multi-threading
-JSON-based communication
-GUI development with Tkinter
-SQLite database integration
-Password hashing
-Real-time event handling
-Error handling
-Automated testing
-🎯 Why This Project?
+- Client-server architecture
+- TCP socket programming
+- Multi-threading
+- JSON-based communication
+- GUI development with Tkinter
+- SQLite database integration
+- Password hashing
+- Real-time event handling
+- Connection management
+- Error handling
 
-Many basic chat applications demonstrate only a simple socket connection and message exchange.
+## 🎯 Why This Project?
 
-VANTA CHAT approaches the same problem as a complete desktop application by combining:
+Basic chat applications often demonstrate only a simple socket connection and message exchange.
 
-👤 User authentication
-💬 Real-time messaging
-🏠 Multiple chat rooms
-🗄 Persistent message history
-🟢 Online presence
-✍️ Typing indicators
-🔔 Desktop notifications
-🔎 Message and room search
-🌙 Dark and light themes
-🔄 Automatic reconnection
-🛡 Password security
+**VANTA CHAT** extends that concept into a complete desktop application by combining real-time communication with authentication, chat rooms, persistent history, notifications, search, presence, and connection management.
 
-The project separates the networking, database, and interface layers so each part can be maintained and tested independently.
+The project is designed to demonstrate how different Python components can work together as a practical application while keeping the networking, database, and user-interface responsibilities separated.
 
-✨ Key Features
-👤 User accounts with sign-in and registration
-🔐 PBKDF2 salted password hashing
-💬 Real-time messaging over TCP
-🏠 Multiple chat rooms
-➕ Create new rooms
-🚪 Join and leave rooms
-🕘 Persistent message history
-📅 Message timestamps and date separators
-🟢 Online presence indicators
-✍️ Live typing indicator
-🔔 Unread message badges
-🖥️ Desktop notifications
-🔊 Notification sound settings
-🔎 Room search
-🔍 Message search
-😊 Emoji picker
-🌙 Dark and light themes
-⚙️ Application settings
-🔄 Automatic reconnect
-❤️ Heartbeat connection monitoring
-⏱️ Idle connection timeout
-🚦 Message rate limiting
-🚪 Graceful logout
-⌨️ Keyboard shortcuts
-📜 Last 100 messages available as room history
-🛡 Security Features
-Feature	Detail
-Password protection	Passwords are stored using PBKDF2 salted hashes
-Password storage	Plain-text passwords are not stored
-Rate limiting	Helps prevent excessive message requests
-Input validation	Server validates incoming requests
-Graceful logout	Client closes the connection cleanly
-Connection monitoring	Heartbeat mechanism detects inactive connections
-Idle timeout	Inactive connections can be closed automatically
-Database storage	SQLite is used for structured persistent data
-Protocol validation	Client/server communicate using structured JSON messages
+## ✨ Key Features
 
-Security note: VANTA CHAT uses unencrypted TCP communication and stores chat messages as plain text in SQLite. It is intended for localhost or trusted-network educational use and should not be treated as a production secure messaging system.
+- 👤 **User accounts** with sign-in and authentication
+- 🔐 **PBKDF2 salted password hashing**
+- 💬 **Real-time messaging** over TCP
+- 🏠 **Multiple chat rooms**
+- ➕ **Create new rooms**
+- 🚪 **Join and leave rooms**
+- 🕘 **Persistent message history**
+- 📅 **Message timestamps and date separators**
+- 🟢 **Online presence**
+- ✍️ **Live typing indicator**
+- 🔔 **Unread message badges**
+- 🖥️ **Desktop notifications**
+- 🔊 **Notification sound settings**
+- 🔎 **Room search**
+- 🔍 **Message search**
+- 😊 **Emoji picker**
+- 🌙 **Dark and light themes**
+- ⚙️ **Application settings**
+- 🔄 **Automatic reconnect**
+- ❤️ **Heartbeat connection monitoring**
+- ⏱️ **Idle connection timeout**
+- 🚦 **Message rate limiting**
+- 🚪 **Graceful logout**
+- 📜 **Chat history with the latest 100 messages**
 
-💬 Chat Application Logic
+## 🛡 Security Features
 
-VANTA CHAT follows a client-server communication model.
+| Feature | Detail |
+|---|---|
+| Password security | Passwords are protected using PBKDF2 salted hashes |
+| Authentication | Users must authenticate before using the chat application |
+| Request validation | Server validates client requests before processing |
+| Rate limiting | Helps prevent excessive message requests |
+| Connection management | Heartbeat and idle timeout handling |
+| Graceful logout | Connections are closed cleanly |
+| Database storage | SQLite provides structured persistent storage |
 
-Message Flow
-User
-  │
-  ▼
+> **Security note:** VANTA CHAT uses TCP communication without TLS encryption and stores chat messages as plain text in SQLite. It is intended for localhost or trusted-network educational use and should not be considered a production secure messaging platform.
+
+## 💬 Chat Application Logic
+
+The application follows a client-server communication model.
+
+```text
 Tkinter Client
-  │
-  │ JSON over TCP
-  ▼
+      │
+      │ Newline-delimited JSON over TCP
+      ▼
 Threaded Chat Server
-  │
-  ├── Authentication
-  ├── Room Management
-  ├── Message Processing
-  ├── Presence
-  └── Rate Limiting
-  │
-  ▼
+      │
+      ├── Authentication
+      ├── Room Management
+      ├── Message Processing
+      ├── Presence
+      ├── Typing Events
+      └── Rate Limiting
+      │
+      ▼
 SQLite Database
-  │
-  └── Users / Rooms / Messages / History
+      │
+      ├── Users
+      ├── Rooms
+      └── Messages
+```
 
-When a user sends a message:
+## 🧠 Client-Server Architecture
 
-The Tkinter client collects the message.
-The message is converted into a JSON request.
-The request is sent through the TCP connection.
-The server validates and processes the request.
-The server stores the message in SQLite.
-Connected clients receive the new message.
-The GUI updates the conversation in real time.
-🗄 Database & Persistence
+VANTA CHAT uses a threaded TCP server and a Tkinter client.
 
-The server uses SQLite to maintain application data.
+### Server
 
-The database manages information required for:
+The server is responsible for:
 
-👤 User accounts
-🏠 Chat rooms
-💬 Messages
-🕘 Message history
-🟢 User presence-related state
+- Managing client connections
+- Authenticating users
+- Managing chat rooms
+- Processing messages
+- Maintaining presence
+- Storing chat history
+- Handling typing events
+- Applying rate limits
+- Managing connection timeouts
 
-The server maintains persistent room history, allowing users to see previous messages after leaving and rejoining a room.
+### Client
 
-The application limits displayed room history to the last 100 messages.
+The client is responsible for:
 
-🧠 Architecture
+- Login and account access
+- Displaying chat rooms
+- Sending messages
+- Receiving messages
+- Displaying notifications
+- Showing unread counts
+- Searching rooms and messages
+- Managing themes and settings
 
-VANTA CHAT uses a layered client-server architecture.
+### Threading
 
-┌─────────────────────────────┐
-│       Tkinter Client        │
-│                             │
-│  Login / Rooms / Chat UI    │
-│  Notifications / Search     │
-└──────────────┬──────────────┘
-               │
-               │ JSON over TCP
-               ▼
-┌─────────────────────────────┐
-│       Threaded Server       │
-│                             │
-│ Authentication              │
-│ Room Management             │
-│ Messaging                   │
-│ Presence                    │
-│ Rate Limiting               │
-└──────────────┬──────────────┘
-               │
-               ▼
-┌─────────────────────────────┐
-│          SQLite             │
-│                             │
-│ Users / Rooms / Messages    │
-└─────────────────────────────┘
-Threading Model
+The server uses one thread per client connection.
 
-The server creates a separate thread for each client connection.
+The client uses background reader threads to receive incoming messages without blocking the Tkinter interface.
 
-The client also uses background reader threads so that incoming messages do not block the Tkinter GUI.
+Incoming events are passed into a queue and processed by the GUI.
 
-Incoming events are passed into a queue and processed by the GUI safely.
+## 🗄 Database & Persistence
 
-🧰 Technology Stack
-Layer	Technology
-Language	Python 3.10+
-GUI	Tkinter
-Networking	TCP Sockets
-Communication	Newline-delimited JSON
-Database	SQLite
-Concurrency	Python threading
-Password Security	PBKDF2 salted hashes
-Testing	Python standard library
-Dependencies	Python standard library
+VANTA CHAT uses **SQLite** for server-side persistence.
 
-No third-party Python packages are required for the VANTA CHAT application.
+The database stores information required for:
 
-🏗 Project Architecture
-Client
-  │
-  ├── GUI
-  ├── Network Reader
-  ├── Event Queue
-  └── User Interaction
-          │
-          ▼
-      TCP Socket
-          │
-          ▼
-Server
-  │
-  ├── Client Threads
-  ├── Authentication
-  ├── Room Management
-  ├── Message Handling
-  ├── Presence
-  ├── Rate Limiting
-  └── Database Layer
-          │
-          ▼
-       SQLite
-📁 Project Structure
+- User accounts
+- Chat rooms
+- Messages
+- Chat history
+
+Messages remain available when a user leaves and later rejoins a room.
+
+The application provides access to the latest **100 messages** of a room as history.
+
+## 🧰 Technology Stack
+
+| Layer | Technology |
+|---|---|
+| Language | Python 3.10+ |
+| GUI | Tkinter |
+| Networking | TCP Sockets |
+| Communication | Newline-delimited JSON |
+| Database | SQLite |
+| Concurrency | Python threading |
+| Password Security | PBKDF2 salted hashes |
+| Testing | Python standard library |
+| Dependencies | Python standard library |
+
+> No third-party Python packages are required for VANTA CHAT.
+>
+## 🏗 Architecture
+
+```text
+                    ┌──────────────────────┐
+                    │    Tkinter Client    │
+                    │                      │
+                    │ Login / Rooms / Chat │
+                    │ Search / Settings    │
+                    │ Notifications        │
+                    └──────────┬───────────┘
+                               │
+                               │ TCP + JSON
+                               ▼
+                    ┌──────────────────────┐
+                    │   Threaded Server    │
+                    │                      │
+                    │ Authentication       │
+                    │ Room Management      │
+                    │ Messaging            │
+                    │ Presence             │
+                    │ Rate Limiting        │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │       SQLite         │
+                    │                      │
+                    │ Users / Rooms /      │
+                    │ Messages / History   │
+                    └──────────────────────┘
+```
+
+## 📁 Project Structure
+
+```text
 Python-Task5-ChatApplication/
-│
 ├── assets/
-│
 ├── client/
-│   └── gui.py
-│
 ├── common/
-│
 ├── database/
-│
 ├── docs/
-│
 ├── screenshots/
-│
 ├── server/
-│   └── server.py
-│
 ├── tests/
-│
 ├── .gitignore
 ├── README.md
 ├── requirements.txt
 ├── run_client.bat
 └── run_server.bat
-🗂 File Overview
-File / Folder	Responsibility
-client/	Tkinter desktop client
-server/	TCP chat server and connection handling
-common/	Shared communication and application components
-database/	SQLite database-related functionality
-assets/	Application assets
-docs/	Project documentation
-screenshots/	Application screenshots
-tests/	Automated test files
-requirements.txt	Project dependency information
-run_client.bat	Windows client launcher
-run_server.bat	Windows server launcher
-README.md	Project documentation
-🖥 GUI / UX
+```
 
-VANTA CHAT provides a desktop interface designed around common messaging workflows.
+## 🗂 File Overview
 
-Login / Account Access
+| File / Folder | Responsibility |
+|---|---|
+| `client/` | Tkinter desktop chat client |
+| `server/` | Threaded TCP chat server |
+| `common/` | Shared application components |
+| `database/` | SQLite database functionality |
+| `assets/` | Application assets |
+| `docs/` | Project documentation |
+| `screenshots/` | Application screenshots |
+| `tests/` | Automated tests |
+| `requirements.txt` | Project dependency information |
+| `run_client.bat` | Windows client launcher |
+| `run_server.bat` | Windows server launcher |
+| `README.md` | Project documentation |
 
-Users can sign in and access the chat application through their account.
+## 🖥 GUI / UX
 
-Chat Rooms
+VANTA CHAT provides a desktop interface built with Tkinter.
 
-The application provides:
+### Authentication
 
-Room list
-Room creation
-Join room
-Leave room
-Room search
-Unread message indicators
-Chat Area
+Users can access the application through the sign-in and account system.
 
-The conversation interface provides:
-
-Real-time messages
-Timestamps
-Date separators
-System messages
-Typing indicators
-Message history
-Online presence
-Notifications
-
-Users can configure:
-
-Desktop notifications
-Notification sounds
-Themes
-
-The application supports:
-
-☀️ Light theme
-🌙 Dark theme
-🔎 Search
-
-VANTA CHAT provides separate search functionality.
-
-Room Search
-Ctrl + K
-
-Allows users to search available chat rooms.
-
-Message Search
-Ctrl + F
-
-Allows users to search messages in the chat interface.
-
-🔔 Notifications & Unread Messages
-
-When a new message arrives while the user is not actively viewing the relevant conversation:
-
-An unread badge can appear.
-The unread count is updated.
-Desktop notification support can alert the user.
-
-Notification behavior can be controlled from the application settings.
-
-✍️ Typing Indicator
-
-VANTA CHAT provides a real-time typing indicator.
-
-When another user is typing, the chat interface can indicate that activity before the message is sent.
-
-This demonstrates real-time event communication beyond ordinary message delivery.
-
-🏠 Chat Rooms
-
-The application includes seeded rooms and supports creating additional rooms.
+### Chat Rooms
 
 Users can:
 
-View available rooms.
-Search for rooms.
-Join a room.
-Send messages.
-Leave a room.
-Rejoin later.
-View previous room history.
-🔄 Connection Reliability
+- View available rooms
+- Search rooms
+- Join rooms
+- Create rooms
+- Leave rooms
+- Rejoin rooms
+
+### Conversation Area
+
+The chat interface provides:
+
+- Real-time messages
+- Timestamps
+- Date separators
+- System messages
+- Typing indicators
+- Message history
+- Online presence
+- Unread message badges
+
+### Notifications
+
+The application supports:
+
+- Desktop notifications
+- Notification sounds
+- Notification settings
+
+### Themes
+
+Users can switch between:
+
+- Light theme
+- Dark theme
+
+- ## 🔎 Search
+
+VANTA CHAT provides search functionality for both rooms and messages.
+
+| Shortcut | Function |
+|---|---|
+| `Ctrl + K` | Search rooms |
+| `Ctrl + F` | Search messages |
+
+## 🔔 Notifications
+
+VANTA CHAT supports desktop notifications for incoming messages.
+
+Unread message badges indicate messages that have not yet been viewed.
+
+Notification behavior can be controlled through the application settings.
+
+## ✍️ Typing Indicator
+
+The application provides a real-time typing indicator.
+
+When a user starts typing, other connected users can see the typing activity before the message is sent.
+
+## 🏠 Chat Rooms
+
+The application includes seeded chat rooms and allows users to create additional rooms.
+
+A user can:
+
+1. Select a room.
+2. Join the room.
+3. Send messages.
+4. Receive messages in real time.
+5. Leave the room.
+6. Rejoin the room.
+7. View previous room history.
+
+## 🔄 Connection Management
 
 VANTA CHAT includes several connection-management features:
 
-❤️ Heartbeat monitoring
-⏱️ Idle timeout
-🔄 Automatic reconnect
-🚪 Graceful logout
-🧵 Background reader threads
-📥 Event queue for GUI updates
+- ❤️ Heartbeat monitoring
+- 🔄 Automatic reconnect
+- ⏱️ Idle timeout
+- 🚪 Graceful logout
+- 🧵 Background reader threads
+- 📥 Queue-based GUI event handling
 
-These features help the client remain responsive during normal connection interruptions.
+These features help maintain a responsive client during normal connection interruptions.
 
-🚦 Error Handling
+## 🚦 Validation & Error Handling
 
 The application handles common errors without unnecessarily crashing the GUI.
 
 Examples include:
 
-Invalid login information
-Invalid room operations
-Connection interruptions
-Invalid requests
-Empty messages
-Server-side validation errors
-Disconnected clients
+- Invalid authentication
+- Invalid room operations
+- Connection interruptions
+- Invalid requests
+- Empty messages
+- Server-side validation errors
+- Disconnected clients
 
-The server also performs request validation before processing client operations.
+The server validates incoming requests before processing them.
 
-🧪 Testing
+## 🔒 Security & Privacy Considerations
+
+- Passwords are protected using salted PBKDF2 hashing.
+- Plain-text passwords are not stored.
+- Server-side validation is performed on client requests.
+- Message rate limiting helps control excessive requests.
+- Connection timeouts help manage inactive clients.
+- Chat messages are stored in the SQLite database.
+- The application does not claim to provide production-grade encrypted messaging.
+
+### Important Limitation
+
+The current application communicates using standard TCP without TLS encryption.
+
+Therefore, it is intended for:
+
+- Localhost use
+- Trusted private networks
+- Educational demonstrations
+- Testing environments
+
+Production deployment would require additional security measures such as encrypted communication, stronger deployment controls, and secure infrastructure.
+
+## 🧪 Testing
 
 VANTA CHAT was manually tested using multiple client sessions.
 
-Tested Functionality
-Test	Result
-Server startup	✅ Passed
-Client startup	✅ Passed
-Tkinter availability	✅ Passed
-User registration/login	✅ Passed
-Room joining	✅ Passed
-Message sending	✅ Passed
-Real-time two-user messaging	✅ Passed
-Leave and rejoin room	✅ Passed
-Message history	✅ Passed
-Room creation	✅ Passed
-Typing indicator	✅ Passed
-Unread message badge	✅ Passed
-Desktop notification	✅ Passed
-Room search	✅ Passed
-Message search	✅ Passed
-Dark theme	✅ Passed
-Light theme	✅ Passed
-Notification settings	✅ Passed
-Run Tests
+| Test | Result |
+|---|---|
+| Tkinter startup | ✅ Passed |
+| Server startup | ✅ Passed |
+| Client startup | ✅ Passed |
+| User registration/login | ✅ Passed |
+| Room joining | ✅ Passed |
+| Message sending | ✅ Passed |
+| Real-time two-user messaging | ✅ Passed |
+| Leave and rejoin | ✅ Passed |
+| Message history | ✅ Passed |
+| Room creation | ✅ Passed |
+| Typing indicator | ✅ Passed |
+| Unread badge | ✅ Passed |
+| Desktop notification | ✅ Passed |
+| Room search | ✅ Passed |
+| Message search | ✅ Passed |
+| Dark theme | ✅ Passed |
+| Light theme | ✅ Passed |
+| Notification settings | ✅ Passed |
+
+### Run Tests
+
+```bash
 python -m unittest discover -s tests -v
-📸 Screenshots
 
-Application screenshots are available in:
+## 📸 Screenshots
 
+Application screenshots are included in the project's `screenshots/` directory.
+
+```text
 screenshots/
+```
 
-Recommended screenshots include:
+The screenshots demonstrate the main VANTA CHAT interface and its functionality, including chat rooms, conversations, notifications, and themes.
 
-01. Login
-screenshots/01-login.png
-02. Chat Dashboard
-screenshots/02-chat-dashboard.png
-03. Real-Time Conversation
-screenshots/03-chat-conversation.png
-04. Chat Rooms
-screenshots/04-chat-rooms.png
-05. Typing Indicator
-screenshots/05-typing-indicator.png
-06. Notifications
-screenshots/06-notification.png
-07. Dark Theme
-screenshots/07-dark-theme.png
+## ▶️ How to Run
 
-Rename the screenshot filenames above if your actual screenshots folder uses different names.
-
-▶️ How to Run
-Start the Server
+### Start the Server
 
 From the project directory:
 
+```bash
 python -m server.server
+```
 
 The default server address is:
 
+```text
 127.0.0.1:5050
+```
 
-You should see:
+The server displays:
 
+```text
 VANTA CHAT server listening on 127.0.0.1:5050
-Start the Client
+```
+
+### Start the Client
 
 Open another terminal in the project directory:
 
+```bash
 python -m client.gui
+```
 
 The VANTA CHAT desktop application will open.
 
-⚙️ Installation
+## ⚙️ Installation
 
 Clone the OIBSIP repository:
 
+```bash
 git clone https://github.com/shailajakunchala09/OIBSIP.git
+```
 
 Move into the Task 5 project:
 
+```bash
 cd OIBSIP/Python-Task5-ChatApplication
+```
 
-Check Python:
+Check your Python version:
 
+```bash
 python --version
+```
 
 VANTA CHAT requires:
 
+```text
 Python 3.10+
+```
 
 No third-party packages are required.
 
-Run the server:
+### Start the Server
 
+```bash
 python -m server.server
+```
 
-Open another terminal and run the client:
+### Start the Client
 
+Open another terminal:
+
+```bash
 python -m client.gui
-🪟 Windows Launchers
+```
+
+## 🪟 Windows Launchers
 
 Windows users can also use the included batch files.
 
-Server
+### Server
+
+```text
 run_server.bat
-Client
+```
+
+### Client
+
+```text
 run_client.bat
-🕹 Usage
-1. Start the Server
+```
+## 🕹 Usage
 
-Start the server before launching the client.
+1. Start the VANTA CHAT server.
+2. Launch the desktop client.
+3. Create an account or sign in.
+4. Select a chat room.
+5. Join the room.
+6. Send and receive messages in real time.
+7. Create additional rooms when required.
+8. Use room and message search.
+9. View typing indicators and unread badges.
+10. Configure notification and theme settings.
+11. Leave rooms or log out when finished.
 
-2. Open the Client
+## ⌨️ Keyboard Shortcuts
 
-Launch the Tkinter application.
+| Shortcut | Action |
+|---|---|
+| `Ctrl + K` | Search rooms |
+| `Ctrl + F` | Search messages |
 
-3. Create or Sign In to an Account
+## 🧪 Manual Testing Workflow
 
-Use the authentication interface to access the application.
+VANTA CHAT was tested using multiple client sessions.
 
-4. Select a Room
+A two-user test can be performed by connecting two clients to the same server and joining the same room.
 
-Choose an existing room or create a new one.
+The testing workflow includes:
 
-5. Send Messages
+1. Start the server.
+2. Open the first client.
+3. Sign in with the first account.
+4. Open a second client.
+5. Sign in with another account.
+6. Join the same room.
+7. Send messages between both users.
+8. Verify real-time delivery.
+9. Leave and rejoin the room.
+10. Verify that message history remains available.
+11. Test typing indicators.
+12. Test unread badges and desktop notifications.
+13. Test room and message search.
+14. Test light and dark themes.
 
-Type a message and send it to the current room.
-
-6. Chat in Real Time
-
-Other connected users in the same room receive messages immediately.
-
-7. Search
-
-Use room or message search when needed.
-
-8. Customize Settings
-
-Change:
-
-Theme
-Desktop notifications
-Notification sound
-9. Logout
-
-Use the application's logout functionality to close the session gracefully.
-
-⌨️ Keyboard Shortcuts
-Shortcut	Action
-Ctrl + K	Search chat rooms
-Ctrl + F	Search messages
-
-Additional application shortcuts are available through the application's shortcut/settings interface.
-
-🧪 Manual Testing Scenario
-
-A basic two-user test can be performed using two client windows.
-
-Client 1
-User: shailaja_16
-Client 2
-User: shailaja_17
-
-Both users can:
-
-Connect to the same server.
-Join the same room.
-Send messages.
-Receive messages in real time.
-Leave the room.
-Rejoin the room.
-Verify that previous messages remain available.
-
-This verifies the main client-server messaging workflow.
-
-🔒 Security & Privacy Considerations
-
-VANTA CHAT includes several security-oriented design choices:
-
-Passwords are protected using salted PBKDF2 hashing.
-Generated authentication data is not stored as plain-text passwords.
-Server-side validation is performed on client requests.
-Message rate limiting helps control excessive requests.
-Connection timeouts help manage inactive clients.
-The application does not claim to provide production-grade encrypted messaging.
-Important Limitation
-
-The current educational implementation uses:
-
-TCP
-
-without TLS encryption.
-
-Therefore, it should be used on:
-
-localhost
-A trusted private network
-Educational/testing environments
-
-It should not be presented as a secure production messaging platform without additional encryption and deployment hardening.
-
-🚀 Future Enhancements
+## 🚀 Future Enhancements
 
 Possible future improvements include:
 
-🔐 TLS-encrypted communication
-📎 File and image sharing
-🖼️ Image messages
-👥 Private one-to-one conversations
-🔔 More advanced notification controls
-🟢 Richer presence states
-🛡️ Additional server-side security controls
-🌐 Web-based client
-📱 Mobile client
-☁️ Secure cloud deployment
-🔑 Password reset functionality
-👤 User profile customization
-🎓 Learning Outcomes
+- 🔐 TLS-encrypted communication
+- 📎 File sharing
+- 🖼️ Image sharing
+- 👥 Private one-to-one conversations
+- 👤 User profile customization
+- 🔑 Password reset functionality
+- 🌐 Web-based client
+- 📱 Mobile client
+- ☁️ Secure cloud deployment
+- 🛡️ Additional server security controls
 
-Building VANTA CHAT reinforced practical Python development skills including:
+  ## 🎓 Learning Outcomes
 
-TCP socket programming
-Client-server architecture
-Python threading
-Tkinter GUI development
-SQLite database management
-JSON communication
-Authentication workflows
-Password hashing
-Real-time event handling
-Queue-based GUI updates
-Connection management
-Error handling
-Application testing
-Software architecture and separation of concerns
+Building VANTA CHAT reinforced:
 
-The project also provided practical experience in designing a complete Python application rather than only implementing an isolated programming exercise.
+- Client-server architecture
+- TCP socket programming
+- Python threading
+- Tkinter GUI development
+- SQLite database management
+- JSON communication
+- Authentication workflows
+- Password hashing
+- Real-time event handling
+- Queue-based GUI updates
+- Connection management
+- Error handling
+- Application testing
+- Separation of concerns
 
-📌 OASIS INFOBYTE Internship
+The project provided practical experience in building a complete Python application that combines networking, database management, GUI development, and real-time communication.
 
-Program: Python Programming Internship
-Organization: OASIS INFOBYTE
-Task: Task 5 – Chat Application
+## 🎓 OASIS INFOBYTE Internship
+
+**Program:** Python Programming Internship  
+**Organization:** **OASIS INFOBYTE**  
+**Task:** **Task 5 – Chat Application**
 
 VANTA CHAT was developed as part of the OASIS INFOBYTE Python Programming Internship.
 
-👩‍💻 Developer
+## 👩‍💻 Developer
 
-Kunchala Shailaja
+**Kunchala Shailaja**
 
-Python Programming Internship — OASIS INFOBYTE
+Python Programming Internship — **OASIS INFOBYTE**
 
-GitHub: shailajakunchala09
+GitHub: **shailajakunchala09**
 
-Repository: OIBSIP
+Repository: **OIBSIP**
 
-📌 Project Status
+## 📌 Project Status
 
-✅ Complete
+✅ **Complete**
 
-VANTA CHAT Task 5 has been implemented and manually verified for its core client-server functionality, including:
+All major VANTA CHAT Task 5 functionality has been implemented and manually verified, including:
 
-User accounts
-Chat rooms
-Real-time messaging
-Message history
-Room creation
-Typing indicators
-Unread badges
-Desktop notifications
-Search
-Dark/light themes
-Settings
-Connection handling
+- User accounts
+- Authentication
+- Chat rooms
+- Real-time messaging
+- Persistent message history
+- Room creation
+- Typing indicators
+- Unread badges
+- Desktop notifications
+- Room search
+- Message search
+- Dark/light themes
+- Settings
+- Connection management
 
-The project is available in the public OIBSIP GitHub repository under:
+The project is available in the public **OIBSIP GitHub repository** under:
 
+```text
 Python-Task5-ChatApplication/
-<p align="center"> <b>🔐 VANTA CHAT</b><br/> Private conversations. Simple connection. </p>
