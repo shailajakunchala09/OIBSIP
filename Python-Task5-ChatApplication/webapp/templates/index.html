@@ -968,6 +968,27 @@ async function loadDemoRoom(room, roomId) {
 
     try {
 
+        // Join the room first
+        const joinResponse =
+            await fetch(
+                `/api/rooms/${roomId}/join`,
+                {
+                    method: "POST"
+                }
+            );
+
+        const joinData =
+            await joinResponse.json();
+
+        if (!joinResponse.ok || !joinData.ok) {
+            alert(
+                joinData.message ||
+                "Unable to join room."
+            );
+            return;
+        }
+
+        // Now load message history
         const response =
             await fetch(
                 `/api/rooms/${roomId}/messages`
@@ -1010,10 +1031,13 @@ async function loadDemoRoom(room, roomId) {
                             message.username ===
                             username
                         ) {
+
                             addOwnMessage(
                                 message.text
                             );
+
                         } else {
+
                             addOtherMessage(
                                 message.username,
                                 message.text,
@@ -1054,7 +1078,7 @@ async function loadDemoRoom(room, roomId) {
             "Unable to load message history."
         );
     }
-}
+}    
 
 /* =========================================================
    SEND MESSAGE
