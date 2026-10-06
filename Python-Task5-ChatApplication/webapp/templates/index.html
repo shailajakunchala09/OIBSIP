@@ -1,0 +1,1942 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VANTA CHAT</title>
+</head>
+<body>
+
+<!-- =======================================================
+     AUTH SCREEN
+======================================================= -->
+
+<section id="authScreen">
+
+    <div class="auth-brand">
+        <div class="auth-brand-inner">
+
+            <div class="logo logo-large"></div>
+
+            <h1>VANTA CHAT</h1>
+
+            <p>Private conversations. Simple connection.</p>
+
+            <div class="features">
+
+                <div class="feature">
+                    <span class="feature-icon">●</span>
+                    <span>Rooms for every topic</span>
+                </div>
+
+                <div class="feature">
+                    <span class="feature-icon">●</span>
+                    <span>History that is still there tomorrow</span>
+                </div>
+
+                <div class="feature">
+                    <span class="feature-icon">●</span>
+                    <span>Alerts when the window is in the background</span>
+                </div>
+
+            </div>
+
+            <div class="auth-footer">
+                A local learning project.<br>
+                Messages are not end-to-end encrypted.
+            </div>
+
+        </div>
+    </div>
+
+    <div class="auth-main">
+
+        <div class="auth-card">
+
+            <h2 id="authTitle">Welcome back</h2>
+
+            <div class="auth-subtitle" id="authSubtitle">
+                Sign in to continue to your rooms.
+            </div>
+
+            <div class="field">
+                <label>USERNAME</label>
+                <input id="usernameInput" type="text" autocomplete="username">
+            </div>
+
+            <div class="field">
+                <label>PASSWORD</label>
+                <input id="passwordInput" type="password" autocomplete="current-password">
+            </div>
+
+            <div class="field hidden" id="confirmField">
+                <label>CONFIRM PASSWORD</label>
+                <input id="confirmInput" type="password" autocomplete="new-password">
+            </div>
+
+            <div class="auth-error" id="authError"></div>
+
+            <button class="primary-btn" id="authButton">
+                Sign in
+            </button>
+
+            <div class="auth-switch">
+                <span id="switchPrompt">New here?</span>
+                <button id="switchButton">Create an account</button>
+            </div>
+
+            <div class="server-label">
+                Server&nbsp;&nbsp; 127.0.0.1:5000
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =======================================================
+     APP SCREEN
+======================================================= -->
+
+<section id="appScreen" class="hidden">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-header">
+
+            <div class="sidebar-brand">
+
+                <div class="logo"></div>
+
+                <span>VANTA CHAT</span>
+
+            </div>
+
+        </div>
+
+
+        <div class="profile">
+
+            <div class="avatar" id="profileAvatar">
+                S
+                <span class="online-dot"></span>
+            </div>
+
+            <div class="profile-info">
+
+                <div class="profile-name" id="profileName">
+                    Shailaja
+                </div>
+
+                <div class="profile-status">
+                    ● Online
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="search-box">
+
+            <input
+                type="text"
+                id="roomSearch"
+                placeholder="Search rooms"
+            >
+
+        </div>
+
+
+        <div class="section-title">
+            ROOMS
+        </div>
+
+
+        <div class="rooms">
+
+            <div class="room-group-title">
+                YOUR ROOMS
+            </div>
+
+            <div
+                class="room active"
+                data-room="General"
+                data-description="Everyone starts here. Say hello."
+            >
+                <span class="hash">#</span>
+                <span class="room-name">General</span>
+            </div>
+
+            <div
+                class="room"
+                data-room="Python"
+                data-description="Questions, snippets and code reviews."
+            >
+                <span class="hash">#</span>
+                <span class="room-name">Python</span>
+                <span class="badge">2</span>
+            </div>
+
+            <div class="room-group-title">
+                BROWSE
+            </div>
+
+            <div
+                class="room"
+                data-room="Technology"
+                data-description="Gadgets, tools and tech news."
+            >
+                <span class="hash">#</span>
+                <span class="room-name">Technology</span>
+                <button class="join-btn">Join</button>
+            </div>
+
+            <div
+                class="room"
+                data-room="Random"
+                data-description="Anything that does not fit elsewhere."
+            >
+                <span class="hash">#</span>
+                <span class="room-name">Random</span>
+                <button class="join-btn">Join</button>
+            </div>
+
+        </div>
+
+
+        <div class="sidebar-footer">
+
+            <button id="newRoomButton">
+                ＋ <span>New room</span>
+            </button>
+
+            <button id="settingsButton">
+                ⚙ <span>Settings</span>
+            </button>
+
+            <button id="aboutButton">
+                ⓘ <span>About</span>
+            </button>
+
+            <button id="logoutButton">
+                ↪ <span>Log out</span>
+            </button>
+
+        </div>
+
+    </aside>
+
+
+    <!-- CENTER -->
+
+    <main class="chat">
+
+        <div id="welcome" class="hidden">
+
+            <div class="welcome-inner">
+
+                <div class="logo"></div>
+
+                <h2 id="welcomeTitle">
+                    Welcome, Shailaja
+                </h2>
+
+                <p>
+Choose a room in the sidebar to join the conversation,
+or start a new one of your own.
+                </p>
+
+                <div class="welcome-actions">
+
+                    <button class="primary-btn"
+                            style="width:auto;padding:0 18px;"
+                            id="welcomeCreate">
+                        Create a room
+                    </button>
+
+                    <button class="secondary-btn"
+                            id="welcomeSearch">
+                        Search rooms
+                    </button>
+
+                </div>
+
+                <div class="tip">
+                    Tip: Ctrl+K searches rooms, Ctrl+N creates one.
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div id="chatArea">
+
+            <header class="chat-header">
+
+                <div class="room-icon">
+                    #
+                </div>
+
+                <div class="header-info">
+
+                    <div class="header-title" id="headerRoom">
+                        General
+                    </div>
+
+                    <div class="header-description"
+                         id="headerDescription">
+                        Everyone starts here. Say hello.
+                    </div>
+
+                    <div class="header-meta">
+                        <span id="memberCount">4 members</span>
+                        ·
+                        <span id="onlineCount">2 online</span>
+                    </div>
+
+                </div>
+
+
+                <div class="header-actions">
+
+                    <button
+                        class="icon-btn"
+                        title="Leave"
+                        id="leaveButton">
+                        ↪
+                    </button>
+
+                    <button
+                        class="icon-btn"
+                        title="Members"
+                        id="membersButton">
+                        ☷
+                    </button>
+
+                    <button
+                        class="icon-btn"
+                        title="Search messages"
+                        id="messageSearchButton">
+                        ⌕
+                    </button>
+
+                    <div class="connection">
+                        ● Connected
+                    </div>
+
+                </div>
+
+            </header>
+
+
+            <div
+                class="message-search hidden"
+                id="messageSearchBar">
+
+                <input
+                    id="messageSearchInput"
+                    placeholder="Search messages in this room"
+                >
+
+            </div>
+
+
+            <section
+                class="messages"
+                id="messages">
+
+                <div class="date-separator">
+                    Today
+                </div>
+
+                <div class="system-message">
+                    Welcome to #General.
+                </div>
+
+                <div class="message-row">
+
+                    <div class="avatar small"
+                         style="background:#2FB5A0;">
+                        A
+                        <span class="online-dot"></span>
+                    </div>
+
+                    <div class="message-content">
+
+                        <div class="message-user">
+                            Alex
+                        </div>
+
+                        <div class="message-bubble">
+                            Welcome to VANTA CHAT!
+                        </div>
+
+                        <div class="message-time">
+                            10:20
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="message-row own">
+
+                    <div class="message-content">
+
+                        <div class="message-user">
+                            You
+                        </div>
+
+                        <div class="message-bubble">
+                            Hello everyone 👋
+                        </div>
+
+                        <div class="message-time">
+                            10:21
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <div
+                class="typing"
+                id="typingIndicator">
+            </div>
+
+
+            <div class="composer">
+
+                <div class="composer-box">
+
+                    <textarea
+                        id="messageInput"
+                        maxlength="2000"
+                        placeholder="Message #General"
+                    ></textarea>
+
+                    <div class="composer-bottom">
+
+                        <button
+                            class="emoji-btn"
+                            id="emojiButton"
+                            title="Emoji">
+                            ☺
+                        </button>
+
+                        <div class="composer-hint">
+                            Enter to send · Shift+Enter for a new line · :smile: becomes 😄
+                        </div>
+
+                        <div class="char-count"
+                             id="charCount">
+                            0 / 2000
+                        </div>
+
+                        <button
+                            class="send-btn"
+                            id="sendButton">
+                            Send
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+
+    <!-- MEMBERS -->
+
+    <aside class="members" id="membersPanel">
+
+        <div class="members-header">
+
+            <span>
+                MEMBERS
+            </span>
+
+        </div>
+
+        <div class="member-list">
+
+            <div class="member">
+
+                <div class="avatar small"
+                     style="background:#6C78F2;">
+                    S
+                    <span class="online-dot"></span>
+                </div>
+
+                <div class="member-info">
+
+                    <div class="member-name">
+                        Shailaja (you)
+                    </div>
+
+                    <div class="member-status">
+                        Online
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="member">
+
+                <div class="avatar small"
+                     style="background:#2FB5A0;">
+                    A
+                    <span class="online-dot"></span>
+                </div>
+
+                <div class="member-info">
+
+                    <div class="member-name">
+                        Alex
+                    </div>
+
+                    <div class="member-status">
+                        Online
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="member">
+
+                <div class="avatar small"
+                     style="background:#E08A4B;">
+                    M
+                </div>
+
+                <div class="member-info">
+
+                    <div class="member-name">
+                        Maya
+                    </div>
+
+                    <div class="member-status">
+                        Last seen recently
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="member">
+
+                <div class="avatar small"
+                     style="background:#B863D6;">
+                    R
+                </div>
+
+                <div class="member-info">
+
+                    <div class="member-name">
+                        Rahul
+                    </div>
+
+                    <div class="member-status">
+                        Last seen today
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="member-note">
+            Messages are stored unencrypted on the server and are not end-to-end encrypted.
+        </div>
+
+    </aside>
+
+</section>
+
+
+<!-- =======================================================
+     MODAL
+======================================================= -->
+
+<div
+    class="modal-overlay hidden"
+    id="modalOverlay">
+
+    <div class="modal">
+
+        <div class="modal-header">
+
+            <h3 id="modalTitle">
+                Settings
+            </h3>
+
+            <button
+                class="close-btn"
+                id="modalClose">
+                ×
+            </button>
+
+        </div>
+
+        <div
+            class="modal-body"
+            id="modalBody">
+        </div>
+
+        <div
+            class="modal-footer"
+            id="modalFooter">
+
+            <button
+                class="secondary-btn"
+                id="modalCancel">
+                Close
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let currentRoom = "General";
+let currentRoomId = null;
+let username = "Shailaja";
+let darkMode = true;
+let notifications = true;
+
+
+/* =========================================================
+   ELEMENTS
+========================================================= */
+
+const authScreen = document.getElementById("authScreen");
+const appScreen = document.getElementById("appScreen");
+
+const authTitle = document.getElementById("authTitle");
+const authSubtitle = document.getElementById("authSubtitle");
+const authButton = document.getElementById("authButton");
+const authError = document.getElementById("authError");
+
+const usernameInput = document.getElementById("usernameInput");
+const passwordInput = document.getElementById("passwordInput");
+const confirmInput = document.getElementById("confirmInput");
+
+const confirmField = document.getElementById("confirmField");
+
+const switchPrompt = document.getElementById("switchPrompt");
+const switchButton = document.getElementById("switchButton");
+
+const profileName = document.getElementById("profileName");
+const profileAvatar = document.getElementById("profileAvatar");
+
+const headerRoom = document.getElementById("headerRoom");
+const headerDescription = document.getElementById("headerDescription");
+
+const messageInput = document.getElementById("messageInput");
+const messages = document.getElementById("messages");
+const charCount = document.getElementById("charCount");
+
+const roomSearch = document.getElementById("roomSearch");
+const messageSearchBar = document.getElementById("messageSearchBar");
+const messageSearchInput = document.getElementById("messageSearchInput");
+
+const typingIndicator = document.getElementById("typingIndicator");
+
+const modalOverlay = document.getElementById("modalOverlay");
+const modalTitle = document.getElementById("modalTitle");
+const modalBody = document.getElementById("modalBody");
+
+
+/* =========================================================
+   AUTH SCREEN
+========================================================= */
+
+let registerMode = false;
+
+switchButton.addEventListener("click", () => {
+
+    registerMode = !registerMode;
+
+    authError.textContent = "";
+
+    if (registerMode) {
+
+        authTitle.textContent = "Create your account";
+
+        authSubtitle.textContent =
+            "Pick a username and a password to get started.";
+
+        authButton.textContent = "Create account";
+
+        switchPrompt.textContent = "Already registered?";
+
+        switchButton.textContent = "Sign in";
+
+        confirmField.classList.remove("hidden");
+
+    } else {
+
+        authTitle.textContent = "Welcome back";
+
+        authSubtitle.textContent =
+            "Sign in to continue to your rooms.";
+
+        authButton.textContent = "Sign in";
+
+        switchPrompt.textContent = "New here?";
+
+        switchButton.textContent = "Create an account";
+
+        confirmField.classList.add("hidden");
+
+    }
+
+});
+
+
+authButton.addEventListener("click", authenticate);
+
+usernameInput.addEventListener("keydown", handleAuthEnter);
+passwordInput.addEventListener("keydown", handleAuthEnter);
+confirmInput.addEventListener("keydown", handleAuthEnter);
+
+
+function handleAuthEnter(event) {
+
+    if (event.key === "Enter") {
+        authenticate();
+    }
+
+}
+
+async function authenticate() {
+
+    const name = usernameInput.value.trim();
+    const password = passwordInput.value;
+
+    authError.textContent = "";
+
+    if (!name) {
+        authError.textContent =
+            "Please enter your username.";
+        return;
+    }
+
+    if (!password) {
+        authError.textContent =
+            "Please enter your password.";
+        return;
+    }
+
+    if (
+        registerMode &&
+        password !== confirmInput.value
+    ) {
+        authError.textContent =
+            "The two passwords do not match.";
+        return;
+    }
+
+    try {
+
+        const endpoint =
+            registerMode
+                ? "/api/register"
+                : "/api/login";
+
+        const body = {
+            username: name,
+            password: password
+        };
+
+        if (registerMode) {
+            body.confirm_password =
+                confirmInput.value;
+        }
+
+        const response =
+            await fetch(endpoint, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                credentials: "same-origin",
+                body: JSON.stringify(body)
+            });
+
+        const data =
+            await response.json();
+
+        if (!response.ok || !data.ok) {
+
+            authError.textContent =
+                data.message ||
+                "Authentication failed.";
+
+            return;
+        }
+
+        username =
+            data.user.username;
+
+        profileName.textContent =
+            username;
+
+        profileAvatar.textContent =
+            username.charAt(0).toUpperCase();
+
+        authScreen.classList.add("hidden");
+
+        appScreen.classList.remove("hidden");
+
+        updateWelcome();
+
+        await loadRoomsFromServer();
+
+        messageInput.focus();
+
+    } catch (error) {
+
+        console.error(
+            "Authentication error:",
+            error
+        );
+
+        authError.textContent =
+            "Unable to connect to the server.";
+    }
+}
+
+/* =========================================================
+   ROOM SELECTION
+========================================================= */
+async function loadRoomsFromServer() {
+
+    try {
+
+        const response =
+            await fetch("/api/rooms");
+
+        const data =
+            await response.json();
+
+        if (!response.ok || !data.ok) {
+            console.error(
+                "Unable to load rooms:",
+                data.message
+            );
+            return;
+        }
+
+        const roomsContainer =
+            document.querySelector(".rooms");
+
+        const existingRooms =
+            document.querySelectorAll(".room");
+
+        // Remove previously generated server rooms
+        existingRooms.forEach(room => {
+
+            if (room.dataset.serverRoom === "true") {
+                room.remove();
+            }
+
+        });
+
+        data.rooms.forEach(roomData => {
+
+            let roomElement =
+                document.querySelector(
+                    `.room[data-room="${CSS.escape(roomData.name)}"]`
+                );
+
+            // Create rooms that are not already in the HTML
+            if (!roomElement) {
+
+                roomElement =
+                    document.createElement("div");
+
+                roomElement.className =
+                    "room";
+
+                roomElement.dataset.serverRoom =
+                    "true";
+
+                roomElement.innerHTML = `
+                    <span class="hash">#</span>
+                    <span class="room-name"></span>
+                `;
+
+                roomElement
+                    .querySelector(".room-name")
+                    .textContent =
+                    roomData.name;
+
+                roomsContainer.appendChild(
+                    roomElement
+                );
+            }
+
+            roomElement.dataset.room =
+                roomData.name;
+
+            roomElement.dataset.roomId =
+                roomData.id;
+
+            roomElement.dataset.description =
+                roomData.description || "";
+
+            roomElement.onclick = () => {
+
+                document
+                    .querySelectorAll(".room")
+                    .forEach(item =>
+                        item.classList.remove("active")
+                    );
+
+                roomElement.classList.add("active");
+
+                currentRoom =
+                    roomData.name;
+
+                currentRoomId =
+                    roomData.id;
+
+                headerRoom.textContent =
+                    roomData.name;
+
+                headerDescription.textContent =
+                    roomData.description || "";
+
+                messageInput.placeholder =
+                    "Message #" +
+                    roomData.name;
+
+                loadDemoRoom(
+                    roomData.name,
+                    roomData.id
+                );
+            };
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Room loading error:",
+            error
+        );
+    }
+}
+loadRoomsFromServer();
+async function loadDemoRoom(room, roomId) {
+
+    currentRoom = room;
+    currentRoomId = roomId;
+
+    messages.innerHTML = "";
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/rooms/${roomId}/messages`
+            );
+
+        const data =
+            await response.json();
+
+        if (!response.ok || !data.ok) {
+            alert(
+                data.message ||
+                "Unable to load room."
+            );
+            return;
+        }
+
+        if (data.messages.length === 0) {
+
+            const system =
+                document.createElement("div");
+
+            system.className =
+                "system-message";
+
+            system.textContent =
+                "You joined #" + room + ".";
+
+            messages.appendChild(system);
+
+        } else {
+
+            data.messages.forEach(
+                message => {
+
+                    if (
+                        message.kind === "user"
+                    ) {
+
+                        if (
+                            message.username ===
+                            username
+                        ) {
+                            addOwnMessage(
+                                message.text
+                            );
+                        } else {
+                            addOtherMessage(
+                                message.username,
+                                message.text,
+                                message.ts
+                            );
+                        }
+
+                    } else {
+
+                        const system =
+                            document.createElement("div");
+
+                        system.className =
+                            "system-message";
+
+                        system.textContent =
+                            message.text;
+
+                        messages.appendChild(
+                            system
+                        );
+                    }
+                }
+            );
+        }
+
+        messages.scrollTop =
+            messages.scrollHeight;
+
+    } catch (error) {
+
+        console.error(
+            "Load history error:",
+            error
+        );
+
+        alert(
+            "Unable to load message history."
+        );
+    }
+}
+
+/* =========================================================
+   SEND MESSAGE
+========================================================= */
+
+document
+    .getElementById("sendButton")
+    .addEventListener("click", sendMessage);
+
+
+messageInput.addEventListener("keydown", event => {
+
+    if (event.key === "Enter" && !event.shiftKey) {
+
+        event.preventDefault();
+
+        sendMessage();
+
+    }
+
+});
+
+
+messageInput.addEventListener("input", () => {
+
+    charCount.textContent =
+        messageInput.value.length + " / 2000";
+
+});
+
+
+async function sendMessage() {
+
+    const text =
+        messageInput.value.trim();
+
+    if (!text) {
+        return;
+    }
+
+    if (!currentRoomId) {
+        alert("Please select a room first.");
+        return;
+    }
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/rooms/${currentRoomId}/messages`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        text: text
+                    })
+                }
+            );
+
+        const data =
+            await response.json();
+
+        if (!response.ok || !data.ok) {
+            alert(
+                data.message ||
+                "Failed to send message."
+            );
+            return;
+        }
+
+        addOwnMessage(
+            data.message.text
+        );
+
+        messageInput.value = "";
+
+        charCount.textContent =
+            "0 / 2000";
+
+        messageInput.focus();
+
+    } catch (error) {
+
+        console.error(
+            "Send message error:",
+            error
+        );
+
+        alert(
+            "Unable to send message."
+        );
+    }
+}
+
+
+function addOtherMessage(username, text, timestamp) {
+
+    const row =
+        document.createElement("div");
+
+    row.className =
+        "message-row";
+
+    const content =
+        document.createElement("div");
+
+    content.className =
+        "message-content";
+
+    const user =
+        document.createElement("div");
+
+    user.className =
+        "message-user";
+
+    user.textContent =
+        username;
+
+    const bubble =
+        document.createElement("div");
+
+    bubble.className =
+        "message-bubble";
+
+    bubble.textContent =
+        convertShortcodes(text);
+
+    const time =
+        document.createElement("div");
+
+    time.className =
+        "message-time";
+
+    time.textContent =
+        timestamp
+            ? new Date(timestamp)
+                .toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit"
+                })
+            : getTime();
+
+    content.appendChild(user);
+    content.appendChild(bubble);
+    content.appendChild(time);
+
+    row.appendChild(content);
+
+    messages.appendChild(row);
+}
+
+function addOwnMessage(text) {
+
+    const row =
+        document.createElement("div");
+
+    row.className =
+        "message-row own";
+
+    const content =
+        document.createElement("div");
+
+    content.className =
+        "message-content";
+
+    const user =
+        document.createElement("div");
+
+    user.className =
+        "message-user";
+
+    user.textContent =
+        "You";
+
+    const bubble =
+        document.createElement("div");
+
+    bubble.className =
+        "message-bubble";
+
+    bubble.textContent =
+        convertShortcodes(text);
+
+    const time =
+        document.createElement("div");
+
+    time.className =
+        "message-time";
+
+    time.textContent =
+        getTime();
+
+    content.appendChild(user);
+    content.appendChild(bubble);
+    content.appendChild(time);
+
+    row.appendChild(content);
+
+    messages.appendChild(row);
+
+    messages.scrollTop =
+        messages.scrollHeight;
+
+}
+
+
+function convertShortcodes(text) {
+
+    return text
+        .replaceAll(":smile:", "😄")
+        .replaceAll(":wave:", "👋")
+        .replaceAll(":rocket:", "🚀")
+        .replaceAll(":heart:", "❤️")
+        .replaceAll(":thumbsup:", "👍");
+
+}
+
+
+function getTime() {
+
+    return new Date().toLocaleTimeString(
+        [],
+        {
+            hour:"2-digit",
+            minute:"2-digit",
+            hour12:false
+        }
+    );
+
+}
+
+
+/* =========================================================
+   ROOM SEARCH
+========================================================= */
+
+roomSearch.addEventListener("input", () => {
+
+    const query =
+        roomSearch.value.toLowerCase();
+
+    document.querySelectorAll(".room")
+        .forEach(room => {
+
+            const name =
+                room.dataset.room.toLowerCase();
+
+            room.style.display =
+                name.includes(query)
+                    ? "flex"
+                    : "none";
+
+        });
+
+});
+
+
+/* =========================================================
+   MESSAGE SEARCH
+========================================================= */
+
+document
+    .getElementById("messageSearchButton")
+    .addEventListener("click", () => {
+
+        messageSearchBar.classList.toggle("hidden");
+
+        if (!messageSearchBar.classList.contains("hidden")) {
+            messageSearchInput.focus();
+        }
+
+    });
+
+
+messageSearchInput.addEventListener("input", () => {
+
+    const query =
+        messageSearchInput.value.toLowerCase();
+
+    document.querySelectorAll(".message-row")
+        .forEach(row => {
+
+            row.style.display =
+                row.textContent
+                    .toLowerCase()
+                    .includes(query)
+                    ? ""
+                    : "none";
+
+        });
+
+});
+
+
+/* =========================================================
+   MEMBERS
+========================================================= */
+
+document
+    .getElementById("membersButton")
+    .addEventListener("click", () => {
+
+        const panel =
+            document.getElementById("membersPanel");
+
+        panel.classList.toggle("hidden");
+
+    });
+
+
+/* =========================================================
+   EMOJI
+========================================================= */
+
+document
+    .getElementById("emojiButton")
+    .addEventListener("click", () => {
+
+        messageInput.value += "😊";
+
+        charCount.textContent =
+            messageInput.value.length + " / 2000";
+
+        messageInput.focus();
+
+    });
+
+
+/* =========================================================
+   TYPING INDICATOR
+========================================================= */
+
+let typingTimer;
+
+messageInput.addEventListener("input", () => {
+
+    typingIndicator.textContent =
+        messageInput.value.length
+            ? "You are typing…"
+            : "";
+
+    clearTimeout(typingTimer);
+
+    typingTimer = setTimeout(() => {
+
+        typingIndicator.textContent = "";
+
+    }, 3500);
+
+});
+
+
+/* =========================================================
+   SETTINGS
+========================================================= */
+
+document
+    .getElementById("settingsButton")
+    .addEventListener("click", openSettings);
+
+
+function openSettings() {
+
+    modalTitle.textContent =
+        "Settings";
+
+    modalBody.innerHTML = `
+
+        <div class="setting-row">
+
+            <div class="setting-text">
+
+                <div class="setting-title">
+                    Dark theme
+                </div>
+
+                <div class="setting-description">
+                    Use the VANTA CHAT dark interface.
+                </div>
+
+            </div>
+
+            <button
+                class="toggle ${darkMode ? "on" : ""}"
+                id="themeToggle">
+            </button>
+
+        </div>
+
+
+        <div class="setting-row">
+
+            <div class="setting-text">
+
+                <div class="setting-title">
+                    Notifications
+                </div>
+
+                <div class="setting-description">
+                    Show chat notifications.
+                </div>
+
+            </div>
+
+            <button
+                class="toggle ${notifications ? "on" : ""}"
+                id="notificationToggle">
+            </button>
+
+        </div>
+
+    `;
+
+    modalOverlay.classList.remove("hidden");
+
+
+    document
+        .getElementById("themeToggle")
+        .addEventListener("click", () => {
+
+            darkMode = !darkMode;
+
+            document.body.classList.toggle(
+                "light",
+                !darkMode
+            );
+
+            openSettings();
+
+        });
+
+
+    document
+        .getElementById("notificationToggle")
+        .addEventListener("click", () => {
+
+            notifications =
+                !notifications;
+
+            openSettings();
+
+        });
+
+}
+
+
+/* =========================================================
+   ABOUT
+========================================================= */
+
+document
+    .getElementById("aboutButton")
+    .addEventListener("click", openAbout);
+
+
+function openAbout() {
+
+    modalTitle.textContent =
+        "About VANTA CHAT";
+
+    modalBody.innerHTML = `
+
+        <div style="text-align:center;padding:10px">
+
+            <div class="logo"
+                 style="margin:0 auto 14px;">
+            </div>
+
+            <h3 style="margin:0 0 8px;">
+                VANTA CHAT
+            </h3>
+
+            <p style="
+                color:var(--text-dim);
+                font-size:9px;
+                line-height:1.7;
+            ">
+                Private conversations. Simple connection.
+                <br><br>
+                A local learning project created for
+                the OASIS INFOBYTE Python Programming Internship.
+                <br><br>
+                Messages are stored unencrypted and are not
+                end-to-end encrypted.
+            </p>
+
+        </div>
+
+    `;
+
+    modalOverlay.classList.remove("hidden");
+
+}
+
+
+/* =========================================================
+   NEW ROOM
+========================================================= */
+
+document
+    .getElementById("newRoomButton")
+    .addEventListener("click", openNewRoom);
+
+
+document
+    .getElementById("welcomeCreate")
+    .addEventListener("click", openNewRoom);
+
+
+function openNewRoom() {
+
+    modalTitle.textContent =
+        "Create a new room";
+
+    modalBody.innerHTML = `
+
+        <div class="field">
+
+            <label>ROOM NAME</label>
+
+            <input
+                id="newRoomName"
+                placeholder="e.g. JavaScript"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>DESCRIPTION</label>
+
+            <input
+                id="newRoomDescription"
+                placeholder="What is this room about?"
+            >
+
+        </div>
+
+    `;
+
+    modalOverlay.classList.remove("hidden");
+
+
+    const footer =
+        document.getElementById("modalFooter");
+
+    footer.innerHTML = `
+
+        <button
+            class="secondary-btn"
+            id="cancelNewRoom">
+            Cancel
+        </button>
+
+        <button
+            class="send-btn"
+            id="createRoomConfirm">
+            Create room
+        </button>
+
+    `;
+
+
+    document
+        .getElementById("cancelNewRoom")
+        .addEventListener("click", closeModal);
+
+
+    document
+        .getElementById("createRoomConfirm")
+        .addEventListener("click", () => {
+
+            const name =
+                document
+                    .getElementById("newRoomName")
+                    .value.trim();
+
+            if (!name) {
+                return;
+            }
+
+            addRoom(name);
+
+            closeModal();
+
+        });
+
+}
+
+
+async function addRoom(name) {
+
+    try {
+
+        const response =
+            await fetch("/api/rooms", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({
+                    name: name,
+                    description: "A new VANTA CHAT room."
+                })
+            });
+
+        const data =
+            await response.json();
+
+        if (!response.ok || !data.ok) {
+            alert(
+                data.message ||
+                "Unable to create room."
+            );
+            return;
+        }
+
+        const roomData = data.room;
+
+        const room =
+            document.createElement("div");
+
+        room.className =
+            "room";
+
+        room.dataset.room =
+            roomData.name;
+
+        room.dataset.roomId =
+            roomData.id;
+
+        room.dataset.description =
+            roomData.description ||
+            "A new VANTA CHAT room.";
+
+        room.innerHTML = `
+            <span class="hash">#</span>
+            <span class="room-name"></span>
+        `;
+
+        room.querySelector(".room-name")
+            .textContent = roomData.name;
+
+        document
+            .querySelector(".rooms")
+            .appendChild(room);
+
+        room.addEventListener("click", () => {
+
+            document
+                .querySelectorAll(".room")
+                .forEach(item =>
+                    item.classList.remove("active")
+                );
+
+            room.classList.add("active");
+
+            currentRoom =
+                roomData.name;
+
+            currentRoomId =
+                roomData.id;
+
+            headerRoom.textContent =
+                roomData.name;
+
+            headerDescription.textContent =
+                roomData.description ||
+                "A new VANTA CHAT room.";
+
+            messageInput.placeholder =
+                "Message #" + roomData.name;
+
+            loadDemoRoom(
+                roomData.name,
+                roomData.id
+            );
+
+        });
+
+    } catch (error) {
+
+        console.error(
+            "Create room error:",
+            error
+        );
+
+        alert(
+            "Unable to create room."
+        );
+    }
+}
+/* =========================================================
+   LOGOUT
+========================================================= */
+
+document
+    .getElementById("logoutButton")
+    .addEventListener("click", () => {
+
+        appScreen.classList.add("hidden");
+        authScreen.classList.remove("hidden");
+
+        usernameInput.value = "";
+        passwordInput.value = "";
+        confirmInput.value = "";
+
+        registerMode = false;
+
+        authTitle.textContent =
+            "Welcome back";
+
+        authSubtitle.textContent =
+            "Sign in to continue to your rooms.";
+
+        authButton.textContent =
+            "Sign in";
+
+        switchPrompt.textContent =
+            "New here?";
+
+        switchButton.textContent =
+            "Create an account";
+
+        confirmField.classList.add("hidden");
+
+    });
+
+
+/* =========================================================
+   LEAVE ROOM
+========================================================= */
+
+document
+    .getElementById("leaveButton")
+    .addEventListener("click", () => {
+
+        typingIndicator.textContent =
+            "You left #" + currentRoom;
+
+        setTimeout(() => {
+            typingIndicator.textContent = "";
+        }, 2500);
+
+    });
+
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+function updateWelcome() {
+
+    document.getElementById("welcomeTitle")
+        .textContent =
+        "Welcome, " + username;
+
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+document
+    .getElementById("modalClose")
+    .addEventListener("click", closeModal);
+
+
+document
+    .getElementById("modalCancel")
+    .addEventListener("click", closeModal);
+
+
+modalOverlay.addEventListener("click", event => {
+
+    if (event.target === modalOverlay) {
+        closeModal();
+    }
+
+});
+
+
+function closeModal() {
+
+    modalOverlay.classList.add("hidden");
+
+    document.getElementById("modalFooter").innerHTML = `
+
+        <button
+            class="secondary-btn"
+            id="modalCancel">
+            Close
+        </button>
+
+    `;
+
+    document
+        .getElementById("modalCancel")
+        .addEventListener("click", closeModal);
+
+}
+
+
+/* =========================================================
+   KEYBOARD SHORTCUTS
+========================================================= */
+
+document.addEventListener("keydown", event => {
+
+    if (
+        event.ctrlKey &&
+        event.key.toLowerCase() === "k"
+    ) {
+
+        event.preventDefault();
+
+        roomSearch.focus();
+
+        return;
+
+    }
+
+
+    if (
+        event.ctrlKey &&
+        event.key.toLowerCase() === "n"
+    ) {
+
+        event.preventDefault();
+
+        openNewRoom();
+
+        return;
+
+    }
+
+
+    if (
+        event.ctrlKey &&
+        event.key.toLowerCase() === "f"
+    ) {
+
+        event.preventDefault();
+
+        messageSearchBar.classList.remove("hidden");
+
+        messageSearchInput.focus();
+
+    }
+
+});
+
+
+/* =========================================================
+   SEARCH ROOMS FROM WELCOME
+========================================================= */
+
+documentf
+    .getElementById("welcomeSearch")
+    .addEventListener("click", () => {
+
+        roomSearch.focus();
+
+    });
+
+
+/* =========================================================
+   INITIAL STATE
+==========
+=============================================== */
+
+profileName.textContent =
+    username;
+
+profileAvatar.textContent =
+    username.charAt(0).toUpperCase();
+
+</script>
+
+</body>
+</html>
