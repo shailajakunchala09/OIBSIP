@@ -1,235 +1,239 @@
 # 🧮 BMI Insight
 
 <p align="center">
-  <strong>Personal BMI Tracking & Health Analytics</strong>
-  <br>
+  <b>Personal BMI Tracking &amp; Health Analytics</b><br/>
+  <i>Calculate, track, and analyze BMI measurements through web and desktop interfaces.</i>
 </p>
 
 <p align="center">
-  A Python-based BMI calculator and personal health analytics application
-  with multi-user support, persistent SQLite storage, historical tracking,
-  and BMI trend visualization through both web and desktop interfaces.
-</p>
-
-<p align="center">
-  <img src="https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/Flask-000000?style=for-the-badge&logo=flask&logoColor=white" alt="Flask">
-  <img src="https://img.shields.io/badge/Tkinter-2C2C2C?style=for-the-badge" alt="Tkinter">
-  <img src="https://img.shields.io/badge/SQLite-003B57?style=for-the-badge&logo=sqlite&logoColor=white" alt="SQLite">
-  <img src="https://img.shields.io/badge/Matplotlib-11557C?style=for-the-badge&logo=python&logoColor=white" alt="Matplotlib">
-  <img src="https://img.shields.io/badge/Chart.js-FF6384?style=for-the-badge&logo=chart.js&logoColor=white" alt="Chart.js">
-  <img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5">
-  <img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" alt="CSS3">
+  <img alt="Python" src="https://img.shields.io/badge/Python-3.x-3776AB?logo=python&logoColor=white">
+  <img alt="Flask" src="https://img.shields.io/badge/Flask-3.x-000000?logo=flask&logoColor=white">
+  <img alt="Tkinter" src="https://img.shields.io/badge/Tkinter-2C2C2C?logo=python&logoColor=white">
+  <img alt="SQLite" src="https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=white">
+  <img alt="Matplotlib" src="https://img.shields.io/badge/Matplotlib-11557C?logo=python&logoColor=white">
+  <img alt="Chart.js" src="https://img.shields.io/badge/Chart.js-FF6384?logo=chart.js&logoColor=white">
+  <img alt="HTML5" src="https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white">
+  <img alt="CSS3" src="https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white">
+  <img alt="Status" src="https://img.shields.io/badge/Status-Complete-16a34a">
+  <img alt="Internship" src="https://img.shields.io/badge/OASIS%20INFOBYTE-Task%202-7c3aed">
 </p>
 
 ---
 
+## 🌐 Live Demo
 
-### LIVE DEMO:
-https://bmi-insight.onrender.com/
-
----
-
-## About
-
-BMI Insight is a Python-based application designed to provide a simple, organized, and persistent way to calculate and track Body Mass Index (BMI).
-
-Instead of calculating a BMI value once and losing the result, users can create named profiles, record multiple measurements, view their previous records, and analyze BMI and weight changes over time.
-
-The project provides both a **Flask web application** and a **Tkinter desktop application**, using shared calculation, validation, and SQLite database logic.
-
-The application is developed as part of the **OASIS INFOBYTE Python Programming Internship — Task 2 (Advanced Tier)**.
+**https://bmi-insight.onrender.com/**
 
 ---
 
-## Why This Project?
+## 📖 Project Overview
 
-A basic BMI calculator performs a calculation and displays a result.
+**BMI Insight** is a Python-based BMI calculator and personal health analytics application developed for the **OASIS INFOBYTE Python Programming Internship — Task 2**.
 
-BMI Insight extends this concept into a small personal tracking and analytics system by adding persistent storage, multiple user profiles, historical records, and trend visualization.
+The application allows users to calculate BMI, create multiple user profiles, store measurements using SQLite, view historical records, and analyze BMI and weight trends.
 
-### Advantages
+The project provides both a **Flask web application** and a **Tkinter desktop application**, supported by shared calculation, validation, database, and analytics functionality.
 
-- Simple and clear BMI calculation
-- Separate records for multiple users
-- Persistent history using SQLite
+---
+
+## 🎯 Why This Project?
+
+A basic BMI calculator provides a single BMI result without preserving previous measurements.
+
+BMI Insight extends the basic calculation into a personal tracking and analytics system by providing:
+
+- Persistent BMI history
+- Multiple user profiles
 - BMI and weight trend visualization
+- Search and filtering
+- Record management
 - Web and desktop interfaces
 - Input validation and error handling
-- Modular and reusable Python code
-- Automated testing for core functionality
 
----
+  ---
 
-## Key Features
+## ✨ Key Features
 
 | Feature | Description |
 |---|---|
-| ⚖️ BMI Calculator | Calculates BMI from weight and height |
-| 📊 BMI Classification | Classifies BMI into standard health categories |
-| 👤 Multi-User Support | Allows separate named user profiles |
-| 💾 SQLite Storage | Stores BMI records persistently |
-| 📋 History | Displays previous BMI measurements |
-| 🔎 Search & Filter | Filters historical records in the web application |
-| 🗑️ Delete Records | Removes individual historical measurements |
-| 📈 BMI Trend | Visualizes BMI measurements over time |
-| ⚖️ Weight Trend | Visualizes weight changes over time |
-| 📊 Analytics | Displays BMI summary statistics |
-| 🎨 Color-Coded Result | Provides visual category feedback |
-| 📏 BMI Scale | Shows the result on a visual BMI scale |
-| 🌐 Web Application | Flask-based responsive web dashboard |
-| 🖥️ Desktop Application | Tkinter-based graphical application |
-| 🌗 Theme Support | Light and dark theme support in desktop application |
-| 🔔 Notifications | User feedback and delete confirmations |
-| ⚠️ Error Handling | Handles invalid input and database errors |
-| 🧪 Automated Testing | Core logic tested using pytest |
+| ⚖️ **BMI Calculator** | Calculates BMI from weight and height |
+| 📊 **BMI Classification** | Classifies BMI into standard health categories |
+| 👤 **Multi-User Support** | Allows separate named user profiles |
+| 💾 **SQLite Storage** | Stores BMI records persistently |
+| 📋 **History** | Displays previous BMI measurements |
+| 🔎 **Search & Filter** | Filters historical records |
+| 🗑️ **Delete Records** | Removes individual historical measurements |
+| 📈 **BMI Trend** | Visualizes BMI measurements over time |
+| ⚖️ **Weight Trend** | Visualizes weight changes over time |
+| 📊 **Analytics** | Displays BMI summary statistics |
+| 🎨 **Color-Coded Results** | Provides visual BMI category feedback |
+| 📏 **BMI Scale** | Shows results on a visual BMI scale |
+| 🌐 **Web Application** | Flask-based responsive web dashboard |
+| 🖥️ **Desktop Application** | Tkinter-based graphical application |
+| 🌗 **Theme Support** | Light and dark theme support |
+| ⚠️ **Error Handling** | Handles invalid input and database errors |
+| 🧪 **Automated Testing** | Tests core BMI functionality using pytest |
 
 ---
 
-### Technology Stack
-
-## Backend
-
-Python 3  
-Flask  
-SQLite  
-sqlite3  
-
-## Desktop GUI
-
-Tkinter  
-Matplotlib  
-
-## Frontend
-
-HTML5  
-CSS3  
-JavaScript  
-Chart.js  
-
-## Testing
-
-pytest  
-
-## Deployment
-
-Gunicorn  
-Git  
-GitHub  
-
-## Development
-
-Python Virtual Environment  
-JSON  
-Environment Variables  
-
 ---
 
-## BMI Calculation
+## 🧰 Technology Stack
+
+| Layer | Technology |
+|---|---|
+| Language | Python 3 |
+| Web Backend | Flask |
+| Desktop GUI | Tkinter |
+| Database | SQLite |
+| Web Frontend | HTML5, CSS3, JavaScript |
+| Web Charts | Chart.js |
+| Desktop Charts | Matplotlib |
+| Testing | pytest |
+| Configuration | JSON, Environment Variables |
+| Deployment | Gunicorn, Render |
+| Development | Git, GitHub, Python Virtual Environment |
+
+---
+---
+
+## 🧮 BMI Calculation
 
 BMI is calculated using the standard formula:
-BMI = Weight / Height²
-Weight = kilograms
-Height = meters
 
-## BMI Categories
-| BMI Range      | Category    |
-| -------------- | ----------- |
-| Below 18.5     | Underweight |
-| 18.5 – 24.9    | Normal      |
-| 25.0 – 29.9    | Overweight  |
-| 30.0 and above | Obese       |
+**BMI = Weight (kg) / Height (m)²**
 
-## How the Application Works
+Where:
+
+- **Weight** is measured in kilograms
+- **Height** is measured in meters
+
+### BMI Categories
+
+| BMI Range | Category |
+|---|---|
+| Below 18.5 | Underweight |
+| 18.5 – 24.9 | Normal |
+| 25.0 – 29.9 | Overweight |
+| 30.0 and above | Obese |
+
+---
+---
+
+## 🔄 Application Workflow
+
 The application follows a simple workflow:
 
+```text
 Select or Create User
-        ↓
+        │
+        ▼
 Enter Weight & Height
-        ↓
+        │
+        ▼
 Validate Input
-        ↓
+        │
+        ▼
 Calculate BMI
-        ↓
+        │
+        ▼
 Determine BMI Category
-        ↓
+        │
+        ▼
 Save Measurement to SQLite
-        ↓
+        │
+        ▼
 View History
-        ↓
+        │
+        ▼
 Analyze BMI & Weight Trends
+```
 
-## Web Application
+---
+---
 
-The Flask web application provides a modern dashboard interface.
+## 🌐 Web Application
 
-### Dashboard
+The Flask web application provides a modern dashboard for calculating and tracking BMI.
+
+### 🏠 Dashboard
 
 The dashboard provides:
 
-User profile selection
-Add-user functionality
-Weight and height inputs
-BMI calculation
-Color-coded result
-BMI scale
-Summary metrics
-Recent records
-BMI trend visualization
-History
+- User profile selection
+- Add-user functionality
+- Weight and height inputs
+- BMI calculation
+- Color-coded BMI result
+- BMI scale
+- Summary metrics
+- Recent records
+- BMI trend visualization
 
-### The History page provides:
+### 📋 History
 
-Complete BMI history
-Measurement date and time
-Weight
-Height
-BMI
-Category
-Search and filtering
-Record deletion
-Analytics
+The History page provides:
 
-### The Analytics page provides:
+- Complete BMI history
+- Measurement date and time
+- Weight
+- Height
+- BMI
+- Category
+- Search and filtering
+- Record deletion
 
-Latest BMI
-Previous BMI
-Highest BMI
-Lowest BMI
-Total measurement count
-BMI trend chart
-Weight trend chart
+### 📊 Analytics
 
-## Desktop Application
+The Analytics page provides:
 
-The desktop version is built using Tkinter and provides the same core functionality through a standalone graphical interface.
+- Latest BMI
+- Previous BMI
+- Highest BMI
+- Lowest BMI
+- Total measurement count
+- BMI trend chart
+- Weight trend chart
 
-### Dashboard
-User selection
-Add-user functionality
-Weight and height input
-BMI calculation
-BMI result card
-Color-coded category
-BMI scale
-Reset functionality
+---
+---
 
-### History
-Complete measurement history
-Date and time
-Weight
-Height
-BMI
-Category
-Record deletion
+## 🖥️ Desktop Application
 
-### Analytics
-BMI statistics
-BMI trend chart
-Weight trend chart
-Matplotlib visualization
+The desktop version is built using **Tkinter** and provides the same core BMI tracking functionality through a standalone graphical interface.
 
-The desktop application also supports light and dark themes.
+### 🏠 Dashboard
+
+- User selection
+- Add-user functionality
+- Weight and height input
+- BMI calculation
+- BMI result card
+- Color-coded BMI category
+- BMI scale
+- Reset functionality
+
+### 📋 History
+
+- Complete measurement history
+- Date and time
+- Weight
+- Height
+- BMI
+- Category
+- Record deletion
+
+### 📊 Analytics
+
+- BMI statistics
+- BMI trend chart
+- Weight trend chart
+- Matplotlib visualization
+
+The desktop application also supports **light and dark themes**.
+
+---
+---
 
 ## 📸 Screenshots
 
@@ -269,134 +273,272 @@ The desktop application also supports light and dark themes.
   <img src="screenshots/06-analytics-bmi-trend.png" alt="BMI Analytics and Trend" width="950">
 </p>
 
+---
+---
 
-## Project Structure
+## 📁 Project Structure
 
+```text
 Python-Task2-BMICalculator/
-
 │
-
 ├── app.py
-
 ├── desktop_app.py
-
 ├── bmi_calculator.py
-
 ├── database.py
-
 ├── validators.py
-
 ├── config.py
-
 ├── requirements.txt
-
 ├── README.md
-
 ├── .gitignore
-
 │
-
 ├── templates/
-
 │   ├── base.html
-
 │   ├── index.html
-
 │   ├── history.html
-
 │   └── analytics.html
-
 │
-
 ├── static/
-
 │   ├── css/
-
 │   │   └── style.css
-
 │   ├── js/
-
 │   │   └── app.js
-
-│   │
-
 │   └── assets/
-
 │
-
 ├── data/
-
 │
-
 ├── screenshots/
-
+│   ├── 01-dashboard.png
+│   ├── 02-normal-result.png
+│   ├── 03-overweight-result.png
+│   ├── 04-obese-result.png
+│   ├── 05-history.png
+│   └── 06-analytics-bmi-trend.png
 │
-
 └── tests/
-
     └── test_bmi.py
+```
 
+---
+---
 
-## Future Enhancements
-Additional health metrics
-Advanced analytics and reporting
-PostgreSQL database support
-User authentication
-Exportable analytics charts
-Additional visualization options
-Additional measurement units
-Cloud data synchronization
-Progressive Web App support
+## 📄 File Overview
 
-## Learning Outcomes
+| File / Folder | Purpose |
+|---|---|
+| `app.py` | Flask web application entry point |
+| `desktop_app.py` | Tkinter desktop application |
+| `bmi_calculator.py` | BMI calculation and classification logic |
+| `database.py` | SQLite database operations and record management |
+| `validators.py` | Input validation and error checking |
+| `config.py` | Application configuration |
+| `requirements.txt` | Python dependencies |
+| `templates/` | Flask HTML templates |
+| `static/` | CSS, JavaScript, and frontend assets |
+| `data/` | Application data and SQLite storage |
+| `screenshots/` | Project screenshots |
+| `tests/` | Automated test files |
 
-This project provided practical experience with:
+---
+---
 
-Python application development
-Modular programming
-BMI calculation and classification
-Input validation
-SQLite database design
-CRUD operations
-Flask web development
-Tkinter GUI development
-Matplotlib visualization
-Chart.js visualization
-Automated testing with pytest
-Database error handling
-Git and GitHub
-Web application deployment
+## 🛡️ Validation & Error Handling
 
-## Project Status
+BMI Insight includes input validation and error handling to provide reliable application behavior.
 
-Completed — Oasis Infobyte Internship (OIBSIP), Python Programming Task 2
+### Input Validation
 
-### Implemented
-BMI calculation
-BMI classification
-Multi-user profiles
-SQLite persistence
-Historical BMI records
-Search and filtering
-Record deletion
-BMI analytics
-BMI trend visualization
-Weight trend visualization
-Flask web application
-Tkinter desktop application
-Responsive web interface
-Input validation
-Database error handling
-Automated testing
-Deployment configuration
+- Checks that weight and height values are provided
+- Prevents invalid or non-numeric input
+- Validates positive measurement values
+- Prevents invalid BMI calculations
 
-## Developer
-### Kunchala Shailaja
+### Database Error Handling
 
+- Handles SQLite database errors
+- Provides appropriate feedback when database operations fail
+- Maintains reliable record creation, retrieval, and deletion
+
+### User Feedback
+
+The application provides clear feedback for:
+
+- Invalid input
+- Missing values
+- Calculation errors
+- Database operation errors
+
+---
+---
+
+## 🧪 Testing
+
+The project includes automated tests using **pytest** to verify the core BMI functionality.
+
+Testing covers:
+
+- BMI calculation
+- BMI category classification
+- Valid input handling
+- Invalid input handling
+- Boundary BMI values
+- Core application logic
+
+Run the tests with:
+
+```bash
+pytest
+```
+
+---
+---
+
+## 🚀 Installation & How to Run
+
+### 1. Clone the Repository
+
+```bash
+git clone https://github.com/shailajakunchala09/OIBSIP.git
+cd OIBSIP
+```
+
+Navigate to the BMI Insight project directory.
+
+### 2. Create a Virtual Environment
+
+```bash
+python -m venv venv
+```
+
+Activate the virtual environment.
+
+**Windows:**
+
+```bash
+venv\Scripts\activate
+```
+
+**Linux / macOS:**
+
+```bash
+source venv/bin/activate
+```
+
+### 3. Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+### 4. Run the Web Application
+
+```bash
+python app.py
+```
+
+Open the local Flask URL shown in the terminal.
+
+### 5. Run the Desktop Application
+
+```bash
+python desktop_app.py
+```
+
+### 6. Run Tests
+
+```bash
+pytest
+```
+
+---
+---
+
+## 💡 Usage
+
+1. Select an existing user or create a new user profile.
+2. Enter the user's weight and height.
+3. Calculate the BMI.
+4. View the BMI value and category.
+5. Save the measurement to the database.
+6. Open **History** to review previous measurements.
+7. Use **Search & Filter** to find specific records.
+8. Open **Analytics** to view BMI and weight trends.
+9. Delete individual records when required.
+10. Switch between light and dark themes in the desktop application.
+
+---
+---
+
+## 🔮 Future Enhancements
+
+- Add additional health and wellness metrics
+- Introduce advanced analytics and reporting
+- Support PostgreSQL for larger-scale deployments
+- Add secure user authentication
+- Add exportable analytics reports and charts
+- Provide additional visualization options
+- Support additional measurement units
+- Add cloud synchronization
+- Explore Progressive Web App (PWA) support
+
+---
+---
+
+## 🎓 Learning Outcomes
+
+Through this project, I gained practical experience in:
+
+- Python application development
+- Modular programming
+- BMI calculation and classification
+- Input validation
+- SQLite database design
+- CRUD operations
+- Flask web application development
+- Tkinter desktop GUI development
+- Matplotlib and Chart.js visualizations
+- Automated testing with pytest
+- Database error handling
+- Git and GitHub
+- Web application deployment
+
+---
+---
+
+## 👩‍💻 Developer
+
+**Kunchala Shailaja**  
 BCA Graduate | Python Programming | AI/ML Learner
 
-## GitHub:
-https://github.com/shailajakunchala09
+- **GitHub:** https://github.com/shailajakunchala09
+- **Repository:** https://github.com/shailajakunchala09/OIBSIP
 
-## Repository:
-https://github.com/shailajakunchala09/OIBSIP
+---
+---
+
+## ✅ Project Status
+
+**Completed** — OASIS INFOBYTE Python Programming Internship, Task 2.
+
+The project includes:
+
+- BMI calculation and classification
+- Multi-user support
+- SQLite data storage
+- BMI history tracking
+- Search and filtering
+- BMI and weight analytics
+- Web application
+- Desktop application
+- Light and dark themes
+- Input validation
+- Error handling
+- Automated testing
+- Responsive visualizations
+
+---
+
+
+
+- Automated testing
+
+---
