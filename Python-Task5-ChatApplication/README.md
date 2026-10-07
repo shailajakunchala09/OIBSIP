@@ -415,12 +415,10 @@ VANTA CHAT was manually tested using multiple client sessions.
 | Light theme | ✅ Passed |
 | Notification settings | ✅ Passed |
 
+``
 ### Run Tests
 
-```bash
 python -m unittest discover -s tests -v
-
----
 
 ## 📸 Screenshots
 
@@ -431,8 +429,8 @@ screenshots/
 
 with:
 
-```markdown
-## 📸 Screenshots
+```
+##  📸 Screenshots
 
 ### 🔐 Login
 
