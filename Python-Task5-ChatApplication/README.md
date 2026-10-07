@@ -420,15 +420,45 @@ VANTA CHAT was manually tested using multiple client sessions.
 ```bash
 python -m unittest discover -s tests -v
 
+---
+
 ## 📸 Screenshots
 
 Application screenshots are included in the project's `screenshots/` directory.
 
 ```text
 screenshots/
-```
 
-The screenshots demonstrate the main VANTA CHAT interface and its functionality, including chat rooms, conversations, notifications, and themes.
+with:
+
+```markdown
+## 📸 Screenshots
+
+### 🔐 Login
+
+<p align="center">
+  <img src="screenshots/01-login.png" alt="VANTA CHAT Login" width="900">
+</p>
+
+### 🏠 Create Room
+
+<p align="center">
+  <img src="screenshots/02-create%20room.png" alt="VANTA CHAT Create Room" width="900">
+</p>
+
+### 💬 Chat Home
+
+<p align="center">
+  <img src="screenshots/03-chat%20home.png" alt="VANTA CHAT Chat Home" width="900">
+</p>
+
+### 📋 Chat History
+
+<p align="center">
+  <img src="screenshots/04-chat%20history.png" alt="VANTA CHAT Chat History" width="900">
+</p>
+
+---
 
 ## ▶️ How to Run
 
