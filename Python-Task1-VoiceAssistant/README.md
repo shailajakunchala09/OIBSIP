@@ -89,10 +89,9 @@ application.
 
 ---
 
-## 🏗 Architecture
+## 🏗️ Architecture
 
-The application connects the web interface with the Python backend and external
-services to process voice and text-based requests.
+The application connects the web interface with the Python backend and external services to process voice and text-based requests.
 
 ```text
 User
@@ -122,8 +121,12 @@ Assistant Response
     │
     ├── Text Response
     └── Voice Response
+```
+---
 
-📁 Project Structure
+## 📁 Project Structure
+
+```text
 Python-Task1-VoiceAssistant/
 ├── app.py
 ├── voice_assistant.py
@@ -146,136 +149,180 @@ Python-Task1-VoiceAssistant/
 └── static/
     ├── style.css
     └── app.js
+```
+---
 
-🗂 File Overview
-| File                   | Responsibility                                          |
-| ---------------------- | ------------------------------------------------------- |
-| `app.py`               | Flask application and backend functionality             |
-| `voice_assistant.py`   | Desktop voice-assistant implementation                  |
-| `commands.json`        | Configurable command definitions                        |
-| `templates/index.html` | Main web interface                                      |
-| `static/style.css`     | Interface styling and responsive design                 |
-| `static/app.js`        | Browser interaction and voice functionality             |
-| `requirements.txt`     | Python dependencies                                     |
-| `.env.example`         | Environment configuration template                      |
-| `mic_test.py`          | Microphone testing utility                              |
-| `.gitignore`           | Prevents local and sensitive files from being committed |
+## 🗂️ File Overview
 
+| File | Responsibility |
+|---|---|
+| `app.py` | Flask application and backend functionality |
+| `voice_assistant.py` | Desktop voice-assistant implementation |
+| `commands.json` | Configurable command definitions |
+| `templates/index.html` | Main web interface |
+| `static/style.css` | Interface styling and responsive design |
+| `static/app.js` | Browser interaction and voice functionality |
+| `requirements.txt` | Python dependencies |
+| `.env.example` | Environment configuration template |
+| `mic_test.py` | Microphone testing utility |
+| `.gitignore` | Prevents local and sensitive files from being committed |
 
-🔐 Configuration & Environment
+---
 
-The application uses environment variables for configuration and sensitive
-information.
+## 🔐 Configuration & Environment
+
+The application uses environment variables for configuration and sensitive information.
 
 A template is provided in:
 
+```text
 .env.example
+```
 
-Create a local .env file when required and configure the necessary API or
-email-related values.
+Create a local `.env` file when required and configure the necessary API or email-related values.
 
-Security: Never commit real API keys, passwords, or other sensitive
-credentials to GitHub.
+> **Security:** Never commit real API keys, passwords, or other sensitive credentials to GitHub.
 
-⚠️ Validation & Error Handling
+---
+
+## ⚠️ Validation & Error Handling
 
 The application includes handling for common voice-assistant issues such as:
 
-Microphone-related errors
-Speech recognition failures
-Invalid or unsupported commands
-API-related failures
-Email-related errors
-Unexpected assistant responses
+- Microphone-related errors
+- Speech recognition failures
+- Invalid or unsupported commands
+- API-related failures
+- Email-related errors
+- Unexpected assistant responses
 
-The goal is to provide useful feedback instead of allowing the application to
-terminate unexpectedly.
+The goal is to provide useful feedback instead of allowing the application to terminate unexpectedly.
 
-📸 Screenshots
-01. Home Interface
+---
 
-02. Voice Listening
+## 📸 Screenshots
 
-03. Assistant Response
+### 01. Home Interface
 
-04. Available Commands
+![Voice Assistant Home](screenshots/01-voice-assistant-home.png)
 
-▶️ How to Run
+### 02. Voice Listening
+
+![Voice Assistant Listening](screenshots/02-voice-assistant-listening.png)
+
+### 03. Assistant Response
+
+![Voice Assistant Response](screenshots/03-voice-assistant-response.png)
+
+### 04. Available Commands
+
+![Voice Assistant Commands](screenshots/04-voice-assistant-commands.png)
+
+---
+
+## ▶️ How to Run
+
+```bash
 python app.py
-⚙️ Installation
+```
+---
 
-Clone the repository:
+## ⚙️ Installation
 
+### 1. Clone the repository
+
+```bash
 git clone https://github.com/shailajakunchala09/OIBSIP.git
+```
 
-Navigate to the project:
+### 2. Navigate to the project
 
+```bash
 cd OIBSIP/Python-Task1-VoiceAssistant
+```
 
-Create a virtual environment:
+### 3. Create a virtual environment
 
+```bash
 python -m venv .venv
+```
 
-Activate the virtual environment on Windows:
+### 4. Activate the virtual environment on Windows
 
+```bash
 .venv\Scripts\activate
+```
 
-Install the required dependencies:
+### 5. Install dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
-Start the application:
+### 6. Start the application
 
+```bash
 python app.py
-🕹 Usage
-Start the Flask application.
-Open the application in a web browser.
-Allow microphone access when prompted.
-Enter a command using voice or text.
-The assistant processes the request.
-View the response in the conversation interface.
-Use supported features such as weather, web search, reminders, email, and
-custom commands.
-🚀 Future Enhancements
-Conversational memory
-Improved intent classification
-Enhanced natural-language understanding
-Additional API integrations
-Expanded custom command support
-Personalized user preferences
-Advanced reminder management
-Improved contextual conversations
-🎓 Learning Outcomes
+```
+---
+
+## 🕹️ Usage
+
+1. Start the Flask application.
+2. Open the application in a web browser.
+3. Allow microphone access when prompted.
+4. Enter a command using voice or text.
+5. The assistant processes the request.
+6. View the response in the conversation interface.
+7. Use supported features such as weather, web search, reminders, email, and custom commands.
+
+---
+
+## 🚀 Future Enhancements
+
+- Conversational memory
+- Improved intent classification
+- Enhanced natural-language understanding
+- Additional API integrations
+- Expanded custom command support
+- Personalized user preferences
+- Advanced reminder management
+- Improved contextual conversations
+
+---
+
+## 🎓 Learning Outcomes
 
 Building this project provided practical experience in:
 
-Python application development
-Flask web application development
-Speech recognition and text-to-speech
-Frontend and backend integration
-API integration
-SMTP email integration
-JSON-based configuration
-Environment variable management
-Error handling
-Git and GitHub workflow
-Deploying a Python web application
-👩‍💻 Developer
+- Python application development
+- Flask web application development
+- Speech recognition and text-to-speech
+- Frontend and backend integration
+- API integration
+- SMTP email integration
+- JSON-based configuration
+- Environment variable management
+- Error handling
+- Git and GitHub workflow
+- Deploying a Python web application
 
-Kunchala Shailaja
+---
+
+## 👩‍💻 Developer
+
+**Kunchala Shailaja**
 
 BCA Graduate | Python Programming | AI/ML Learner
 
-🔗 GitHub:
+🔗 **GitHub:**  
 https://github.com/shailajakunchala09
 
-📌 Project Status
+---
 
-✅ Complete — OASIS INFOBYTE Python Programming Internship
-Task 1: Voice Assistant
+## 📌 Project Status
 
+✅ **Complete**
 
-This is much closer to the **VaultForge README style** while remaining specific to your Voice Assistant.
-
-**Don't commit this yet.** Replace your current `README.md` with this version, save it, and then run:
-
+**OASIS INFOBYTE Python Programming Internship**  
+**Task 1: Voice Assistant**
